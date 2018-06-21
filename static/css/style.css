@@ -148,7 +148,7 @@ body, html{
 
 /* --- Menu Content - Add Icon --- */
 .menu .content .add{
-	max-width: 70px;
+	/*max-width: 70px;*/
 }
 .menu .content .add i{
 	cursor: pointer;
@@ -185,9 +185,12 @@ body, html{
 
 .menu .content .price{
 	font-size: 18px;
+	/*float: right;*/
+	/*text-align: right;*/
 	/*background: red;*/
 	line-height: 60px;
-	padding-right: 15px;
+	
+	/*padding-right: 30px;*/
 	color: #F98B4E;
 }
 
@@ -200,6 +203,7 @@ body, html{
 	right: 0;
 	left: 0;
 	height: 50px;
+	margin-right: -10px;
 	background: #2F9465;
 	text-align: center;
 }
