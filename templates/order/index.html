@@ -33,17 +33,18 @@
 
 {% for category in categories %}
 
-<div class="row menu">
+<div class="row menu-title">
 	<div class="col-12 clear">
-
 		<div class="head">
 			<div class="name">{{ category.name }}</div>
 		</div>
+	</div>
+</div>
 
-		{% for menu in category.menu %}
-		<div class="row content">
-
-			<div class="col-2 add" id="{{ menu.id }}">
+{% for menu in category.menu %}
+<div class="row menu-item">
+		<div class="col-2 col-sm-1 clear">
+			<div class="add" id="{{ menu.id }}">
 				<!-- For jQuery -->
 				<div id="subCategory" style="display: none;">{{ menu.subcategory.count }}</div>
 				<!-- End -->
@@ -51,8 +52,11 @@
 				<img id="loader" style="display: none" src="{% static 'img/spinner.gif' %}">
 				<i id="check" style="display: none" class="fas fa-check"></i>
 			</div>
+		</div>
 
-			<div class="col-7 record">
+	
+		<div class="col-7 col-sm-8 clear">
+			<div class="record">
 				<a href="{% url 'order:detail' id=menu.id %}">
 					<div class="title">
 						<div class="main">{{ menu.name }}</div>
@@ -60,16 +64,21 @@
 					</div>
 				</a>
 			</div>
-
-			<div class="col-3 price">{{ menu.price|floatformat:2 }} TL</div>
-
 		</div>
-		{% endfor %}
 
-	</div>
+		<div class="col-3 clear">
+			<div class="price">{{ menu.price|floatformat:2 }} TL</div>
+		</div>
+
+	<div style="display: none" id="price">{{ menu.price|floatformat:2 }}</div>
+
 </div>
 
 {% endfor %}
+
+{% endfor %}
+
+
 
 
 <div class="row no-gutter sepetim">
@@ -92,7 +101,7 @@
 <script>
 
 
-function addBudget(id){
+function getBudgetCount(){
 
 	// CSRF Token for Django
 	$.ajaxSetup({
@@ -116,7 +125,55 @@ function addBudget(id){
 		} 
 	});
 
-	var serialized = $.param({id: id, count: 1});
+	request = $.ajax({
+        url: "{% url 'cart:count' %}",
+        type: "post"
+    });
+
+    // Callback handler that will be called on success
+    request.done(function (response, textStatus, jqXHR){
+        // Log a message to the console
+        console.log("Hooray, it worked!");
+        console.log()
+        $('#bucketCount').html('('+response['result']+')')
+    });
+
+    // Callback handler that will be called on failure
+    request.fail(function (jqXHR, textStatus, errorThrown){
+        // Log the error to the console
+        console.error(
+            "The following error occurred: "+
+            textStatus, errorThrown
+        );
+    });
+}
+
+
+function addBudget(id, price){
+
+	// CSRF Token for Django
+	$.ajaxSetup({
+		beforeSend: function(xhr, settings) {
+			function getCookie(name) {
+				var cookieValue = null;
+				if (document.cookie && document.cookie != '') {
+					var cookies = document.cookie.split(';');
+					for (var i = 0; i < cookies.length; i++) {
+						var cookie = jQuery.trim(cookies[i]);
+						if (cookie.substring(0, name.length + 1) == (name + '=')) {
+							cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+							break;
+						}
+					}
+				}
+				return cookieValue;
+			}if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+				xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+			}
+		} 
+	});
+
+	var serialized = $.param({id: id, price: price, option: -1, count: 1});
 
 	request = $.ajax({
         url: "{% url 'cart:add' %}",
@@ -151,7 +208,9 @@ function updateBucket(){
 };
 
 $(document).ready(function(){
-	updateBucket();
+	// updateBucket();
+
+	getBudgetCount();
 
 
     $(".fa-plus-circle").click(function(){
@@ -168,6 +227,7 @@ $(document).ready(function(){
         var id = $(parent).attr('id');
 		var subCategoryCount = parseInt(element.parent().find("#subCategory").html());
 		var link = element.parent().parent().parent().find('a').attr('href');
+		var price = parseFloat($(element.parent().parent().get(0)).find('#price').html());
 
         
 		if (subCategoryCount > 0){
@@ -177,9 +237,8 @@ $(document).ready(function(){
 
 		}else{
 			// Directly add cart
+			addBudget(id, price);
 		}
-
-        addBudget(id);
 
         element.css('display','none');
         element.parent().find('img').css('display','block');
@@ -192,7 +251,7 @@ $(document).ready(function(){
 		}
 		$.session.set('bucket', newItem);
 
-		updateBucket();
+		// updateBucket();
 
         setTimeout(function(){
         	element.parent().find('img').css('display','none');
@@ -203,6 +262,7 @@ $(document).ready(function(){
         		$(check).css('display','none');
         		element.parent().find("img").css('display','none');
         		element.css('display','block');
+        		getBudgetCount();
         	}, 1000);
         }, 1000);
 

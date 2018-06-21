@@ -38,16 +38,16 @@ def add_view(request):
     if(productOptions != '-1'):
         productOptions = ast.literal_eval(productOptions)
 
-    # print(productId)
-    # print(productCount)
-    # print(productPrice)
-    # print(productOptions)
+    print(productId)
+    print(productCount)
+    print(productPrice)
+    print(productOptions)
 
 
     menu = {}
-    menu['id'] = productId
-    menu['price'] = productPrice
-    menu['count'] = productCount
+    menu['id'] = int(productId)
+    menu['price'] = float(productPrice)
+    menu['count'] = int(productCount)
     menu['options'] = productOptions
     menu['totalPrice'] = float(productPrice.replace(',','.'))
 
@@ -73,8 +73,8 @@ def add_view(request):
             # product = json.loads(product)
             if product['id'] == menu['id'] and product['options'] == menu['options']:
                 # Edit Already Saved Product Count
-                product['count'] = int(product['count']) + int(menu['count'])
-                product['totalPrice'] = float(product['price'].replace(',','.')) * int(product['count'])
+                product['count'] = product['count'] + menu['count']
+                product['totalPrice'] = float(product['price']) * product['count']
                 print('Ekleniyor..')
                 print(product)
                 print('...')
@@ -111,6 +111,98 @@ def show_view(request):
         result = False
 
     data = {'result':result}
+    return JsonResponse(data)
+
+
+
+def delete_view(request):
+    
+    productId = request.POST.get('id', '')
+    productCount = request.POST.get('count', '')
+    productPrice = request.POST.get('price', '')
+    productOptions = request.POST.get('option', '')
+    # Option String List to Normal List
+    if(productOptions != '-1'):
+        productOptions = ast.literal_eval(productOptions)
+
+    print(productId)
+    print(productCount)
+    print(productPrice)
+    print(productOptions)
+
+
+    menu = {}
+    menu['id'] = int(productId)
+    menu['price'] = float(productPrice)
+    menu['count'] = int(productCount)
+    menu['options'] = productOptions
+    menu['totalPrice'] = float(productPrice.replace(',','.'))
+
+    str_menu = json.dumps(menu)
+
+    newList = list()
+
+    # deneme = serializers.serialize("json", menu)
+
+    # Listeyi Cek, For'da dondur, yeni liste olustur
+    # eger ayni urunden varsa countu arttir ve liseteye ekle, yeni urunse direk yeni listeye ekle
+    # sessionu sil ve yeni listeyi ekle
+
+    
+    added = False
+
+    # Daha once sepet session'u olusturulmus mu?
+    if "cart" in request.session:
+        productList = request.session['cart']
+
+        # Daha once ayni urun eklenmis mi?
+        for product in productList:
+            # product = json.loads(product)
+            if product['id'] == menu['id'] and product['options'] == menu['options']:
+                # Edit Already Saved Product Count
+                product['count'] = product['count'] + menu['count']
+                product['totalPrice'] = float(product['price']) * product['count']
+                print('Ekleniyor..')
+                print(product)
+                print('...')
+                added = True
+                newList.append(product)
+                break
+            else:
+                newList.append(product)
+
+        # Yeni bir urun ise
+        if(added == False):
+            newList.append(menu)
+        
+        request.session['cart'] = newList
+
+    else:
+        productList = []
+        productList.append(menu)
+        request.session['cart'] = productList
+
+    
+
+    data = {'OK':'OK'}
+    return JsonResponse(data)
+
+
+
+def count_view(request):
+
+    count = 0
+    
+    if "cart" in request.session:
+        result = request.session["cart"]
+        for item in result:
+            print(item)
+            count += item['count']
+
+    else:
+        result = False
+
+    data = {'result':count}
     return JsonResponse(data)
 
 

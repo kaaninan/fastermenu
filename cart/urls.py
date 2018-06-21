@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^remove/(?P<id>[\w+]+)/$', add_view, name="remove"),
     url(r'^update/(?P<id>[\w+]+)/$', add_view, name="update"),
     url(r'^show/$', show_view, name="show"),
+    url(r'^count/$', count_view, name="count"),
     url(r'^delete/$', delete_view, name="delete"),
 
     # url(r'^my_exams/(?P<id>[\w+]+)/show/$', my_exams_show_view, name="my_exams_show"),

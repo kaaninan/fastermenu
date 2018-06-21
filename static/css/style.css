@@ -106,19 +106,14 @@ body, html{
 /* MENU CONTENT */
 
 
-.menu{
-	/*margin-bottom: 10px;*/
-}
-.menu {}
-
 /* --- Menu Title --- */
-.menu  .head{
+.menu-title  .head{
 	padding-left: 10px;
 	padding-top: 5px;
 	border-bottom: 1px solid #E3E3E3;
 	background: #F7F7F7;
 }
-.menu  .special{
+.menu-title  .special{
 	padding: 5px 10px;
 	border: 1px solid #5AB38E;
 	border-left: 6px solid #5AB38E;
@@ -127,7 +122,7 @@ body, html{
 	background: white;
 	margin: 10px;
 }
-.menu  .head .name{
+.menu-title  .head .name{
 	font-size: 16px;
 	padding: 10px 5px;
 	color: #2F9465;
@@ -138,26 +133,23 @@ body, html{
 
 
 
-/* --- Menu Content --- */
-.menu  .content{
-	height: 60px;
+.menu-item{
 	border-bottom: 1px solid #E3E3E3;
-	background: white;
 }
 
 
-/* --- Menu Content - Add Icon --- */
-.menu .content .add{
-	/*max-width: 70px;*/
+.menu-item .add{
+	width: 30px;
+	height: 60px;
+	margin: auto;
 }
-.menu .content .add i{
+.menu-item .add i{
 	cursor: pointer;
 	font-size: 30px;
 	line-height: 60px;
-	padding: 0 20px;
 	color: green;
 }
-.menu .content .add img{
+.menu-item .add img{
 	cursor: pointer;
 	width: 30px;
 	height: 30px;
@@ -165,34 +157,36 @@ body, html{
 }
 
 /* --- Menu Content - Title Sub --- */
-.menu .content .record a .title{}
-.menu .content .record a .title .main{
+
+.menu-item .record a .title{
+}
+.menu-item .record a .title .main{
 	color: black;
 	font-size: 1rem;
 	padding-top: 0.5rem;
-	/*background: yellow;*/
 }
-.menu .content .record a .title .sub{
+.menu-item .record a .title .sub{
 	font-size: 0.75rem;
 	color: #777777;
 	padding-top: 0.1rem;
+	padding-bottom: 0.5rem;
 }
-.menu .content .record a:hover{
+.menu-item .record a:hover{
 	text-decoration: none;
 }
 
 /* --- Menu Content - Price --- */
 
-.menu .content .price{
+.menu-item .price{
+	text-align: right;
 	font-size: 18px;
-	/*float: right;*/
-	/*text-align: right;*/
-	/*background: red;*/
 	line-height: 60px;
-	
-	/*padding-right: 30px;*/
+	text-align: right;
 	color: #F98B4E;
+	padding-right: 10px;
 }
+
+
 
 
 /* ---- SEPETIM --------------------------------------------------- */
@@ -477,6 +471,7 @@ body, html{
 .cart-items .item{
 	margin: 0 15px;
 	padding: 0;
+	background: red;
 	padding-bottom: 10px;
 	margin-bottom: 10px;
 	border-bottom: 1px solid #F3F3F3;
@@ -489,7 +484,6 @@ body, html{
 	color: black;
 	text-align: center;
 	padding: 7px 4px;
-	margin: 0 8px;
 	margin-top: 5px;
 }
 .cart-items .item .titles a {
@@ -508,6 +502,7 @@ body, html{
 .cart-items .item .price{
 	color: black;
 	font-weight: bold;
+	text-align: right;
 }
 
 

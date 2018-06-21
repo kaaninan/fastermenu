@@ -99,16 +99,6 @@ def cart_view(request):
 
     cartSession = request.session.get('cart', '')
 
-    print('\n')
-    print('== ORDER CART VIEW ==')
-
-    # d = json.loads(cartSession)
-    print('\n')
-    print('\n')
-    print(cartSession) # type LIST
-    print('\n')
-    print('\n')
-
     cart = []
 
     cartTotal = 0.0
@@ -117,17 +107,10 @@ def cart_view(request):
 
     # Tekrar eden urunleri bul, Menu objesinin icine count alani ekle ve orayi arttir
     for item in cartSession:
-        print('== STARTSS ==')
-        print(item)
-        print('== ENDSS ==')
-        # item = item[0]
         dbMenu = Menu.objects.get(id=item['id'])
         item['name'] = dbMenu.name
         item['description'] = dbMenu.description
         cartTotal = cartTotal + item['totalPrice']
-
-    print('== END ==')
-    print('\n')
 
 
     context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise, 'cart': cartSession, 'total':cartTotal}
@@ -142,7 +125,7 @@ def complated_view(request, id):
     sTable = request.session.get('table', 'table')
     enterprise = get_object_or_404(Enterprise, name=sEnterprise)
 
-    cartSession = request.session.get('cart', '')
+    cartSession = request.session['cart']
 
     cart = []
 
@@ -150,7 +133,6 @@ def complated_view(request, id):
 
     # Tekrar eden urunleri bul, Menu objesinin icine count alani ekle ve orayi arttir
     for item in cartSession:
-        item = json.loads(item)
         # jQuery'den kaydolan menu id si ile Menu objesini cek
         menuItem = Menu.objects.get(id=item['id'])
         # Varsayilan olarak adeti 1 yap

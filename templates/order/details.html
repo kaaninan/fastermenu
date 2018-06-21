@@ -268,9 +268,9 @@ $(document).ready(function(){
 
     // Get Menu Details
 
-    var productId = $('#productId').html();
-    var productPrice = $('span#priceInner').html();
-    var productCount = $('span#count').html();
+    var productId = parseInt($('#productId').html());
+    var productPrice = parseFloat($('span#priceInner').html());
+    var productCount = parseInt($('span#count').html());
 
     
     // Get Option Details
