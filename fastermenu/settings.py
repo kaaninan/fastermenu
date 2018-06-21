@@ -146,11 +146,11 @@ AWS_LOCATION = 'static'
 
 
 # TEST
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
 
 # SERVER
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# STATIC_URL = "https://{}/{}/".format(AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATIC_URL = "https://{}/{}/".format(AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
 
 
