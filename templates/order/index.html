@@ -5,10 +5,12 @@
 
 <div class="container-index">
 
+
 <div class="row enterprise">
     <div class="col-4 clear">
         <img src="{{enterprise.logo.url}}">
     </div>
+    
 
     <div class="col-8 clear">
         <div class="titleDiv">
@@ -19,85 +21,48 @@
     </div>
 </div>
 
+
+
 <div class="row search">
 	<div class="col-12 clear">
 		<input type="search" name="search" class="searchInput" placeholder="Ürün Arayın">
 	</div>
 </div>
-<!-- 
 
-<div class="row menu no-gutter">
-	<div class="col menu-col clear">
-		<div class="menu-title">
-			<div class="content">En Çok Tercih Edilenler</div>
-			<div class="clear"></div>
-		</div>
 
-		<div class="menu-content">
-			<div class="add">
-				<div class="add" id="1">
-					<i id="plus" class="fas fa-plus-circle"></i>
-					<img id="loader" style="display: none" src="{% static 'img/spinner.gif' %}">	
-					<i id="check" style="display: none" class="fas fa-check"></i>
-				</div>
-			</div>
-			<a href="#">
-				<div class="title">
-					<div class="main">Çiğ Köfte</div>
-					<div class="sub">Seçeceğiniz malzemeler ile</div>
-				</div>
-			</a>
-			<div class="price">5,00 TL</div>
-			<div style="clear: both"></div>
-		</div>
-		<div class="menu-content">
-			<div class="add">
-				<div class="add" id="2">
-					<i style="display: block" id="plus" class="fas fa-plus-circle"></i>
-					<img id="loader" style="display: none" src="{% static 'img/spinner.gif' %}">
-					<i id="check" style="display: none" class="fas fa-check"></i>
-				</div>
-			</div>
-			<a href="#">
-				<div class="title">
-					<div class="main">Urfa Kebap</div>
-					<div class="sub">Seçeceğiniz malzemeler ile</div>
-				</div>
-			</a>
-			<div class="price">5,00 TL</div>
-			<div style="clear: both"></div>
-		</div>
-	</div>
-</div>
- -->
 
 {% for category in categories %}
 
-<div class="row menu no-gutter">
-	<div class="col menu-col clear">
-		<div class="menu-title">
-			<div class="content">{{ category.name }}</div>
-			<div class="clear"></div>
+<div class="row menu">
+	<div class="col-12 clear">
+
+		<div class="head">
+			<div class="name">{{ category.name }}</div>
 		</div>
 
 		{% for menu in category.menu %}
-		<div class="menu-content">
-			<div class="add">
-				<div class="add" id="{{ menu.id }}">
-					<div id="subCategory" style="display: none;">{{ menu.subcategory.count }}</div>
-					<i style="display: block" id="plus" class="fas fa-plus-circle"></i>
-					<img id="loader" style="display: none" src="{% static 'img/spinner.gif' %}">
-					<i id="check" style="display: none" class="fas fa-check"></i>
-				</div>
+		<div class="row content">
+
+			<div class="col-2 add" id="{{ menu.id }}">
+				<!-- For jQuery -->
+				<div id="subCategory" style="display: none;">{{ menu.subcategory.count }}</div>
+				<!-- End -->
+				<i style="display: block" id="plus" class="fas fa-plus-circle"></i>
+				<img id="loader" style="display: none" src="{% static 'img/spinner.gif' %}">
+				<i id="check" style="display: none" class="fas fa-check"></i>
 			</div>
-			<a href="{% url 'order:detail' id=menu.id %}">
-				<div class="title">
-					<div class="main">{{ menu.name }}</div>
-					<div class="sub">Seçeceğiniz malzemeler ile</div>
-				</div>
-			</a>
-			<div class="price">{{ menu.price|floatformat:2 }} TL</div>
-			<div style="clear: both"></div>
+
+			<div class="col-7 record">
+				<a href="{% url 'order:detail' id=menu.id %}">
+					<div class="title">
+						<div class="main">{{ menu.name }}</div>
+						<div class="sub">Seçeceğiniz malzemeler ile</div>
+					</div>
+				</a>
+			</div>
+
+			<div class="col-3 price">{{ menu.price|floatformat:2 }} TL</div>
+
 		</div>
 		{% endfor %}
 

@@ -38,7 +38,7 @@ body, html{
 
 
 
-/* ---- ORDER ---------------------------------------------------- */
+/* ---- ORDER MAIN ---------------------------------------------------- */
 
 .enterprise{
 	background: #fff;
@@ -109,75 +109,109 @@ body, html{
 .menu{
 	/*margin-bottom: 10px;*/
 }
-.menu .menu-col{}
+.menu {}
 
 /* --- Menu Title --- */
-.menu .menu-col .menu-title{
+.menu  .head{
 	padding-left: 10px;
 	padding-top: 5px;
 	border-bottom: 1px solid #E3E3E3;
 	background: #F7F7F7;
 }
-.menu .menu-col .special{
+.menu  .special{
 	padding: 5px 10px;
 	border: 1px solid #5AB38E;
 	border-left: 6px solid #5AB38E;
 	border-bottom: 2px solid #5AB38E;
 	border-radius: 5px;
+	background: white;
 	margin: 10px;
 }
-.menu .menu-col .menu-title .content{
+.menu  .head .name{
 	font-size: 16px;
 	padding: 10px 5px;
 	color: #2F9465;
 	font-weight: 600;
-	float: left;
+	clear: both;
 }
 
+
+
+
 /* --- Menu Content --- */
-.menu .menu-col .menu-content{
+.menu  .content{
 	height: 60px;
 	border-bottom: 1px solid #E3E3E3;
 	background: white;
 }
+
+
 /* --- Menu Content - Add Icon --- */
-.menu .menu-col .menu-content .add i{
+.menu .content .add{
+	max-width: 70px;
+}
+.menu .content .add i{
 	cursor: pointer;
-	float: left;
 	font-size: 30px;
 	line-height: 60px;
-	padding: 0 15px;
+	padding: 0 20px;
 	color: green;
 }
-.menu .menu-col .menu-content .add img{
+.menu .content .add img{
 	cursor: pointer;
 	width: 30px;
 	height: 30px;
-	float: left;
 	margin: 15px;
 }
 
-/* --- Menu Content - Title Sub Price --- */
-.menu .menu-col .menu-content a .title{
-	float: left;
-}
-.menu .menu-col .menu-content a .title .main{
+/* --- Menu Content - Title Sub --- */
+.menu .content .record a .title{}
+.menu .content .record a .title .main{
 	color: black;
 	font-size: 1rem;
 	padding-top: 0.5rem;
+	/*background: yellow;*/
 }
-.menu .menu-col .menu-content .title .sub{
+.menu .content .record a .title .sub{
 	font-size: 0.75rem;
 	color: #777777;
 	padding-top: 0.1rem;
 }
-.menu .menu-col .menu-content .price{
-	float: right;
+.menu .content .record a:hover{
+	text-decoration: none;
+}
+
+/* --- Menu Content - Price --- */
+
+.menu .content .price{
 	font-size: 18px;
+	/*background: red;*/
 	line-height: 60px;
 	padding-right: 15px;
 	color: #F98B4E;
 }
+
+
+/* ---- SEPETIM --------------------------------------------------- */
+
+.sepetim{
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	height: 50px;
+	background: #2F9465;
+	text-align: center;
+}
+
+.sepetim a{
+	color: white;
+	font-size: 20px;
+	line-height: 50px;
+	font-weight: normal;
+}
+
+
 
 
 
@@ -623,24 +657,6 @@ body, html{
 	.complated .track{ margin-top: 3rem; }
 }
 
-
-/* ---- FOOTER --------------------------------------------------- */
-
-.sepetim{
-	position: fixed;
-	bottom: 0;
-	right: 0;
-	left: 0;
-	height: 50px;
-	background: #2F9465;
-	text-align: center;
-}
-
-.sepetim a{
-	color: white;
-	font-size: 20px;
-	line-height: 50px;
-}
 
 
 
