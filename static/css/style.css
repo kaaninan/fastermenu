@@ -38,6 +38,16 @@ body, html{
 
 
 
+
+.alert2{
+	position: fixed;
+	z-index: 4;
+	left: 10px;
+	right: 10px;
+	top: 60px;
+}
+
+
 /* ---- ORDER MAIN ---------------------------------------------------- */
 
 .enterprise{
@@ -179,7 +189,7 @@ body, html{
 
 .menu-item .price{
 	text-align: right;
-	font-size: 18px;
+	font-size: 1.2rem;
 	line-height: 60px;
 	text-align: right;
 	color: #F98B4E;
@@ -471,7 +481,6 @@ body, html{
 .cart-items .item{
 	margin: 0 15px;
 	padding: 0;
-	background: red;
 	padding-bottom: 10px;
 	margin-bottom: 10px;
 	border-bottom: 1px solid #F3F3F3;
@@ -485,22 +494,24 @@ body, html{
 	text-align: center;
 	padding: 7px 4px;
 	margin-top: 5px;
+	cursor: pointer;
 }
-.cart-items .item .titles a {
+.cart-items .item .titles {
+	margin-left: 15px;
+	cursor: pointer;
 }
-.cart-items .item .titles a:hover{
-	text-decoration: none;
-}
-.cart-items .item .titles a .title{
-	font-size: 17px;
+.cart-items .item .titles .title{
+	font-size: 1rem;
 	color: black;
 }
-.cart-items .item .titles a .subtitle{
-	font-size: 15px;
+.cart-items .item .titles .subtitle{
+	font-size: 0.8rem;
 	color: #9A9A9A;
+	padding-top: 5px;
 }
 .cart-items .item .price{
-	color: black;
+	font-size: 1rem;
+	color: #219764;
 	font-weight: bold;
 	text-align: right;
 }

@@ -5,6 +5,10 @@
 
 <div class="container-index">
 
+  <div class="alert alert-success fade show alert2" id="success-alert">
+    <strong>Success!</strong> This alert box could indicate a successful or positive action.
+  </div>
+
 
 <div class="row enterprise">
     <div class="col-4 clear">
@@ -199,16 +203,13 @@ function addBudget(id, price){
 
 
 
-function updateBucket(){
-	var d = 0;
-	if($.session.get('bucket')){
-		d = $.session.get('bucket');
-	}
-	$('#bucketCount').html('('+d+')')
-};
-
 $(document).ready(function(){
-	// updateBucket();
+
+
+	$("#success-alert").fadeTo(1500, 500).slideUp(500, function(){
+
+	});
+
 
 	getBudgetCount();
 
@@ -269,6 +270,9 @@ $(document).ready(function(){
 
     });
 });
+
+
+
 </script>
 
 {% endblock %}

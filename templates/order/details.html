@@ -171,6 +171,8 @@ function addBudget(id, price, count, option){
     request.done(function (response, textStatus, jqXHR){
         // Log a message to the console
         console.log("Hooray, it worked!");
+        window.location.href = "{% url 'order:index' %}";
+        return false;
     });
 
     // Callback handler that will be called on failure

@@ -29,10 +29,35 @@
 </div>
 
 
+<!-- The Modal -->
+<div class="modal fade" id="myModal2">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Modal Heading</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        Modal body..
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
 <div class="row cart">
     <div class="col clear">
         <div class="title">Sepetim</div>
-<!--         <div class="table">Masa: {{table}}</div> -->
     </div>
 </div>
 
@@ -42,13 +67,13 @@
 
         	{% for item in cart %}
         	<div class="row item">
+
+        		<!-- <a href="{% url 'order:detail' id=item.id %}"> -->
         		
-        		<div class="col-1 clear">
-        			<a href="{% url 'order:detail' id=item.id %}">
-        				<div class="count">{{ item.count }}</div>
-        			</a>
+        		<div class="col-1 clear" data-toggle="modal" data-target="#myModal2">
+        			<div class="count">{{ item.count }}</div>
         		</div>
-        		<div class="col-8">
+        		<div class="col-8 clear">
         			<div class="titles" data-toggle="modal" data-target="#myModal">
 	        			
 		        			<div class="title">{{ item.name }}</div>
@@ -98,7 +123,7 @@
 
 <script type="text/javascript">
 	
-	function deleteBudget(id, price, count, option){
+	function addBudget(id, price, count, option){
 
 	  // CSRF Token for Django
 	  $.ajaxSetup({
