@@ -1,0 +1,77 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.db import models
+from enterprise.models import *
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=120, verbose_name="Name")
+    enterprise = models.ForeignKey(Enterprise, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['-name']
+
+
+
+class Menu(models.Model):
+    name = models.CharField(max_length=120, verbose_name="Name")
+    pictures = models.ImageField(null=True, upload_to='menus/')
+    description = models.CharField(max_length=120, verbose_name="Description")
+    price = models.FloatField(null=False)
+    stock = models.BooleanField(verbose_name="Stock", default=True)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    enterprise = models.ForeignKey(Enterprise, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['-name']
+
+
+
+class SubMenuCategory(models.Model):
+    TYPES = (
+        ('option', 'Option'),
+        ('dropadd', 'Drop-Add'),
+    )
+    name = models.CharField(max_length=120, verbose_name="Name")
+    type = models.CharField(verbose_name="Type", choices=TYPES, max_length=100, default='option')
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
+    enterprise = models.ForeignKey(Enterprise, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['-name']
+
+
+
+
+class SubMenuCategoryOption(models.Model):
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
+    subMenu = models.ForeignKey(SubMenuCategory, on_delete=models.CASCADE)
+    name = models.CharField(max_length=120, verbose_name="Name")
+    price = models.FloatField(null=False)
+
+    def __str__(self):
+        return self.name
+
+    # @property
+    # def sorted_attendee_set(self):
+    #     return self.attendee_set.order_by('name')
+
+    class Meta:
+        ordering = ['name']
+
+
+
+
+
+
+

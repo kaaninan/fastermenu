@@ -1,0 +1,84 @@
+{% extends 'static/base.html' %}
+
+{% load static %}
+{% load bootstrap3 %}
+
+{% block body %}
+
+<div class="content-wrapper">
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Settings for Question(s)
+            <small><span style="text-transform: capitalize;">{{request.user.type}}</span> Account</small>
+        </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+
+        <div class="box box-primary">
+
+            <div class="box-header with-border">
+                <h3 class="box-title">Question Operations</h3>
+            </div>
+
+            <form class="form-horizontal">
+                <div class="box-body">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Question:</label>
+                        <div class="col-sm-10" style="padding-top:7px">
+                            {% if data.module.name == "Speaking" %}
+                                <a href="{{ data.question }}" target="_blank">Watch on Youtube</a>
+                            {% endif %}
+                            {% if data.module.name == "Writing" %}
+                                {{ data.question }}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Description:</label>
+                        <div class="col-sm-10" style="padding-top:7px; word-wrap:break-word;">{{ data.description }}</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Difficulty:</label>
+                        <div class="col-sm-10" style="padding-top:7px">{{ data.difficulty }}</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Module:</label>
+                        <div class="col-sm-10" style="padding-top:7px">{{ data.module }}</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Created By:</label>
+                        <div class="col-sm-10" style="padding-top:7px">{{ data.createdby.get_full_name }}</div>
+                    </div>
+
+                </div>
+
+                <div class="box-footer">
+                    <div style="float:right">
+                        <a href="{% url 'manager:exam_question_list' %}"><button type="button" class="btn btn btn-default">Back</button></a>
+                    </div>
+                    <div style="margin-right: 10px; float:right">
+                        <a href="{% url 'manager:exam_question_update' id=data.id %}"><button type="button" class="btn btn btn-primary">Edit</button></a>
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+{% endblock %}

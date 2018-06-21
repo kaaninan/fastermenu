@@ -1,0 +1,137 @@
+{% extends 'static/base.html' %}
+
+{% load static %}
+{% load bootstrap3 %}
+
+{% block head %}
+<!-- Search field placeholder'ın beyaz olması için ve search icon -->
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+{% endblock %}
+
+
+{% block body %}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Settings for Student(s)
+            <small><span style="text-transform: capitalize;">{{request.user.type}}</span> Account</small>
+        </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+
+        <div class="row">
+            <div class="col-xs-12">
+
+                <div style="float:left; margin-bottom: 10px;">
+                    <a href="{% url 'manager:student_create' %}">
+                        <button type="button" class="btn btn-primary">Add Student(s)&nbsp;&nbsp;<i class="fa fa-plus" aria-hidden="true"></i></button>
+                    </a>
+                </div>
+                <div style="margin-left: 10px; float:left; margin-right: 10px; margin-bottom: 10px;">
+                    <a href="{% url 'manager:student_upload' %}">
+                        <button type="button" class="btn btn-success">Upload Excel File&nbsp;&nbsp;&nbsp;<i class="fa fa-upload" aria-hidden="true"></i></button>
+                    </a>
+                </div>
+                <div style="float:left; margin-bottom: 10px; margin-right: 10px;">
+                    <a href="{% url 'manager:student_delete_all' %}">
+                        <button type="button" class="btn btn-danger">Delete All Students</button>
+                    </a>
+                </div>
+                <div style="float:left;">
+                    <form action="{% url 'manager:student_list' %}" method="get">
+                        <select name="class" class="form-control" style="width:120px" onchange="this.form.submit()">
+                            <option value="">Select Class</option>
+                            {% for single in classes %}
+                                <option value="{{ single }}" {% if request.GET.class == single.name %}selected{% endif %}>{{ single.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <br>
+
+        <div class="row">
+
+            <div class="col-xs-12">
+
+                <div class="box box-primary" style="margin-top: -10px;">
+
+                    <div class="box-header">
+                        <h3 class="box-title">List of Students(s)</h3>
+
+                        <div class="box-tools">
+                            <div class="input-group input-group-sm" style="width: 150px;" style="position: relative">
+                                <form type="get" action="{% url 'manager:student_list' %}">
+                                <input type="text" name="search" class="form-control pull-right" style="border-radius:5px; height: 30px; background-color: #3C8DBC; color: #fff; z-index: 1; padding-right: 30px;" placeholder="Search" value="{{ request.GET.search }}">
+                                <i class="fa fa-search form-control-feedback icon" style="color:#fff;"></i>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box-body table-responsive">
+                        <table class="table table-hover">
+                            {% if users|length == 0 %}
+                                <tr>
+                                <th>This looks empty!</th>
+                            </tr>
+                            {% endif %}
+                            {% if users|length != 0 %}
+                            <tr>
+                                <th>Name & Surname</th>
+                                <th>Username</th>
+                                <th>Class(es)</th>
+                                <th>Number</th>
+                                <th>Actions</th>
+                            </tr>
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ user.get_full_name }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>
+                                    {% for class in user.get_classes %}
+                                    {{ class }}<br>
+                                    {% endfor %}
+                                </td>
+                                <td>{{ user.number }}</td>
+                                <td>
+                                    <a href="{% url 'manager:student_update' id=user.id %}">
+                                        <button class="btn btn-warning btn-sm">Edit</button>
+                                    </a>&nbsp;
+                                    <a href="{% url 'manager:student_delete' id=user.id %}">
+                                        <button class="btn btn-danger btn-sm">Delete</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+</div>
+
+{% endblock %}

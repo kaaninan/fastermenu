@@ -1,0 +1,646 @@
+/* ---- ALL ****------------------------------------------------- */
+
+*{
+	/*font-family: 'Montserrat', sans-serif;*/
+	font-family: 'Noto Sans', sans-serif;
+	font-weight: 500;
+}
+
+.clear{
+	margin: 0 !important;
+	padding: 0 !important;
+	clear: both;
+}
+
+body, html{
+	height: 100%;
+}
+
+/* order/index.html - Alt taraftaki sepetim bolumu icin padding */
+.container-index{
+	padding-bottom: 50px;
+}
+
+
+
+
+/* ---- HEADER -------------------------------------------------- */
+
+.header{
+	background: #219764;
+	/*background: red;*/
+	padding: 10px;
+	font-weight: bold;
+	color: white;
+	z-index: 3;
+	position: relative;
+}
+
+
+
+/* ---- ORDER ---------------------------------------------------- */
+
+.enterprise{
+	background: #fff;
+}
+
+.enterprise img{
+	display: block;
+	width: 100px;
+	height: 100px;
+	object-fit: cover;
+	border-radius: 100px;
+	margin: auto;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.enterprise .titleDiv {
+	padding-top: 20px;
+	padding-left: 5px;
+}
+.enterprise .titleDiv .name {
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.enterprise .titleDiv .location {
+	padding-top: 5px;
+}
+.enterprise .titleDiv .table {
+	padding-top: 5px;
+}
+
+/* SEARCH BAR */
+
+
+.search{
+	height: 60px;
+	background-color: #F7F7F7;
+}
+
+.search .searchInput{
+	width: 90%;
+	height: 40px;
+	background: white;
+	border-radius: 5px;
+	margin-left: 5%;
+	border: 1px solid #D0D0D0;
+	margin-top: 10px;
+	padding: 20px;
+	padding-left: 40px;
+	background: white url('/static/img/search.png') 9px no-repeat;
+	background-size: 20px;
+	-webkit-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+
+}
+
+.search .searchInput:focus {
+    width: 94%;
+    margin-left: 3%;
+    outline: 0;
+}
+
+
+/* MENU CONTENT */
+
+
+.menu{
+	/*margin-bottom: 10px;*/
+}
+.menu .menu-col{}
+
+/* --- Menu Title --- */
+.menu .menu-col .menu-title{
+	padding-left: 10px;
+	padding-top: 5px;
+	border-bottom: 1px solid #E3E3E3;
+	background: #F7F7F7;
+}
+.menu .menu-col .special{
+	padding: 5px 10px;
+	border: 1px solid #5AB38E;
+	border-left: 6px solid #5AB38E;
+	border-bottom: 2px solid #5AB38E;
+	border-radius: 5px;
+	margin: 10px;
+}
+.menu .menu-col .menu-title .content{
+	font-size: 16px;
+	padding: 10px 5px;
+	color: #2F9465;
+	font-weight: 600;
+	float: left;
+}
+
+/* --- Menu Content --- */
+.menu .menu-col .menu-content{
+	height: 60px;
+	border-bottom: 1px solid #E3E3E3;
+	background: white;
+}
+/* --- Menu Content - Add Icon --- */
+.menu .menu-col .menu-content .add i{
+	cursor: pointer;
+	float: left;
+	font-size: 30px;
+	line-height: 60px;
+	padding: 0 15px;
+	color: green;
+}
+.menu .menu-col .menu-content .add img{
+	cursor: pointer;
+	width: 30px;
+	height: 30px;
+	float: left;
+	margin: 15px;
+}
+
+/* --- Menu Content - Title Sub Price --- */
+.menu .menu-col .menu-content a .title{
+	float: left;
+}
+.menu .menu-col .menu-content a .title .main{
+	color: black;
+	font-size: 1rem;
+	padding-top: 0.5rem;
+}
+.menu .menu-col .menu-content .title .sub{
+	font-size: 0.75rem;
+	color: #777777;
+	padding-top: 0.1rem;
+}
+.menu .menu-col .menu-content .price{
+	float: right;
+	font-size: 18px;
+	line-height: 60px;
+	padding-right: 15px;
+	color: #F98B4E;
+}
+
+
+
+/* ---- DETAILS --------------------------------------------------- */
+
+
+.details{
+	padding-bottom: 20px;
+	border-bottom: 1px solid #EFEFEF;
+}
+.details img{
+	display: block;
+	width: 100px;
+	height: 100px;
+	object-fit: cover;
+	margin-top: 10px;
+	margin-left: 10px;
+}
+.details .product{
+	margin-top: 12px;
+}
+.details .product .name{
+	font-weight: 500;
+	font-size: 1.2rem;
+}
+.details .product .description{
+	font-size: 0.9rem;
+	padding-top: 8px;
+	line-height: 18px;
+	margin-right: 10px;
+}
+
+
+
+.stock{
+	height: 65px;
+	background-color: #F7F7F7;
+	border-bottom: 1px solid #EFEFEF;
+	padding-bottom: 5px;
+}
+.stock .number{
+	float: left;
+	margin: 10px 20px;
+	padding: 0 10px;
+	background: white;
+	border: 1px solid #F2F1FA;
+	border-radius: 4px;
+}
+.stock .number i{
+	float: left;
+	line-height: 40px;
+	font-size: 25px;
+	color: #309566;
+	cursor: pointer;
+}
+.stock .number .count{
+	float: left;
+	padding: 0 20px;
+	font-size: 17px;
+	line-height: 40px;
+}
+.stock .price{
+	float: right;
+	color: #309566;
+	line-height: 60px;
+	padding-right: 20px;
+	font-size: 19px;
+	font-weight: 600;
+}
+
+.stock .price span{
+	font-weight: 600;
+}
+
+
+
+
+
+.option{
+	padding: 20px 10px;
+	background: #F7F7F7;
+	border-bottom: 1px solid #EFEFEF;
+	/*padding-bottom: 10px;*/
+}
+.option .title{
+	color: #309566;
+	font-weight: 600;
+	font-size: 1rem;
+	/*border-bottom: 2px solid #309566;*/
+	padding-bottom: 5px;
+}
+.option .subtitle{
+	font-size: 0.8rem;
+	color: #777777;
+}
+
+/* DROPADD MENU */
+
+.option .content-dropadd ul{
+	margin: 0;
+	padding: 0;
+	border: 1px solid #E4E4E4;
+	margin-top: 10px;
+	padding-top: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	background: white;
+}
+.option .content-dropadd li{
+	float: left;
+	cursor: pointer;
+	list-style: none;
+	padding: 5px 10px;
+	font-size: 1rem;
+	border: 1px solid black;
+	border-radius: 8px;
+	margin-right: 10px;
+	margin-bottom: 15px;
+}
+.option .content-dropadd li.delete{
+	text-decoration:line-through;
+	border-color: red;
+	color: red;
+}
+
+
+/* DROPDOWN MENU */
+
+.option .content-dropdown{
+	background: #fff;
+	margin-top: 10px;
+}
+
+
+.container-radio {
+	border: 1px solid #E4E4E4;
+    display: block;
+    position: relative;
+    margin: 0;
+    margin-top: -1px;
+    padding: 15px 0;
+    padding-left: 60px;
+    cursor: pointer;
+    font-size: 1rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container-radio .extra{
+	float: right;
+	font-size: 16px;
+	padding-right: 15px;
+}
+.container-radio input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    height: 30px;
+    width: 30px;
+    background-color: #eee;
+    border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container-radio:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container-radio input:checked ~ .checkmark {
+    background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container-radio input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container-radio .checkmark:after {
+ 	top: 9px;
+	left: 9px;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: white;
+}
+
+
+
+
+
+
+.add-bucket{
+	padding-top: 10px;
+	/*border-top: 1px solid #D6D6D6;*/
+	background: #F7F7F7;
+	/*background: white;*/
+}
+.add-bucket a .bucket-button{
+	cursor: pointer;
+	background: #309566;
+	color: white;
+	text-align: center;
+	border-radius: 5px;
+	font-size: 17px;
+	/*letter-spacing: 0.5px;*/
+	margin: 10px;
+	padding: 15px;
+	margin-bottom: 40px;
+	font-weight: 600;	
+}
+
+.add-bucket a:hover{
+	text-decoration: none;
+}
+
+
+
+/* ---- CART --------------------------------------------------- */
+
+
+/* - Title - */
+.cart{
+	padding: 10px;
+	border-bottom: 1px solid #309566;
+	background: #F7F7F7;
+}
+.cart .title{
+	font-size: 1.3rem;
+	padding-left: 10px;
+	line-height: 30px;
+}
+
+
+
+.cart-items{
+	margin-top: 10px;
+}
+.cart-items ul{
+	margin: 0 15px;
+	padding: 0;
+	margin-bottom: 124px;
+}
+.cart-items ul li{
+	list-style: none;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #F3F3F3;
+	position: relative;
+}
+.cart-items ul li a .count{
+	float: left;
+	border: 1px solid #309566;
+	padding: 10px 12px;
+	line-height: 18px;
+	margin-right: 15px;
+	margin-top: 4px;
+	border-radius: 5px;
+	color: black;
+	text-align: center;
+}
+.cart-items ul li a .titles {
+	float: left;
+	background: red;
+	width: 80%;
+	margin-right: 40px;
+	margin-left: 40px;
+
+}
+.cart-items ul li a .titles .title{
+	font-size: 17px;
+	color: black;
+}
+.cart-items ul li a .titles .subtitle{
+	font-size: 15px;
+	color: #9A9A9A;
+}
+.cart-items ul li a .price{
+	position: absolute;
+	top: 1px;
+	right: 0;
+	color: black;
+	font-weight: bold;
+}
+
+
+.total{
+	position: fixed;
+	bottom: 75px;
+	right: 0;
+	left: 0;
+	background: #F5F5F5;
+	border-bottom: 1px solid #D1D1D1;
+	border-top: 1px solid #D1D1D1;
+	padding: 5px 15px;
+}
+
+
+.total .amount{
+}
+
+.total .amount .title{
+	float: left;
+	color: #219764;
+	font-size: 1.2rem;
+	padding: 5px 0;
+	font-weight: bold;
+}
+.total .amount .price{
+	float: right;
+	padding: 5px 0;
+	font-size: 1.2rem;
+	font-weight: bold;
+	color: #219764;
+}
+
+
+
+
+.order{
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	margin-left: 15px;
+	margin-right: 15px;
+	background: white;
+	
+}
+
+.order .inside{
+	/*margin: 15px 0;*/
+	margin-bottom: 15px;
+}
+/*.total .amount{
+	margin: 0 10px;
+	border: 1px solid #D7D7D7;
+	color: #219764;
+	border-radius: 5px;
+	line-height: 50px;
+	text-align: center;
+	font-size: 24px;
+	font-weight: 600;
+}*/
+.order a .button{
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: 10px;
+	background: #219764;
+	color: white;
+	border-radius: 5px;
+	font-size: 17px;
+	line-height: 50px;
+	letter-spacing: 0.5px;
+	font-weight: 600;
+	text-align: center;
+}
+
+.order a:hover{
+	text-decoration: none;
+}
+
+
+
+
+/* ---- COMPLATED ------------------------------------------------ */
+
+
+
+.complated{
+	position: relative;
+	margin: 0;
+	padding: 0;
+}
+
+.complated .pic{
+	/*width: 60%;*/
+	width: 7rem;
+	margin: auto;
+}
+.complated .pic img{
+	width: 7rem;
+}
+.complated .message{
+	text-align: center;
+	margin-top: 2.8rem;
+	font-size: 1.2rem;
+	font-weight: bold;
+	color: #222222;
+}
+.complated .subMessage{
+	text-align: center;
+	font-size: 0.8rem;
+	color: #9B9B9B;
+	margin-top: 1rem;
+	padding: 0 2rem;
+}
+.complated a .track{
+	background: #2D2D2D;
+	color: white;
+	font-weight: bold;
+	font-size: 1rem;
+	text-align: center;
+	padding: 20px;
+	border-radius: 3px;
+}
+
+.complated a:hover{
+	text-decoration: none;
+}
+
+
+@media only screen and (min-width: 401px) {
+	.complated .pic{ margin-top: 10rem; }
+	.complated .track{ margin-top: 9rem; }
+}
+
+@media only screen and (max-width: 400px) {
+	.complated .pic{ margin-top: 7rem; }
+	.complated .track{ margin-top: 6rem; }
+}
+
+@media only screen and (max-width: 320px) {
+	.complated .pic{ margin-top: 5rem; }
+	.complated .track{ margin-top: 3rem; }
+}
+
+
+/* ---- FOOTER --------------------------------------------------- */
+
+.sepetim{
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	height: 50px;
+	background: #2F9465;
+	text-align: center;
+}
+
+.sepetim a{
+	color: white;
+	font-size: 20px;
+	line-height: 50px;
+}
+
+
+

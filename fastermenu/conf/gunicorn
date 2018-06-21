@@ -1,0 +1,25 @@
+#!/bin/bash
+
+NAME="fasterMenu"
+DJANGODIR=/opt/fasterMenu
+NUM_WORKERS=3
+TIMEOUT=9600
+DJANGO_SETTINGS_MODULE=fasterMenu.settings
+DJANGO_WSGI_MODULE=fasterMenu.wsgi
+
+echo "Starting $NAME as `whoami`"
+
+cd $DJANGODIR
+source /opt/fasterMenu/venv/bin/activate
+export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+export PYTHONPATH=$DJANGODIR:$PYTHONPATH
+
+exec gunicorn ${DJANGO_WSGI_MODULE}:application \
+  --name $NAME \
+  --workers $NUM_WORKERS \
+  --worker-class gevent \
+  --timeout $TIMEOUT \
+  --log-level=debug \
+  --bind 127.0.0.1:8000 \
+  --log-file=-
+  

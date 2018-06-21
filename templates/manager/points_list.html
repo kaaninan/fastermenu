@@ -1,0 +1,101 @@
+{% extends 'static/base.html' %}
+
+{% load static %}
+
+{% block body %}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <a href="{% url 'manager:points' %}">
+            <button type="button" style="margin-right: 10px" class="btn btn-default btn-sm pull-left"><</button>
+        </a>
+        <h1>
+            Grade Operations
+            <small><span style="text-transform: capitalize;">{{request.user.type}}</span> Account</small>
+        </h1>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="box box-widget widget-user-2">
+
+                    <div class="widget-user-header bg-blue">
+                        <h3 class="widget-user-username" style="margin-left:0; font-size:20px">Exam Details</h3>
+                    </div>
+                    <div class="box-footer no-padding">
+                        <ul class="nav nav-stacked">
+                            <li><a><b>Module:</b> {{ exam.module.name }}</a></li>
+                            <li><a><b>Category:</b> {{ exam.category.name }}</a></li>
+                            <li><a><b>Total Question:</b> {{ exam.count }}</a></li>
+                            <li>
+                                <a><b>Classes: </b>
+                                    {% for class in exam.classes.all %}
+                                         {{ class.name }}
+                                         {% if not forloop.last %} - {% endif %}
+                                     {% endfor %}
+                                </a>
+                            </li>
+                            <li><a><b>Created By:</b> {{ exam.createdby.get_full_name }}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-xs-12">
+
+                <div class="box box-success">
+
+                    <div class="box-header">
+                        <h3 class="box-title">Student List</h3>
+                    </div>
+
+                    <div class="box-body table-responsive">
+                        <table class="table table-hover">
+                            <tr>
+                                <th>Name</th>
+                                <th>Class</th>
+                                <th>Number</th>
+                                <th>Grade</th>
+                                <th>Checked By</th>
+                            </tr>
+                            {% for single in student_list %}
+                            <tr>
+                                <td>{{ single.get_full_name }}</td>
+                                <td>{{ single.classids.all.0 }}</td>
+                                <td>{{ single.number }}</td>
+                                <td>{{ single.point }}</td>
+                                <td>{{ single.count }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </section>
+</div>
+
+
+{% endblock %}

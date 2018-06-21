@@ -1,0 +1,334 @@
+{% extends 'static/base.html' %}
+{% load static %}
+
+{% block body %}
+
+
+<!-- Menu Picture, Title, Description -->
+
+<div class="row details">
+
+    <div class="col-4 clear">
+        <img src="/media/{{ menu.pictures.url }}">
+    </div>
+
+    <div class="col-8 clear">
+        <div class="product">
+            <div id="productId" style="display: none;">{{ menu.id }}</div>
+            <div class="name">{{ menu.name }}</div>
+            <div class="description">{{ menu.description }}</div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Stock and Price -->
+
+<div class="row stock">
+
+    <div class="col-12 clear">
+
+        <div class="number">
+        	<a href="#"><i id="minus" class="fas fa-minus-circle"></i></a>
+        	<div class="count"><span id="count">1</span> Adet</div>
+        	<a href="#"><i id="plus" class="fas fa-plus-circle"></i></a>
+        </div>
+
+        <div class="price">
+        	<span id="priceInner">{{ menu.price|floatformat:2 }}</span> TL
+        </div>
+
+        <!-- For jQuery -->
+        <div id="price" style="display: none">{{menu.price}}</div>
+        <!-- End -->
+
+        <div class="clear"></div>
+    </div>
+
+</div>
+
+
+<!-- Options -->
+
+{% for option in subMenus %}
+
+<div class="row option">
+	<div class="col-12 clear">
+		<div class="title">{{ option.name }}</div>
+		
+		{% if option.type == 'option' %}		
+
+			<div class="content-dropdown">
+
+				{% for subOption in option.options %}
+
+				<label class="container-radio">{{ subOption.name }}
+					<!-- For jQuery -->
+					<div id="{{ subOption.id }}" style="display: none;"></div>
+					<div id='price' style="display: none">{{subOption.price}}</div>
+					<!-- End -->
+					{% if subOption.price != 0 %}
+					<div class="extra">[{{ subOption.price|floatformat:2 }} TL ekle]</div>
+					{% endif %}
+					<input type="radio" name="radio-{{ forloop.parentloop.counter }}" value="{{ subOption.id }}" {% if forloop.counter == 1 %}checked="checked"{% endif %}>
+					<span class="checkmark"></span>
+				</label>
+
+				{% endfor %}
+
+			</div>
+		
+		{% endif %}
+
+		{% if option.type == 'dropadd' %}
+
+			<div class="subtitle">Lutfen cikarmak istediginiz malzemeleri seciniz.</div>
+
+			<div class="content-dropadd">
+				<ul >
+					{% for subOption in option.options %}
+						<li id="options"><span id="{{subOption.id}}">{{ subOption.name }}</span></li>
+						<!-- <li class="delete">Sarimsak</li> -->
+					{% endfor %}
+					<div class="clear"></div>
+				</ul>
+			</div>
+
+		{% endif %}
+
+	</div>
+</div>
+
+{% endfor %}
+
+
+
+<!-- Add Bucket Button -->
+
+<div class="row add-bucket">
+	<div class="col-12 clear">
+		<a href="#">
+			<div class="bucket-button">SEPETE EKLE</div>
+		</a>
+	</div>
+</div>
+
+{% endblock %}
+
+
+{% block js %}
+<script>
+
+
+// When clicked 'Adet' buttons, it changes
+var count = 1;
+
+// When clicked paid options, it changes
+var extraPrice = 0;
+
+
+function addBudget(id, price, count, option){
+
+  // CSRF Token for Django
+  $.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+      function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+      }
+    } 
+  });
+
+  // Option List to Json String
+  var optionParsed = -1;
+  if(option.length != 0)
+    optionParsed = JSON.stringify(option);
+
+  var serialized = $.param({id: id, price: price, option: optionParsed, count: count});
+
+  console.log(serialized);
+
+  request = $.ajax({
+        url: "{% url 'cart:add' %}",
+        type: "post",
+        data: serialized
+    });
+
+    // Callback handler that will be called on success
+    request.done(function (response, textStatus, jqXHR){
+        // Log a message to the console
+        console.log("Hooray, it worked!");
+    });
+
+    // Callback handler that will be called on failure
+    request.fail(function (jqXHR, textStatus, errorThrown){
+        // Log the error to the console
+        console.error(
+            "The following error occurred: "+
+            textStatus, errorThrown
+        );
+    });
+}
+
+
+
+function updatePrice(){
+	// Get Item Price for one
+	var price = parseFloat($("#price").html());
+	price = extraPrice + price;
+
+	// Add decimal numbers and convert to string
+	priceTemp = parseFloat(price * count).toFixed(2).toString();
+
+	// Convert decimal point to comma
+ 	var newPrice = priceTemp.replace('.',',');
+
+ 	// Update new price
+	$("span#priceInner").html(newPrice);
+}
+
+
+$(document).ready(function(){
+
+
+  // ------------ ITEM COUNT ------------------------------
+
+	// When click the plus button (item count)
+  $(".fa-plus-circle").click(function(e){
+  	e.preventDefault();
+  	$('span#count').html(count+1);
+  	count = count + 1;
+  	updatePrice();
+  });
+
+  // When click the minus button (item count)
+  $(".fa-minus-circle").click(function(e){
+  	e.preventDefault();
+  	if(count > 1){
+  		$('span#count').html(count-1);
+  		count = count - 1;
+  	}
+  	updatePrice();
+  });
+
+
+  // ------------ DROPADD ------------------------------
+
+  // When click the DropAdd options
+  $("li#options").click(function(e){
+  	e.preventDefault();
+  	var element = $(this);
+  	
+  	// Mark li element as a removed class
+  	if(element.attr('class')){
+  		element.removeClass('delete');
+  	}else{
+  		element.addClass('delete');	
+  	}
+
+  	// Get subcategory id
+  	var d = element.children().attr('id');
+  });
+
+
+  // ------------ DROPDOWN ------------------------------
+
+  // When Clicked Dropdown Options
+  $("label.container-radio").mousedown(function (e) {
+  	var element = $(this);
+  	var d = element.children().attr('id');
+  	var extra = parseFloat(element.find("#price").html());
+  	extraPrice = extra;
+  	updatePrice();
+  });
+
+
+  // ------------ ADD CART ------------------------------
+
+  // When Click 'Sepete Ekle'
+  $(".bucket-button").click(function(){
+
+    // Create List for Add Cart AJAX
+    var optionList = new Array();
+
+    var element = $(this);
+
+    // Get Menu Details
+
+    var productId = $('#productId').html();
+    var productPrice = $('span#priceInner').html();
+    var productCount = $('span#count').html();
+
+    
+    // Get Option Details
+
+    var options = $('.option'); // get all option sections
+
+    for (i = 0; i < options.length; i++) {
+
+      // Define option type
+      var dropdown = $(options[i]).find('.content-dropdown');
+      var dropadd = $(options[i]).find('.content-dropadd');
+
+
+      // If Options with dropdown
+      if(dropdown.length > 0){
+        var inputs = $(dropdown).find('.container-radio');
+
+        // console.log(inputs);
+
+        for (t = 0; t < inputs.length; t++) {
+          var optionName = $(inputs[t]).html().split('\n')[0];
+          var checked = $(inputs[t]).find('input').prop('checked');
+          var value = $(inputs[t]).find('input').attr('value');
+
+          // console.log('Name: '+ optionName);
+          // console.log('Checked: '+ checked);
+          // console.log('Value: '+ value);
+          // console.log('--');
+          if(checked){
+            // console.log('Name: '+ optionName);
+            // console.log('Value: '+ value);
+            // console.log('--');
+            optionList.push(value);
+          }
+        }
+
+
+      // If Options with drop-add
+      }else if(dropadd.length > 0){
+        var inputs = $(dropadd).find('li#options');
+        for(di = 0; di < inputs.length; di++){
+          var id = $(inputs[di]).find('span').attr('id');
+          var deleted = $(inputs[di]).attr('class');
+          if(deleted){
+            // console.log('Deleted ID: ' + id);
+            optionList.push(id);
+          }
+
+        }
+      }
+    }
+
+    // console.log(optionList);
+
+    addBudget(productId, productPrice, productCount, optionList);
+  });
+});
+</script>
+
+{% endblock %}
+

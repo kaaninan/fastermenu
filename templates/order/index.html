@@ -1,0 +1,250 @@
+{% extends 'static/base.html' %}
+{% load static %}
+
+{% block body %}
+
+<div class="container-index">
+
+<div class="row enterprise">
+    <div class="col-4 clear">
+        <img src="{{enterprise.logo.url}}">
+    </div>
+
+    <div class="col-8 clear">
+        <div class="titleDiv">
+            <div class="name">{{enterprise.name}}</div>
+            <div class="location">Levent</div>
+            <div class="table"><b>Masa:</b> {{table}}</div>
+        </div>
+    </div>
+</div>
+
+<div class="row search">
+	<div class="col-12 clear">
+		<input type="search" name="search" class="searchInput" placeholder="Ürün Arayın">
+	</div>
+</div>
+
+
+<div class="row menu no-gutter">
+	<div class="col menu-col clear">
+		<div class="menu-title">
+			<div class="content">En Çok Tercih Edilenler</div>
+			<div class="clear"></div>
+		</div>
+
+		<div class="menu-content">
+			<div class="add">
+				<div class="add" id="1">
+					<i id="plus" class="fas fa-plus-circle"></i>
+					<img id="loader" style="display: none" src="{% static 'img/spinner.gif' %}">	
+					<i id="check" style="display: none" class="fas fa-check"></i>
+				</div>
+			</div>
+			<a href="#">
+				<div class="title">
+					<div class="main">Çiğ Köfte</div>
+					<div class="sub">Seçeceğiniz malzemeler ile</div>
+				</div>
+			</a>
+			<div class="price">5,00 TL</div>
+			<div style="clear: both"></div>
+		</div>
+		<div class="menu-content">
+			<div class="add">
+				<div class="add" id="2">
+					<i style="display: block" id="plus" class="fas fa-plus-circle"></i>
+					<img id="loader" style="display: none" src="{% static 'img/spinner.gif' %}">
+					<i id="check" style="display: none" class="fas fa-check"></i>
+				</div>
+			</div>
+			<a href="#">
+				<div class="title">
+					<div class="main">Urfa Kebap</div>
+					<div class="sub">Seçeceğiniz malzemeler ile</div>
+				</div>
+			</a>
+			<div class="price">5,00 TL</div>
+			<div style="clear: both"></div>
+		</div>
+	</div>
+</div>
+
+
+{% for category in categories %}
+
+<div class="row menu no-gutter">
+	<div class="col menu-col clear">
+		<div class="menu-title">
+			<div class="content">{{ category.name }}</div>
+			<div class="clear"></div>
+		</div>
+
+		{% for menu in category.menu %}
+		<div class="menu-content">
+			<div class="add">
+				<div class="add" id="{{ menu.id }}">
+					<div id="subCategory" style="display: none;">{{ menu.subcategory.count }}</div>
+					<i style="display: block" id="plus" class="fas fa-plus-circle"></i>
+					<img id="loader" style="display: none" src="{% static 'img/spinner.gif' %}">
+					<i id="check" style="display: none" class="fas fa-check"></i>
+				</div>
+			</div>
+			<a href="{% url 'order:detail' id=menu.id %}">
+				<div class="title">
+					<div class="main">{{ menu.name }}</div>
+					<div class="sub">Seçeceğiniz malzemeler ile</div>
+				</div>
+			</a>
+			<div class="price">{{ menu.price|floatformat:2 }} TL</div>
+			<div style="clear: both"></div>
+		</div>
+		{% endfor %}
+
+	</div>
+</div>
+
+{% endfor %}
+
+
+<div class="row no-gutter sepetim">
+	<div class="col">
+		<a href="{% url 'order:cart' %}">
+			<i class="fas fa-shopping-basket"></i>
+			&nbsp;Sepetim <span id="bucketCount">(0)</span>
+		</a>
+	</div>
+</div>
+
+</div>
+
+{% csrf_token %}
+
+{% endblock %}
+
+
+{% block js %}
+<script>
+
+
+function addBudget(id){
+
+	// CSRF Token for Django
+	$.ajaxSetup({
+		beforeSend: function(xhr, settings) {
+			function getCookie(name) {
+				var cookieValue = null;
+				if (document.cookie && document.cookie != '') {
+					var cookies = document.cookie.split(';');
+					for (var i = 0; i < cookies.length; i++) {
+						var cookie = jQuery.trim(cookies[i]);
+						if (cookie.substring(0, name.length + 1) == (name + '=')) {
+							cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+							break;
+						}
+					}
+				}
+				return cookieValue;
+			}if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+				xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+			}
+		} 
+	});
+
+	var serialized = $.param({id: id, count: 1});
+
+	request = $.ajax({
+        url: "{% url 'cart:add' %}",
+        type: "post",
+        data: serialized
+    });
+
+    // Callback handler that will be called on success
+    request.done(function (response, textStatus, jqXHR){
+        // Log a message to the console
+        console.log("Hooray, it worked!");
+    });
+
+    // Callback handler that will be called on failure
+    request.fail(function (jqXHR, textStatus, errorThrown){
+        // Log the error to the console
+        console.error(
+            "The following error occurred: "+
+            textStatus, errorThrown
+        );
+    });
+}
+
+
+
+function updateBucket(){
+	var d = 0;
+	if($.session.get('bucket')){
+		d = $.session.get('bucket');
+	}
+	$('#bucketCount').html('('+d+')')
+};
+
+$(document).ready(function(){
+	updateBucket();
+
+
+    $(".fa-plus-circle").click(function(){
+
+    	var d = $.session.get('bucket');
+    	console.log(d);
+
+    	var element = $(this);
+
+    	// Go Up One
+        var parent = element.parent().get(0);
+
+        // Get Menu Item Details
+        var id = $(parent).attr('id');
+		var subCategoryCount = parseInt(element.parent().find("#subCategory").html());
+		var link = element.parent().parent().parent().find('a').attr('href');
+
+        
+		if (subCategoryCount > 0){
+			// Go Details Page
+			window.location.href = link;
+			return false;
+
+		}else{
+			// Directly add cart
+		}
+
+        addBudget(id);
+
+        element.css('display','none');
+        element.parent().find('img').css('display','block');
+
+   		newItem = 1;
+
+		if($.session.get('bucket')){
+			var old = $.session.get('bucket');
+			newItem = parseInt(old) + 1;
+		}
+		$.session.set('bucket', newItem);
+
+		updateBucket();
+
+        setTimeout(function(){
+        	element.parent().find('img').css('display','none');
+        	var check = element.parent().find('i')[1];
+        	$(check).css('display','block');
+
+        	setTimeout(function(){
+        		$(check).css('display','none');
+        		element.parent().find("img").css('display','none');
+        		element.css('display','block');
+        	}, 1000);
+        }, 1000);
+
+
+    });
+});
+</script>
+
+{% endblock %}
+

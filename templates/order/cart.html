@@ -1,0 +1,62 @@
+{% extends 'static/base.html' %}
+{% load static %}
+
+{% block body %}
+
+<div class="row cart">
+    <div class="col clear">
+        <div class="title">Sepetim</div>
+<!--         <div class="table">Masa: {{table}}</div> -->
+    </div>
+</div>
+
+
+<div class="row cart-items">
+    <div class="col-12 clear">
+        <ul>
+
+        	{% for item in cart %}
+        	<li>
+        		<a href="">
+	        		<div class="count">{{ item.count }}</div>
+	        		<div class="titles">
+	        			<div class="title">{{ item.name }}</div>
+	        		<div class="subtitle">{{ item.description }}</div>
+	        		</div>
+	        		<div class="price">{{ item.totalPrice|floatformat:2 }} TL</div>
+	        		<div class="clear"></div>
+	        	</a>
+        	</li>
+        	{% endfor %}
+
+        </ul>
+    </div>
+</div>
+
+
+
+<div class="row total">
+	<div class="col">
+		<div class="amount">
+			<div class="title">Ödenecek Tutar:</div>
+			<div class="price">{{ total|floatformat:2 }} TL</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="row order">
+	<!-- <div class="col-6 clear">
+		<div class="amount">{{ total|floatformat:2 }} TL</div>
+	</div> -->
+	<div class="col-12 clear">
+		<div class="inside">
+			<a href="{% url 'order:complated' id=1 %}">
+				<div class="button">SİPARİŞ VER</div>
+			</a>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
