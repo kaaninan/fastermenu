@@ -13,23 +13,28 @@
 
 <div class="row cart-items">
     <div class="col-12 clear">
-        <ul>
 
         	{% for item in cart %}
-        	<li>
-        		<a href="">
-	        		<div class="count">{{ item.count }}</div>
-	        		<div class="titles">
-	        			<div class="title">{{ item.name }}</div>
-	        		<div class="subtitle">{{ item.description }}</div>
+        	<div class="row item">
+        		
+        		<div class="col-2 clear">
+        			<div class="count">{{ item.count }}</div>
+        		</div>
+        		<div class="col-7">
+        			<div class="titles">
+	        			<a href="">
+		        			<div class="title">{{ item.name }}</div>
+		        			<div class="subtitle">{{ item.description }}</div>
+		        		</a>
 	        		</div>
-	        		<div class="price">{{ item.totalPrice|floatformat:2 }} TL</div>
-	        		<div class="clear"></div>
-	        	</a>
-        	</li>
+	        	</div>
+        		<div class="col-3">
+        			<div class="price">{{ item.totalPrice|floatformat:2 }} TL</div>
+        		</div>
+        		<div class="clear"></div>
+	        	
+        	</div>
         	{% endfor %}
-
-        </ul>
     </div>
 </div>
 

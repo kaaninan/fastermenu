@@ -467,50 +467,41 @@ body, html{
 
 .cart-items{
 	margin-top: 10px;
-}
-.cart-items ul{
-	margin: 0 15px;
-	padding: 0;
 	margin-bottom: 124px;
 }
-.cart-items ul li{
-	list-style: none;
+
+.cart-items .item{
+	margin: 0 15px;
+	padding: 0;
 	padding-bottom: 10px;
 	margin-bottom: 10px;
 	border-bottom: 1px solid #F3F3F3;
-	position: relative;
 }
-.cart-items ul li a .count{
-	float: left;
+
+.cart-items .item .count{
 	border: 1px solid #309566;
-	padding: 10px 12px;
 	line-height: 18px;
-	margin-right: 15px;
-	margin-top: 4px;
 	border-radius: 5px;
 	color: black;
 	text-align: center;
+	padding: 7px 4px;
+	margin: 0 8px;
+	margin-top: 5px;
 }
-.cart-items ul li a .titles {
-	float: left;
-	background: red;
-	width: 80%;
-	margin-right: 40px;
-	margin-left: 40px;
-
+.cart-items .item .titles a {
 }
-.cart-items ul li a .titles .title{
+.cart-items .item .titles a:hover{
+	text-decoration: none;
+}
+.cart-items .item .titles a .title{
 	font-size: 17px;
 	color: black;
 }
-.cart-items ul li a .titles .subtitle{
+.cart-items .item .titles a .subtitle{
 	font-size: 15px;
 	color: #9A9A9A;
 }
-.cart-items ul li a .price{
-	position: absolute;
-	top: 1px;
-	right: 0;
+.cart-items .item .price{
 	color: black;
 	font-weight: bold;
 }
