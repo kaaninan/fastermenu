@@ -7,6 +7,7 @@ import json
 
 from barcode.models import *
 from enterprise.models import *
+from cart.views import *
 
 
 
@@ -64,6 +65,8 @@ def redirect_view(request, id):
     Log.objects.create(barcode=barcode, barcode_valid=barcode_valid, barcode_active=barcode_active, 
                        table_valid=table_valid, table_active=table_active,
                        enterprise=enterprise, table=table)
+
+    delete_session_view(request)
 
     return redirect('order:index')
     # return HttpResponse('OK', status=200)
