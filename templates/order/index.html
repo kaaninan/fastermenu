@@ -5,10 +5,11 @@
 
 <div class="container-index">
 
-  <div class="alert alert-success fade show alert2" id="success-alert">
-    <strong>Success!</strong> This alert box could indicate a successful or positive action.
-  </div>
-
+{% if addedState %}
+<div class="alert alert-success fade show alert-main" id="success-alert" style="text-align: center; padding: 15px 0;">
+	<strong>Sepete Eklendi!</strong>
+</div>
+{% endif %}
 
 <div class="row enterprise">
     <div class="col-4 clear">
@@ -71,10 +72,8 @@
 		</div>
 
 		<div class="col-3 clear">
-			<div class="price">{{ menu.price|floatformat:2 }} TL</div>
+			<div class="price"><span id="price">{{ menu.price|floatformat:2 }}</span> TL</div>
 		</div>
-
-	<div style="display: none" id="price">{{ menu.price|floatformat:2 }}</div>
 
 </div>
 
@@ -228,8 +227,10 @@ $(document).ready(function(){
         var id = $(parent).attr('id');
 		var subCategoryCount = parseInt(element.parent().find("#subCategory").html());
 		var link = element.parent().parent().parent().find('a').attr('href');
-		var price = parseFloat($(element.parent().parent().get(0)).find('#price').html());
 
+		var price = parseFloat($('span#price').html());
+
+		console.log(price);
         
 		if (subCategoryCount > 0){
 			// Go Details Page

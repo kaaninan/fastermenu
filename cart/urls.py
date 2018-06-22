@@ -12,9 +12,12 @@ urlpatterns = [
 
     # url(r'^change_password/?$', change_password_view, name="change_password"),
 
+    # API
+
     url(r'^add/?$', add_view, name="add"),
-    url(r'^remove/(?P<id>[\w+]+)/$', add_view, name="remove"),
-    url(r'^update/(?P<id>[\w+]+)/$', add_view, name="update"),
+    url(r'^remove/(?P<id>[\w+]+)/$', delete_session_view, name="remove"),
+    # url(r'^update/(?P<id>[\w+]+)/$', add_view, name="update"),
+    url(r'^updateCount/$', update_count_view, name="updateCount"),
     url(r'^show/$', show_view, name="show"),
     url(r'^count/$', count_view, name="count"),
     url(r'^delete/$', delete_view, name="delete"),

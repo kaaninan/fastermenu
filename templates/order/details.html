@@ -53,6 +53,8 @@
 
 {% for option in subMenus %}
 
+{% if option.options %} <!-- Opsiyon eklenmemisse gosterme -->
+
 <div class="row option">
 	<div class="col-12 clear">
 		<div class="title">{{ option.name }}</div>
@@ -99,6 +101,8 @@
 
 	</div>
 </div>
+
+{% endif %}
 
 {% endfor %}
 
@@ -157,9 +161,9 @@ function addBudget(id, price, count, option){
   if(option.length != 0)
     optionParsed = JSON.stringify(option);
 
-  var serialized = $.param({id: id, price: price, option: optionParsed, count: count});
+  var serialized = $.param({id: id, price: price, option: optionParsed, count: count, displayAlert: true});
 
-  console.log(serialized);
+  console.log(typeof(optionParsed));
 
   request = $.ajax({
         url: "{% url 'cart:add' %}",

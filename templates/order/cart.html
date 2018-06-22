@@ -4,54 +4,59 @@
 {% block body %}
 
 <!-- The Modal -->
-<div class="modal fade" id="myModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
+<div class="modal fade" id="modal-delete">
+	<div class="modal-dialog">
+		<div class="modal-content">
 
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Modal Heading</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
+			<div class="modal-header">
+				<h4 class="modal-title">
+					<div id="modal-delete-title"></div>
+				</h4>
+			</div>
 
-      <!-- Modal body -->
-      <div class="modal-body">
-        Modal body..
-      </div>
+			<div class="modal-body">
+				<div id="modal-delete-body"></div>
+			</div>
+			
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger btn-block" id="button-delete">Sil</button>
+			</div>
 
-      <!-- Modal footer -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-      </div>
-
-    </div>
-  </div>
+		</div>
+	</div>
 </div>
 
 
 <!-- The Modal -->
-<div class="modal fade" id="myModal2">
-  <div class="modal-dialog">
-    <div class="modal-content">
+<div class="modal fade" id="modal-count">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<h4 class="modal-title">Adet Sayısı</h4>
+			</div>
 
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Modal Heading</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
+			<!-- Modal body -->
+			<div class="modal-body">
+				<div class="row stock-modal">
+					<div class="col-12 clear">
+						<div class="number">
+							<div id="right"><a href="#"><i id="plus" class="fas fa-plus-circle"></i></a></div>
+							<div class="count"><span id="count">1</span> Adet</div>
+							<div id="left"><a href="#"><i id="minus" class="fas fa-minus-circle"></i></a></div>
+						</div>
+					</div>
+				</div>
+			</div>
 
-      <!-- Modal body -->
-      <div class="modal-body">
-        Modal body..
-      </div>
+			<!-- Modal footer -->
+			<div class="modal-footer">
+				<button type="button" class="btn btn-light" data-dismiss="modal" style="width: 50%">Vazgeç</button>
+				<button type="button" class="btn btn-success" style="width: 50%" id="button-update">Güncelle</button>
+			</div>
 
-      <!-- Modal footer -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-      </div>
-
-    </div>
-  </div>
+		</div>
+	</div>
 </div>
 
 
@@ -68,13 +73,13 @@
         	{% for item in cart %}
         	<div class="row item">
 
-        		<!-- <a href="{% url 'order:detail' id=item.id %}"> -->
+        		<div id="menu_id" style="display: none;">{{ item.id }}</div>
         		
-        		<div class="col-1 clear" data-toggle="modal" data-target="#myModal2">
+        		<div class="col-1 clear">
         			<div class="count">{{ item.count }}</div>
         		</div>
         		<div class="col-8 clear">
-        			<div class="titles" data-toggle="modal" data-target="#myModal">
+        			<div class="titles">
 	        			
 		        			<div class="title">{{ item.name }}</div>
 		        			<div class="subtitle">{{ item.options }}</div>
@@ -82,7 +87,7 @@
 	        		</div>
 	        	</div>
         		<div class="col-3 clear">
-        			<div class="price">{{ item.totalPrice|floatformat:2 }} TL</div>
+        			<div class="price"><span id="price">{{ item.totalPrice|floatformat:2 }}</span> TL</div>
         		</div>
         		<div class="clear"></div>
 	        	
@@ -122,8 +127,9 @@
 {% block js %}
 
 <script type="text/javascript">
+
 	
-	function addBudget(id, price, count, option){
+	function deleteBudget(id, price, count, option){
 
 	  // CSRF Token for Django
 	  $.ajaxSetup({
@@ -148,16 +154,13 @@
 	  });
 
 	  // Option List to Json String
-	  var optionParsed = -1;
-	  if(option.length != 0)
-	    optionParsed = JSON.stringify(option);
 
-	  var serialized = $.param({id: id, price: price, option: optionParsed, count: count});
+	  var serialized = $.param({id: id, price: price, option: option, count: count});
 
 	  console.log(serialized);
 
 	  request = $.ajax({
-	        url: "{% url 'cart:add' %}",
+	        url: "{% url 'cart:delete' %}",
 	        type: "post",
 	        data: serialized
 	    });
@@ -166,6 +169,61 @@
 	    request.done(function (response, textStatus, jqXHR){
 	        // Log a message to the console
 	        console.log("Hooray, it worked!");
+	        window.location.href = "{% url 'order:cart' %}";
+			return false;
+	    });
+
+	    // Callback handler that will be called on failure
+	    request.fail(function (jqXHR, textStatus, errorThrown){
+	        // Log the error to the console
+	        console.error(
+	            "The following error occurred: "+
+	            textStatus, errorThrown
+	        );
+	    });
+	}
+
+	function updateCountBudget(id, price, count, option){
+
+	  // CSRF Token for Django
+	  $.ajaxSetup({
+	    beforeSend: function(xhr, settings) {
+	      function getCookie(name) {
+	        var cookieValue = null;
+	        if (document.cookie && document.cookie != '') {
+	          var cookies = document.cookie.split(';');
+	          for (var i = 0; i < cookies.length; i++) {
+	            var cookie = jQuery.trim(cookies[i]);
+	            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+	              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+	              break;
+	            }
+	          }
+	        }
+	        return cookieValue;
+	      }if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+	        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+	      }
+	    } 
+	  });
+
+	  var serialized = $.param({id: id, price: price, option: option, count: count});
+
+	  console.log(serialized);
+
+	  request = $.ajax({
+	        url: "{% url 'cart:updateCount' %}",
+	        type: "post",
+	        data: serialized
+	    });
+
+	    // Callback handler that will be called on success
+	    request.done(function (response, textStatus, jqXHR){
+	        // Log a message to the console
+	        console.log("Hooray, it worked!");
+	        window.location.href = "{% url 'order:cart' %}";
+			return false;
+
 	    });
 
 	    // Callback handler that will be called on failure
@@ -181,25 +239,92 @@
 
 	$(document).ready(function(){
 
+
+		// Sadece modal dialoglar acilinca guncellenir
+		// Sadece modal dialoglardan basilan butonlarin calistirdigi funclarda kullanilir
+		var temp_id;
+		var temp_count;
+		var temp_options;
+		var temp_price;
+
+
+
+		$('.titles').click(function(e){
+			element = $(this).parent().parent();
+			menuTitle = $(this).find('.title').html();
+			menuSubTitle = $(this).find('.subtitle').html();
+			menuPrice = element.find('#price').html();
+			menuCount = element.find('.count').html();
+			menuId = element.find('#menu_id').html();
+
+			temp_id = parseInt(menuId);
+			temp_count = parseInt(menuCount);
+			temp_options = menuSubTitle;
+			temp_price = parseFloat(menuPrice);
+
+			$('#modal-delete-title').html(menuTitle);
+			$('#modal-delete-body').html(menuSubTitle);
+
+			$('#modal-delete').modal('show');
+
+		});
+
+		$('#button-delete').click(function(e) {
+			deleteBudget(temp_id, temp_price, temp_count, temp_options);
+		});
+
+
+
 	  // ------------ ITEM COUNT ------------------------------
+
+
+	  $('.count').click(function(e){
+	  	element = $(this).parent().parent();
+  		menuTitle = element.find('.title').html();
+		menuSubTitle = element.find('.subtitle').html();
+		menuPrice = element.find('#price').html();
+		menuCount = element.find('.count').html();
+		menuId = element.find('#menu_id').html();
+
+		console.log(menuCount);
+		console.log(menuSubTitle);
+
+		temp_id = parseInt(menuId);
+		temp_count = parseInt(menuCount);
+		temp_options = menuSubTitle;
+		temp_price = parseFloat(menuPrice);
+
+		$('span#count').html(menuCount);
+
+		$('#modal-count').modal('show');
+
+	  });
+
+
+	  $('#button-update').click(function(e) {
+		updateCountBudget(temp_id, temp_price, temp_count, temp_options);
+	});
+
+
 
 		// When click the plus button (item count)
 	  $(".fa-plus-circle").click(function(e){
 	  	e.preventDefault();
-	  	$('span#count').html(count+1);
-	  	count = count + 1;
-	  	updatePrice();
+	  	$('span#count').html(temp_count+1);
+	  	temp_count = temp_count + 1;
 	  });
 
 	  // When click the minus button (item count)
 	  $(".fa-minus-circle").click(function(e){
 	  	e.preventDefault();
-	  	if(count > 1){
-	  		$('span#count').html(count-1);
-	  		count = count - 1;
+	  	if(temp_count > 1){
+	  		$('span#count').html(temp_count-1);
+	  		temp_count = temp_count - 1;
 	  	}
-	  	updatePrice();
 	  });
+
+
+
 
 
 	  // ------------ DROPADD ------------------------------

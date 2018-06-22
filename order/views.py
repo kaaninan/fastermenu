@@ -8,45 +8,20 @@ import json
 
 def main_view(request):
 
-    # # Activated Modules
-    # institute = get_object_or_404(Institute, id=request.user.instituteid.id)
-    # active = list(institute.modules.all().values('name'))
-    # allmodules = list(Modules.objects.all().values('name'))
-
-    # def comp(list1, list2):
-    #     list = []
-    #     for val in list1:
-    #         if not val in list2:
-    #             list.append(val)
-    #     return list
-
-    # notactive = comp(allmodules, active)
-
-    # # Control statüsünde olan sınavları getir
-    # exams = Exams.objects.filter(instituteid=request.user.instituteid).order_by('-start_date')[:3]
-    # exams_list = list()
-    # exams_list_control = list()
-    # for exam in exams:
-    #     if exam.status == "control":
-    #         exams_list.append(exam)
-
-    # # Kontrol listesini çek ve öğretmenin kontrol edeceği sınavları seç
-    # for exam in exams_list:
-    #     control_list = ExamControlList.objects.filter(exam_id=exam.id, teacher_ids__in=[request.user]) # Her ogrenci için bir tane kayıt var
-    #     if len(list(control_list)) > 0:
-    #         exams_list_control.append(exam)
-
     sEnterprise = request.session.get('enterprise', 'enterprise')
     sTable = request.session.get('table', 'table')
 
     enterprise = get_object_or_404(Enterprise, name=sEnterprise)
 
     # Get Menu
-    # menus = Menu.objects.filter(enterprise=enterprise)
     categories = Category.objects.filter(enterprise=enterprise)
 
-    # print(menu)
-    # print(categories)
+    addedState = False
+    if 'added' in request.session:
+        status = request.session['added']
+        if status == 'success':
+            addedState = True
+            del request.session['added']
 
 
     for category in categories:
@@ -58,7 +33,7 @@ def main_view(request):
 
 
 
-    context = {'enterprise': enterprise, 'table': sTable, 'categories': categories}
+    context = {'enterprise': enterprise, 'table': sTable, 'categories': categories, 'addedState': addedState}
     return render(request, "order/index.html", context)
 
 
