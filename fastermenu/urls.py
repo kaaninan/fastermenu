@@ -17,6 +17,7 @@ urlpatterns = [
 
     url(r'^order/', include('order.urls')),
     url(r'^cart/', include('cart.urls')),
+    url(r'^enterprise/', include('enterprise.urls')),
     # url(r'^teacher/', include('teacher.urls')),
     # url(r'^student/', include('student.urls')),
     # url(r'^exam/', include('exams.urls')),

@@ -6,7 +6,7 @@
 <div class="container-index">
 
 {% if addedState %}
-<div class="alert alert-success fade show alert-main" id="success-alert" style="text-align: center; padding: 15px 0;">
+<div class="alert alert-primary fade show alert-main" id="success-alert" style="text-align: center; padding: 15px 0;">
 	<strong>Sepete Eklendi!</strong>
 </div>
 {% endif %}
@@ -87,8 +87,8 @@
 <div class="row no-gutter sepetim">
 	<div class="col">
 		<a href="{% url 'order:cart' %}">
-			<i class="fas fa-shopping-basket"></i>
-			&nbsp;Sepetim <span id="bucketCount">(0)</span>
+			<span id="sepetim"></span>
+			<i id="basket" class="fas fa-shopping-basket"></i>
 		</a>
 	</div>
 </div>
@@ -135,10 +135,17 @@ function getBudgetCount(){
 
     // Callback handler that will be called on success
     request.done(function (response, textStatus, jqXHR){
-        // Log a message to the console
-        console.log("Hooray, it worked!");
-        console.log()
-        $('#bucketCount').html('('+response['result']+')')
+        setTimeout(function(){
+	        $("#basket").fadeOut('fast', function() {
+			  $("span#sepetim").html(response['result']).fadeIn(function(){
+			  	setTimeout(function(){
+			  		$("span#sepetim").fadeOut('fast', function() {
+						$("#basket").fadeIn('fast');
+					});
+			  	}, 1500);
+			  });
+			});
+		}, 200);
     });
 
     // Callback handler that will be called on failure
@@ -205,9 +212,7 @@ function addBudget(id, price){
 $(document).ready(function(){
 
 
-	$("#success-alert").fadeTo(1500, 500).slideUp(500, function(){
-
-	});
+	$("#success-alert").fadeTo(1500, 500).slideUp(500, function(){});
 
 
 	getBudgetCount();
@@ -260,11 +265,13 @@ $(document).ready(function(){
         	var check = element.parent().find('i')[1];
         	$(check).css('display','block');
 
+        	getBudgetCount();
+
         	setTimeout(function(){
         		$(check).css('display','none');
         		element.parent().find("img").css('display','none');
         		element.css('display','block');
-        		getBudgetCount();
+
         	}, 1000);
         }, 1000);
 

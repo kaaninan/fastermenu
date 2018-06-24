@@ -89,25 +89,15 @@
 
 		        				{% if item.options != "-1" %}
 		        					{% for i in item.options_option %}
-		        						{{ i }}
-		        						{% if not forloop.last %}
-		        						, 
-		        						{% endif %}
-		        						{% if forloop.last %}
-		        						<br>
-		        						{% endif %}
+		        						{{ i }}{% if not forloop.last %}, {% endif %}
+		        						{% if forloop.last %}<br>{% endif %}
 		        					{% endfor %}
 		        				{% endif %}
 
 		        				{% if item.options != "-1" %}
 		        					{% for i in item.options_dropadd %}
-		        						{{ i }}
-		        						{% if not forloop.last %}
-		        						, 
-		        						{% endif %}
-		        						{% if forloop.last %}
-		        						hariç.
-		        						{% endif %}
+		        						{{ i }}{% if not forloop.last %}, {% endif %}
+		        						{% if forloop.last %} hariç.{% endif %}
 		        					{% endfor %}
 		        				{% endif %}
 		        			</div>
@@ -143,7 +133,7 @@
 	</div> -->
 	<div class="col-12 clear">
 		<div class="inside">
-			<a href="{% url 'order:complated' id=1 %}">
+			<a href="{% url 'order:complated' %}">
 				<div class="button">SİPARİŞ VER</div>
 			</a>
 		</div>
@@ -316,9 +306,6 @@
 		menuCount = element.find('.count').html();
 		menuId = element.find('#menu_id').html();
 
-		console.log(menuCount);
-		console.log(menuSubTitle);
-
 		temp_id = parseInt(menuId);
 		temp_count = parseInt(menuCount);
 		temp_options = menuSubTitle;
@@ -387,78 +374,6 @@
 	  	updatePrice();
 	  });
 
-
-	  // ------------ ADD CART ------------------------------
-
-	  // When Click 'Sepete Ekle'
-	  $(".bucket-button").click(function(){
-
-	    // Create List for Add Cart AJAX
-	    var optionList = new Array();
-
-	    var element = $(this);
-
-	    // Get Menu Details
-
-	    var productId = parseInt($('#productId').html());
-	    var productPrice = parseFloat($('span#priceInner').html());
-	    var productCount = parseInt($('span#count').html());
-
-	    
-	    // Get Option Details
-
-	    var options = $('.option'); // get all option sections
-
-	    for (i = 0; i < options.length; i++) {
-
-	      // Define option type
-	      var dropdown = $(options[i]).find('.content-dropdown');
-	      var dropadd = $(options[i]).find('.content-dropadd');
-
-
-	      // If Options with dropdown
-	      if(dropdown.length > 0){
-	        var inputs = $(dropdown).find('.container-radio');
-
-	        // console.log(inputs);
-
-	        for (t = 0; t < inputs.length; t++) {
-	          var optionName = $(inputs[t]).html().split('\n')[0];
-	          var checked = $(inputs[t]).find('input').prop('checked');
-	          var value = $(inputs[t]).find('input').attr('value');
-
-	          // console.log('Name: '+ optionName);
-	          // console.log('Checked: '+ checked);
-	          // console.log('Value: '+ value);
-	          // console.log('--');
-	          if(checked){
-	            // console.log('Name: '+ optionName);
-	            // console.log('Value: '+ value);
-	            // console.log('--');
-	            optionList.push(value);
-	          }
-	        }
-
-
-	      // If Options with drop-add
-	      }else if(dropadd.length > 0){
-	        var inputs = $(dropadd).find('li#options');
-	        for(di = 0; di < inputs.length; di++){
-	          var id = $(inputs[di]).find('span').attr('id');
-	          var deleted = $(inputs[di]).attr('class');
-	          if(deleted){
-	            // console.log('Deleted ID: ' + id);
-	            optionList.push(id);
-	          }
-
-	        }
-	      }
-	    }
-
-	    // console.log(optionList);
-
-	    addBudget(productId, productPrice, productCount, optionList);
-	  });
 	});
 
 

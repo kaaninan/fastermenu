@@ -2,15 +2,15 @@ from django.conf.urls import url
 
 from order.views import *
 
-app_name = 'order'
+app_name = 'enterprise'
 
 urlpatterns = [
 
-    url(r'^$', main_view, name="index"),
+    # url(r'^$', main_view, name="index"),
 
-    url(r'^cart/$', cart_view, name="cart"),
-    url(r'^detail/(?P<id>[\w+]+)/?$', details_view, name="detail"),
-    url(r'^complated/$', complated_view, name="complated"),
+    # url(r'^cart/$', cart_view, name="cart"),
+    # url(r'^detail/(?P<id>[\w+]+)/?$', details_view, name="detail"),
+    # url(r'^complated/(?P<id>[\w+]+)/?$', complated_view, name="complated"),
 
     # url(r'^my_exams/(?P<id>[\w+]+)/update/$', my_exams_update_view, name="my_exams_update"),
     # url(r'^my_exams/(?P<id>[\w+]+)/delete/$', my_exams_delete_view, name="my_exams_delete"),

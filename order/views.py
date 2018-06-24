@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render, get_object_or_404
 from enterprise.models import *
 from menu.models import *
+from cart.views import *
 import json
 
 def main_view(request):
@@ -35,8 +36,6 @@ def main_view(request):
 
     context = {'enterprise': enterprise, 'table': sTable, 'categories': categories, 'addedState': addedState}
     return render(request, "order/index.html", context)
-
-
 
 
 
@@ -106,40 +105,18 @@ def cart_view(request):
 
 
 
-
-def complated_view(request, id):
+def complated_view(request):
 
     sEnterprise = request.session.get('enterprise', 'enterprise')
     sTable = request.session.get('table', 'table')
     enterprise = get_object_or_404(Enterprise, name=sEnterprise)
 
-    cartSession = request.session['cart']
+    add_line_view(request)
 
-    cart = []
-
-    cartTotal = 0
-
-    # Tekrar eden urunleri bul, Menu objesinin icine count alani ekle ve orayi arttir
-    for item in cartSession:
-        # jQuery'den kaydolan menu id si ile Menu objesini cek
-        menuItem = Menu.objects.get(id=item['id'])
-        # Varsayilan olarak adeti 1 yap
-        menuItem.count = 1
-        menuItem.totalPrice = menuItem.price
-        # Eger bu urun daha once sepete eklenmisse
-        if menuItem in cart:
-            # Onceki eklenmis urunu bul
-            index = cart.index(menuItem)
-            # Adet sayisini bir arttir
-            cart[index].count += 1
-            cart[index].totalPrice = cart[index].count * menuItem.price
-        # Daha once sepette yoksa listeye ekle
-        else:
-            cart.append(menuItem)
-        cartTotal += menuItem.price
+    # cartSession = request.session['cart']
 
 
-    context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise, 'cart': cart, 'total':cartTotal}
+    context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise}
     return render(request, "order/complated.html", context)
 
 

@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.core import serializers
 import json, pickle
 from menu.models import *
-from menu.forms import *
+from order.models import *
 import ast
 
 
@@ -25,7 +25,7 @@ def add_view(request):
     productCount = request.POST.get('count', '')
     productPrice = request.POST.get('price', '')
     productOptions = request.POST.get('option', '')
-    displayAlert = request.POST.get('displayAlert', '')
+    displayAlert = request.POST.get('displayAlert', '') # For index.html jQuery
     # Option String List to Normal List
     if(productOptions != '-1'):
         productOptions = ast.literal_eval(productOptions)
@@ -37,8 +37,6 @@ def add_view(request):
     menu['count'] = int(productCount)
     menu['options'] = productOptions
     menu['totalPrice'] = float(productPrice.replace(',','.'))
-
-    str_menu = json.dumps(menu)
 
     newList = list()
 
@@ -148,8 +146,6 @@ def update_count_view(request):
     menu['options'] = productOptions
     menu['totalPrice'] = float(productPrice.replace(',','.'))
 
-    str_menu = json.dumps(menu)
-
     newList = list()
 
     # Listeyi Cek, For'da dondur, yeni liste olustur
@@ -193,6 +189,74 @@ def count_view(request):
         result = False
 
     data = {'result':count}
+    return JsonResponse(data)
+
+
+def add_line_view(request):
+    cartSession = request.session['cart']
+
+    # Add Line
+    line = Line()
+    line.enterprise = Enterprise.objects.get(name=request.session.get('enterprise', ''))
+    line.save()
+
+    # Add Orders
+    for item in cartSession:
+        # Create Order
+        menu = Menu.objects.get(id=item['id'])
+        order = Order()
+        order.menu = menu
+        order.count = item['count']
+        order.options = item['options']
+        order.price = item['price']
+        order.totalPrice = item['totalPrice']
+        order.line = line
+        order.enterprise = Enterprise.objects.get(name=request.session.get('enterprise', ''))
+
+        # Add Readable Options
+
+        optionsReadable = ''
+
+        if order.options != '-1':
+            orderListOption = []
+            orderListDropadd = []
+            for op in order.options:
+                op_object = SubMenuCategoryOption.objects.get(id=op)
+                op_type = op_object.subMenu.type
+                if op_type == 'option':
+                    print(op_object)
+                    orderListOption.append(op_object)
+                elif op_type == 'dropadd':
+                    print(op_object)
+                    orderListDropadd.append(op_object)
+
+            if len(orderListOption) != 0:
+                for index, item in enumerate(orderListOption):
+                    optionsReadable += item.name
+                    if index+1 != len(orderListOption):
+                        optionsReadable += ', '
+                    elif index+1 == len(orderListOption):
+                        optionsReadable += '\n'
+
+            if len(orderListDropadd) != 0:
+                for index, item in enumerate(orderListDropadd):
+                    optionsReadable += item.name
+                    if index+1 != len(orderListDropadd):
+                        optionsReadable += ', '
+                    elif index+1 == len(orderListDropadd):
+                        optionsReadable += ' hariç'
+
+            order.optionsReadable = optionsReadable
+
+        else:
+            order.optionsReadable = order.menu.description
+
+        
+        order.save();
+
+    
+
+    data = {'OK':'OK'}
     return JsonResponse(data)
 
 
