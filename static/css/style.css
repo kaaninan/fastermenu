@@ -203,7 +203,7 @@ body, html{
 
 /* ---- SEPETIM --------------------------------------------------- */
 
-.sepetim{
+/*.sepetim{
 	position: fixed;
 	bottom: 0;
 	right: 0;
@@ -218,6 +218,25 @@ body, html{
 	color: white;
 	font-size: 20px;
 	line-height: 50px;
+	font-weight: normal;
+}*/
+
+
+.sepetim{
+	position: fixed;
+	width: 70px;
+	height: 70px;
+	bottom: 20px;
+	right: 40px;
+	border-radius: 50px; 
+	background: #2F9465;
+	text-align: center;
+}
+
+.sepetim a{
+	color: white;
+	font-size: 25px;
+	line-height: 70px;
 	font-weight: normal;
 }
 

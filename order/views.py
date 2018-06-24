@@ -85,6 +85,19 @@ def cart_view(request):
         dbMenu = Menu.objects.get(id=item['id'])
         item['name'] = dbMenu.name
         item['description'] = dbMenu.description
+
+        # Get Option Names
+        if item['options'] != '-1':
+            item['options_option'] = []
+            item['options_dropadd'] = []
+            for op in item['options']:
+                op_object = SubMenuCategoryOption.objects.get(id=op)
+                op_type = op_object.subMenu.type
+                if op_type == 'option':
+                    item['options_option'].append(op_object)
+                elif op_type == 'dropadd':
+                    item['options_dropadd'].append(op_object)
+
         cartTotal = cartTotal + item['totalPrice']
 
 

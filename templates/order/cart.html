@@ -82,7 +82,36 @@
         			<div class="titles">
 	        			
 		        			<div class="title">{{ item.name }}</div>
-		        			<div class="subtitle">{{ item.options }}</div>
+		        			<div class="subtitle">
+		        				{% if item.options == "-1" %}
+		        					{{ item.description }}
+		        				{% endif %}
+
+		        				{% if item.options != "-1" %}
+		        					{% for i in item.options_option %}
+		        						{{ i }}
+		        						{% if not forloop.last %}
+		        						, 
+		        						{% endif %}
+		        						{% if forloop.last %}
+		        						<br>
+		        						{% endif %}
+		        					{% endfor %}
+		        				{% endif %}
+
+		        				{% if item.options != "-1" %}
+		        					{% for i in item.options_dropadd %}
+		        						{{ i }}
+		        						{% if not forloop.last %}
+		        						, 
+		        						{% endif %}
+		        						{% if forloop.last %}
+		        						hariç.
+		        						{% endif %}
+		        					{% endfor %}
+		        				{% endif %}
+		        			</div>
+		        			<div class="options" style="display: none;">{{ item.options }}</div>
 		        		<!-- </a> -->
 	        		</div>
 	        	</div>
@@ -252,7 +281,8 @@
 		$('.titles').click(function(e){
 			element = $(this).parent().parent();
 			menuTitle = $(this).find('.title').html();
-			menuSubTitle = $(this).find('.subtitle').html();
+			menuSubTitle = $(this).find('.options').html();
+			menuOptions = $(this).find('.subtitle').html();
 			menuPrice = element.find('#price').html();
 			menuCount = element.find('.count').html();
 			menuId = element.find('#menu_id').html();
@@ -263,7 +293,7 @@
 			temp_price = parseFloat(menuPrice);
 
 			$('#modal-delete-title').html(menuTitle);
-			$('#modal-delete-body').html(menuSubTitle);
+			$('#modal-delete-body').html(menuOptions);
 
 			$('#modal-delete').modal('show');
 
@@ -281,7 +311,7 @@
 	  $('.count').click(function(e){
 	  	element = $(this).parent().parent();
   		menuTitle = element.find('.title').html();
-		menuSubTitle = element.find('.subtitle').html();
+		menuSubTitle = element.find('.options').html();
 		menuPrice = element.find('#price').html();
 		menuCount = element.find('.count').html();
 		menuId = element.find('#menu_id').html();
