@@ -1,0 +1,49 @@
+{% extends 'enterprise/static/base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="content-wrapper">
+    <div class="container">
+
+        <section class="content-header">
+            <h1>Son Siparişler</h1>
+        </section>
+
+        <section class="content">
+      
+            <div class="result">d</div>
+      
+        </section>
+
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+
+        worker();
+
+        function worker() {
+          $.ajax({
+            url: '{% url 'cart:getLine' %}', 
+            success: function(data) {
+                console.log(data['data'][0]);
+                $('.result').html(data['data'][0]['orderDate'].toString());
+            },
+            complete: function() {
+                console.log('Complat');
+                setTimeout(worker, 5000);
+            }
+          });
+        };
+    });
+
+</script>
+
+{% endblock %}
