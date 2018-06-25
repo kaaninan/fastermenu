@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'order',
     'menu',
     'cart',
+    'account',
 ]
 
 MIDDLEWARE = [
@@ -101,6 +102,11 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+
+
+LOGIN_REDIRECT_URL = '/enterprise/'
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -113,6 +119,7 @@ USE_TZ = True
 
 # Email
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # EMAIL_HOST = 'smtp.yandex.com'
@@ -147,11 +154,11 @@ AWS_LOCATION = 'static'
 
 
 # TEST
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
 
 # SERVER
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# STATIC_URL = "https://{}/{}/".format(AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATIC_URL = "https://{}/{}/".format(AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
 
 

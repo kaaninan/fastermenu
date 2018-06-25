@@ -1,4 +1,4 @@
-{% extends 'static/base.html' %}
+{% extends 'order/static/base.html' %}
 {% load static %}
 
 {% block body %}
@@ -135,8 +135,9 @@ function getBudgetCount(){
 
     // Callback handler that will be called on success
     request.done(function (response, textStatus, jqXHR){
-        setTimeout(function(){
-	        $("#basket").fadeOut('fast', function() {
+
+        if(response['result'] != 0){
+	        $("#basket").fadeOut('medium', function() {
 			  $("span#sepetim").html(response['result']).fadeIn(function(){
 			  	setTimeout(function(){
 			  		$("span#sepetim").fadeOut('fast', function() {
@@ -145,7 +146,7 @@ function getBudgetCount(){
 			  	}, 1500);
 			  });
 			});
-		}, 200);
+		}
     });
 
     // Callback handler that will be called on failure

@@ -11,6 +11,8 @@ class Line(models.Model):
     complatedDate = models.DateTimeField(null=True)
     isComplated = models.BooleanField(default=False)
     isPaid = models.BooleanField(default=False)
+    totalPrice = models.FloatField(null=True)
+    table = models.ForeignKey(Table, on_delete=models.SET_NULL, null=True)
     enterprise = models.ForeignKey(Enterprise, on_delete=models.SET_NULL, null=True)
 
     def save(self, *args, **kwargs):

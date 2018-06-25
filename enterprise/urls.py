@@ -1,14 +1,26 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
+from django.contrib.auth import views as auth_views
 
-from order.views import *
+from enterprise.views import *
 
 app_name = 'enterprise'
 
 urlpatterns = [
 
-    # url(r'^$', main_view, name="index"),
+    url(r'^$', main_view, name="index"),
 
-    # url(r'^cart/$', cart_view, name="cart"),
+    url(r'^login/$', auth_views.login, {'template_name': 'registration/login.html'}),
+    # url(r'^login2/$', 'django.contrib.auth.views.login', name='login2'),
+
+
+    # url(r'^registration/', include('django.contrib.auth.urls')),
+    url(r'^password_reset/$', auth_views.password_reset, name='password_reset'),
+    url(r'^password_reset/done/$', auth_views.password_reset_done, name='password_reset_done'),
+    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', auth_views.password_reset_confirm, name='password_reset_confirm'),
+    url(r'^reset/done/$', auth_views.password_reset_complete, name='password_reset_complete'),
+
+
+
     # url(r'^detail/(?P<id>[\w+]+)/?$', details_view, name="detail"),
     # url(r'^complated/(?P<id>[\w+]+)/?$', complated_view, name="complated"),
 

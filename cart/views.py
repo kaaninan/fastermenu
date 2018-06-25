@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 import json, pickle
 from menu.models import *
@@ -192,13 +192,33 @@ def count_view(request):
     return JsonResponse(data)
 
 
+
+
+
+def get_line_view(request):
+
+    # print(.id)
+
+    data = list(Line.objects.filter(enterprise=request.user.profile.enterprise).values())
+
+    # dictionaries = [ obj.as_dict() for obj in self.get_queryset() ]
+    # return HttpResponse(json.dumps({"data": data}), content_type='application/json')
+
+    return JsonResponse({'data':data})
+
+
+
+
 def add_line_view(request):
     cartSession = request.session['cart']
 
     # Add Line
     line = Line()
+    line.table = Table.objects.get(name=request.session.get('table', ''))
     line.enterprise = Enterprise.objects.get(name=request.session.get('enterprise', ''))
     line.save()
+
+    totalPrice = 0.0
 
     # Add Orders
     for item in cartSession:
@@ -212,6 +232,8 @@ def add_line_view(request):
         order.totalPrice = item['totalPrice']
         order.line = line
         order.enterprise = Enterprise.objects.get(name=request.session.get('enterprise', ''))
+
+        totalPrice += item['totalPrice']
 
         # Add Readable Options
 
@@ -254,6 +276,10 @@ def add_line_view(request):
         
         order.save();
 
+
+    line = Line.objects.get(id = line.id)
+    line.totalPrice = totalPrice
+    line.save()
     
 
     data = {'OK':'OK'}

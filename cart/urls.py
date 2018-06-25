@@ -22,6 +22,10 @@ urlpatterns = [
     url(r'^count/$', count_view, name="count"),
     url(r'^delete/$', delete_view, name="delete"),
 
+    # LINE
+
+    url(r'^getLine/$', get_line_view, name="getLine"),
+
     # url(r'^my_exams/(?P<id>[\w+]+)/show/$', my_exams_show_view, name="my_exams_show"),
 
     # url(r'^control_exam/$', control_exam_view, name="control_exam"),

@@ -15,7 +15,7 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class LineAdmin(admin.ModelAdmin):
-    list_display = ['enterprise', 'orderDate']
+    list_display = ['enterprise', 'orderDate', 'totalPrice']
     list_display_links = ['enterprise', 'orderDate']
 
     class Meta:
