@@ -60,7 +60,7 @@ def details_view(request, id):
 
 
 
-    context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise, 'menu': menu, 'subMenus': subMenus}
+    context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise, 'menu': menu, 'subMenus': subMenus, 'backButton': True}
     return render(request, "order/details.html", context)
 
 
@@ -100,7 +100,7 @@ def cart_view(request):
         cartTotal = cartTotal + item['totalPrice']
 
 
-    context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise, 'cart': cartSession, 'total':cartTotal}
+    context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise, 'cart': cartSession, 'total':cartTotal, 'backButton': True}
     return render(request, "order/cart.html", context)
 
 

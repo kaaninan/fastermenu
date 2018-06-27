@@ -29,13 +29,31 @@ body, html{
 .header{
 	background: #219764;
 	/*background: red;*/
-	padding: 10px;
+	/*padding: 10px;*/
 	font-weight: bold;
 	color: white;
+	height: 3rem;
 	z-index: 3;
 	position: relative;
+	text-align: center;
 }
 
+.header .back{
+	position: absolute;
+	top: 2px;
+	left: 16px;
+	font-size: 1.8rem;
+}
+
+.header .back a{
+	color: white;
+}
+
+.header .logo{
+	height: 1.5rem;
+	margin-top: 0.8rem;
+	/*line-height: 2.5rem;*/
+}
 
 
 
@@ -486,7 +504,17 @@ body, html{
 	border-bottom: 1px solid #309566;
 	background: #F7F7F7;
 }
+.cart .back{
+	position: absolute;
+	font-size: 1.8rem;
+	padding-left: 10px;
+	line-height: 30px;
+}
+.cart .back a{
+	color: #309566;
+}
 .cart .title{
+	/*text-align: center;*/
 	font-size: 1.3rem;
 	padding-left: 10px;
 	line-height: 30px;

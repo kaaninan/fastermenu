@@ -1,8 +1,18 @@
+{% load static %}
 <div class="row header">
 
     <!-- Logo -->
     <div class="col clear">
-        <span class="logo">FasterMenu Beta</span>
+    	{% if backButton %}
+    	<div class="back">
+    		<a href="/order">
+    			<i class="fas fa-chevron-circle-left"></i>
+    		</a>
+    	</div>
+    	{% endif %}
+    	<a href="/order">
+        	<img src="{% static 'img/logo.png' %}" class="logo">
+        </a>
     </div>
 
 </div>
