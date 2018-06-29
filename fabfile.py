@@ -76,7 +76,7 @@ def bootstrap():
                 run('python manage.py makemigrations')
                 run('python manage.py migrate')
                 run('python manage.py collectstatic --noinput')
-                run("sed -i -e 's/DEBUG=True/DEBUG=False/g' {}/{}/settings.py".format((PROJECT_ROOT, PROJECT_NAME)))
+                # run("sed -i -e 's/DEBUG=True/DEBUG=False/g' {}/{}/settings.py".format((PROJECT_ROOT, PROJECT_NAME)))
 
     # chown()
 
