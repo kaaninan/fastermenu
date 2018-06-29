@@ -67,7 +67,6 @@ WSGI_APPLICATION = 'fastermenu.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        
         'NAME': 'fasterdb',
         'USER': 'fasteruser',
         'PASSWORD': 'faster(MENU)',
