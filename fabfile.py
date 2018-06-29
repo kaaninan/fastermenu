@@ -50,10 +50,10 @@ def deploy():
         run('git pull origin master')
         with source_virtualenv():
             with prefix('export DJANGO_SETTINGS_MODULE={}.settings'.format(PROJECT_NAME)):
-                run('pip install -r requirements.txt')
-                run('python manage.py makemigrations')
-                run('python manage.py migrate')
-                run('python manage.py collectstatic --noinput')
+                run('source venv/bin/activate && pip install -r requirements.txt')
+                run('source venv/bin/activate && python manage.py makemigrations')
+                run('source venv/bin/activate && python manage.py migrate')
+                run('source venv/bin/activate && python manage.py collectstatic --noinput')
 
     restart()
 
@@ -81,10 +81,10 @@ def bootstrap():
         with source_virtualenv():
             with prefix('export DJANGO_SETTINGS_MODULE={}.settings'.format(PROJECT_NAME)):
                 run('source venv/bin/activate && pip install -r requirements.txt')
-                run('python manage.py makemigrations')
-                run('python manage.py migrate')
-                run('python manage.py createsu')
-                run('python manage.py collectstatic --noinput')
+                run('source venv/bin/activate && python manage.py makemigrations')
+                run('source venv/bin/activate && python manage.py migrate')
+                run('source venv/bin/activate && python manage.py createsu')
+                run('source venv/bin/activate && python manage.py collectstatic --noinput')
                 # run("sed -i -e 's/DEBUG=True/DEBUG=False/g' {}/{}/settings.py".format((PROJECT_ROOT, PROJECT_NAME)))
 
     # chown()
