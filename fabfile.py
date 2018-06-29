@@ -54,7 +54,7 @@ def deploy():
                 run('pip install -r requirements.txt')
                 run('python manage.py makemigrations')
                 run('python manage.py migrate')
-                run('python manage.py createsu')
+                run('python manage.py createsu') # can be delete
                 run('python manage.py collectstatic --noinput')
 
     restart()
