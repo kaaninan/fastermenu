@@ -82,11 +82,11 @@ def bootstrap():
         run('ln -s {}/{}/conf/postactivate {}/bin/postactivate'.format(PROJECT_ROOT, PROJECT_NAME, os.path.join(VENV_DIR)))
         with source_virtualenv():
             with prefix('export DJANGO_SETTINGS_MODULE={}.settings'.format(PROJECT_NAME)):
-                run('source venv/bin/activate && pip install -r requirements.txt')
-                run('source venv/bin/activate && python manage.py makemigrations')
-                run('source venv/bin/activate && python manage.py migrate')
-                run('source venv/bin/activate && python manage.py createsu')
-                run('source venv/bin/activate && python manage.py collectstatic --noinput')
+                run('pip install -r requirements.txt')
+                run('python manage.py makemigrations')
+                run('python manage.py migrate')
+                run('python manage.py createsu')
+                run('python manage.py collectstatic --noinput')
                 # run("sed -i -e 's/DEBUG=True/DEBUG=False/g' {}/{}/settings.py".format((PROJECT_ROOT, PROJECT_NAME)))
 
     # chown()
