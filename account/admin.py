@@ -8,19 +8,15 @@ class ProfileInline(admin.StackedInline):
 
 
 class UserAdmin(DjangoUserAdmin):
-    list_display = ('email', 'first_name', 'last_name','is_active','date_joined', 'is_staff')
+    list_display = ('enterprise_name', 'username', 'email' ,'is_active','date_joined', 'is_staff')
+    list_display_links = ['enterprise_name', 'username', 'email']
     inlines = [ProfileInline]
 
-    def salary(self, instance):
+    def enterprise_name(self, obj):
         try:
-            return instance.professor.salary
-        except Professor.DoesNotExist:
-            return "N/A"
-
-    def queryset(self, request):
-        qs = super(UserAdmin, self).queryset(request)
-        # To reduce database calls
-        return qs.select_related('student', 'professor')
+            return obj.profile.enterprise.name
+        except Exception as e:
+            return 'None'
 
 
 admin.site.unregister(User)
