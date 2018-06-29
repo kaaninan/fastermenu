@@ -9,7 +9,8 @@ urlpatterns = [
 
     url(r'^$', main_view, name="index"),
 
-    url(r'^login/$', auth_views.login, {'template_name': 'registration/login.html'}),
+    url(r'^login/$', auth_views.login, {'template_name': 'registration/login.html'}, name='login'),
+    url(r'^logout/$', logout_view, name='logout'),
     # url(r'^login2/$', 'django.contrib.auth.views.login', name='login2'),
 
 
