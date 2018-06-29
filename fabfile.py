@@ -10,7 +10,7 @@ VENV_DIR = os.path.join(PROJECT_ROOT, 'venv')
 REPO = 'https://kaaninan@github.com/kaaninan/%s.git' % PROJECT_NAME
 
 env.hosts = ['root@46.101.151.145']
-env.command_prefixes=["export PRODUCTION='true'",]
+# env.command_prefixes=["export PRODUCTION='true'",]
 # env.command_prefixes=["export RDS_HOSTNAME='fastermenu-db-prod.ccgtp665sryr.eu-central-1.rds.amazonaws.com'",]
 # env.command_prefixes=["export RDS_PORT='5432'",]
 # env.command_prefixes=["export RDS_USERNAME='fasteruser'",]
@@ -50,10 +50,11 @@ def deploy():
         run('git pull origin master')
         with source_virtualenv():
             with prefix('export DJANGO_SETTINGS_MODULE={}.settings'.format(PROJECT_NAME)):
-                run('source venv/bin/activate && pip install -r requirements.txt')
-                run('source venv/bin/activate && python manage.py makemigrations')
-                run('source venv/bin/activate && python manage.py migrate')
-                run('source venv/bin/activate && python manage.py collectstatic --noinput')
+                # with prefix('env PRODUCTION=true'):
+                run('pip install -r requirements.txt')
+                run('python manage.py makemigrations')
+                run('python manage.py migrate')
+                run('python manage.py collectstatic --noinput')
 
     restart()
 
@@ -64,7 +65,6 @@ def bootstrap():
     run('apt install git supervisor nginx memcached postgresql python3-dev python-pip python-virtualenv')
     run("export LC_ALL='en_US.UTF-8'")
     run("export LC_CTYPE='en_US.UTF-8'")
-    run("export PRODUCTION='true'")
 
     
 
