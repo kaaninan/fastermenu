@@ -4,7 +4,7 @@ from fabric.api import cd, env, prefix, run, sudo, task, local
 
 # Haricen Postgresql kurulacak
 
-PROJECT_NAME = 'fasterMenu'
+PROJECT_NAME = 'fastermenu'
 PROJECT_ROOT = '/opt/%s' % PROJECT_NAME
 VENV_DIR = os.path.join(PROJECT_ROOT, 'venv')
 REPO = 'https://kaaninan@github.com/kaaninan/%s.git' % PROJECT_NAME
@@ -48,7 +48,7 @@ def deploy():
                 # run('source venv/bin/activate && python manage.py makemigrations')
                 # run('python manage.py migrate')
                 run('python manage.py collectstatic --noinput')
-                run("sed -i -e 's/DEBUG=True/DEBUG=False/g' {}/fasterMenu/settings.py".format((PROJECT_ROOT)))
+                run("sed -i -e 's/DEBUG=True/DEBUG=False/g' {}/fastermenu/settings.py".format((PROJECT_ROOT)))
 
     restart()
 
