@@ -10,7 +10,7 @@ VENV_DIR = os.path.join(PROJECT_ROOT, 'venv')
 REPO = 'https://kaaninan@github.com/kaaninan/%s.git' % PROJECT_NAME
 
 env.hosts = ['root@46.101.151.145']
-# env.command_prefixes=["export PRODUCTION='true'",]
+env.command_prefixes=["export PRODUCTION='true'",]
 # env.command_prefixes=["export RDS_HOSTNAME='fastermenu-db-prod.ccgtp665sryr.eu-central-1.rds.amazonaws.com'",]
 # env.command_prefixes=["export RDS_PORT='5432'",]
 # env.command_prefixes=["export RDS_USERNAME='fasteruser'",]
@@ -42,7 +42,7 @@ def restart():
 def deploy():
     local('git add .')
     try:
-        local("git commit -am 'deploy commit'")
+        local("git commit -am 'deploy commit fabfile'")
     except:
         print('No Commit')
     local('git push origin master')
@@ -50,11 +50,10 @@ def deploy():
         run('git pull origin master')
         with source_virtualenv():
             with prefix('export DJANGO_SETTINGS_MODULE={}.settings'.format(PROJECT_NAME)):
-                # run('source venv/bin/activate && pip install -r requirements.txt')
-                # run('source venv/bin/activate && python manage.py makemigrations')
-                # run('python manage.py migrate')
+                run('pip install -r requirements.txt')
+                run('python manage.py makemigrations')
+                run('python manage.py migrate')
                 run('python manage.py collectstatic --noinput')
-                # run("sed -i -e 's/DEBUG=True/DEBUG=False/g' {}/fastermenu/settings.py".format((PROJECT_ROOT)))
 
     restart()
 
