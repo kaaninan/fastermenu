@@ -64,7 +64,7 @@ def bootstrap():
     run('apt install git supervisor nginx memcached postgresql python3-dev python-pip python-virtualenv')
     run("export LC_ALL='en_US.UTF-8'")
     run("export LC_CTYPE='en_US.UTF-8'")
-    run("export PRODUCTION='TRUE'")
+    run("export PRODUCTION='true'")
 
     
 

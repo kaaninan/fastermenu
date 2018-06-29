@@ -70,7 +70,7 @@ if 'PRODUCTION' in os.environ:
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             
             'NAME': 'fasterdb',
-            'USER': 'fasteruser'
+            'USER': 'fasteruser',
             'PASSWORD': 'faster(USER)',
             'HOST': 'fastermenu-db-prod.ccgtp665sryr.eu-central-1.rds.amazonaws.com',
             'PORT': '5432',
