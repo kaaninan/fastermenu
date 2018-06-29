@@ -59,6 +59,11 @@ def bootstrap():
     run('apt install git supervisor nginx memcached postgresql python3-dev python-pip python-virtualenv')
     run("export LC_ALL='en_US.UTF-8'")
     run("export LC_CTYPE='en_US.UTF-8'")
+    run("export RDS_HOSTNAME='fastermenu-db-prod.ccgtp665sryr.eu-central-1.rds.amazonaws.com'")
+    run("export RDS_PORT='5432'")
+    run("export RDS_USERNAME='fasteruser'")
+    run("export RDS_PASSWORD='faster(USER)'")
+    run("export RDS_DB_NAME='fasterdb'")
 
     remove()
 
@@ -75,6 +80,7 @@ def bootstrap():
                 run('source venv/bin/activate && pip install -r requirements.txt')
                 run('python manage.py makemigrations')
                 run('python manage.py migrate')
+                run('python manage.py createsu')
                 run('python manage.py collectstatic --noinput')
                 # run("sed -i -e 's/DEBUG=True/DEBUG=False/g' {}/{}/settings.py".format((PROJECT_ROOT, PROJECT_NAME)))
 

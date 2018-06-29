@@ -138,20 +138,18 @@ STATICFILES_DIRS = [
 
 
 
-
+AWS_ACCESS_KEY_ID = 'AKIAIROXVV3GRHIOIIVQ'
+AWS_REGION = 'eu-central-1'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'fastermenu-assets'
+AWS_S3_CUSTOM_DOMAIN = '{}.s3.{}.amazonaws.com'.format(AWS_STORAGE_BUCKET_NAME, AWS_REGION)
+AWS_LOCATION = 'static'
 
 if 'RDS_DB_NAME' in os.environ:
-    AWS_ACCESS_KEY_ID = 'AKIAIROXVV3GRHIOIIVQ'
-    AWS_REGION = 'eu-central-1'
-    AWS_SECRET_ACCESS_KEY = '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'
-    AWS_STORAGE_BUCKET_NAME = 'fastermenu-assets'
-    AWS_S3_CUSTOM_DOMAIN = '{}.s3.{}.amazonaws.com'.format(AWS_STORAGE_BUCKET_NAME, AWS_REGION)
 
     # AWS_S3_OBJECT_PARAMETERS = {
     #     'CacheControl': 'max-age=86400',
     # }
-
-    AWS_LOCATION = 'static'
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     STATIC_URL = "https://{}/{}/".format(AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 else:
