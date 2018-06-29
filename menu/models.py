@@ -67,7 +67,7 @@ class SubMenuCategoryOption(models.Model):
     #     return self.attendee_set.order_by('name')
 
     class Meta:
-        ordering = ['name']
+        ordering = ['price']
 
 
 

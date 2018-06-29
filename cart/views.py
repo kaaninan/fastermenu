@@ -197,9 +197,17 @@ def count_view(request):
 
 def get_line_view(request):
 
-    # print(.id)
-
     data = list(Line.objects.filter(enterprise=request.user.profile.enterprise).values())
+
+
+    for item in data:
+        item['table'] = Table.objects.get(id=item['table_id']).name
+        order = list(Order.objects.filter(line=item['id']).values())
+        print(order)
+        item['order'] = order
+        # item['table'] = item.table.name
+        # order = Order.objects.filter(line=item)
+        # item.order = order
 
     # dictionaries = [ obj.as_dict() for obj in self.get_queryset() ]
     # return HttpResponse(json.dumps({"data": data}), content_type='application/json')
