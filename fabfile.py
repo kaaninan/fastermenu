@@ -78,6 +78,8 @@ def bootstrap():
 
     with cd(PROJECT_ROOT):
         run('virtualenv -p python3 venv')
+        run('rm {}/bin/postactivate'.format(os.path.join(VENV_DIR)))
+        run('ln -s {}/{}/conf/postactivate {}/bin/postactivate'.format(PROJECT_ROOT, PROJECT_NAME, os.path.join(VENV_DIR)))
         with source_virtualenv():
             with prefix('export DJANGO_SETTINGS_MODULE={}.settings'.format(PROJECT_NAME)):
                 run('source venv/bin/activate && pip install -r requirements.txt')
