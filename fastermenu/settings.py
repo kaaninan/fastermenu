@@ -64,39 +64,59 @@ WSGI_APPLICATION = 'fastermenu.wsgi.application'
 
 # Database
 
-if 'PRODUCTION' in os.environ:
-    print('\n')
-    print('\n')
-    print('\n')
-    print('----  ------ ----- ----- PRODUCTION')
-    print('\n')
-    print('\n')
-    print('\n')
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            
-            'NAME': 'fasterdb',
-            'USER': 'fasteruser',
-            'PASSWORD': 'faster(MENU)',
-            # 'HOST': 'fastermenu-db-prod.ccgtp665sryr.eu-central-1.rds.amazonaws.com',
-            'HOST': 'fastermenu-db-staging.ccgtp665sryr.eu-central-1.rds.amazonaws.com',
-            'PORT': '5432',
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        
+        'NAME': 'fasterdb',
+        'USER': 'fasteruser',
+        'PASSWORD': 'faster(MENU)',
+        # 'HOST': 'fastermenu-db-prod.ccgtp665sryr.eu-central-1.rds.amazonaws.com',
+        'HOST': 'fastermenu-db-staging.ccgtp665sryr.eu-central-1.rds.amazonaws.com',
+        'PORT': '5432',
 
-            # 'NAME': os.environ['RDS_DB_NAME'],
-            # 'USER': os.environ['RDS_USERNAME'],
-            # 'PASSWORD': os.environ['RDS_PASSWORD'],
-            # 'HOST': os.environ['RDS_HOSTNAME'],
-            # 'PORT': os.environ['RDS_PORT'],
-        }
+        # 'NAME': os.environ['RDS_DB_NAME'],
+        # 'USER': os.environ['RDS_USERNAME'],
+        # 'PASSWORD': os.environ['RDS_PASSWORD'],
+        # 'HOST': os.environ['RDS_HOSTNAME'],
+        # 'PORT': os.environ['RDS_PORT'],
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
+}
+
+
+# if not 'PRODUCTION' in os.environ:
+#     print('\n')
+#     print('\n')
+#     print('\n')
+#     print('----  ------ ----- ----- PRODUCTION')
+#     print('\n')
+#     print('\n')
+#     print('\n')
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            
+#             'NAME': 'fasterdb',
+#             'USER': 'fasteruser',
+#             'PASSWORD': 'faster(MENU)',
+#             # 'HOST': 'fastermenu-db-prod.ccgtp665sryr.eu-central-1.rds.amazonaws.com',
+#             'HOST': 'fastermenu-db-staging.ccgtp665sryr.eu-central-1.rds.amazonaws.com',
+#             'PORT': '5432',
+
+#             # 'NAME': os.environ['RDS_DB_NAME'],
+#             # 'USER': os.environ['RDS_USERNAME'],
+#             # 'PASSWORD': os.environ['RDS_PASSWORD'],
+#             # 'HOST': os.environ['RDS_HOSTNAME'],
+#             # 'PORT': os.environ['RDS_PORT'],
+#         }
+#     }
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         }
+#     }
 
 
 # Password validation
