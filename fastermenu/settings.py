@@ -64,15 +64,22 @@ WSGI_APPLICATION = 'fastermenu.wsgi.application'
 
 # Database
 
-if 'RDS_DB_NAME' in os.environ:
+if 'PRODUCTION' in os.environ:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ['RDS_DB_NAME'],
-            'USER': os.environ['RDS_USERNAME'],
-            'PASSWORD': os.environ['RDS_PASSWORD'],
-            'HOST': os.environ['RDS_HOSTNAME'],
-            'PORT': os.environ['RDS_PORT'],
+            
+            'NAME': 'fasterdb',
+            'USER': 'fasteruser'
+            'PASSWORD': 'faster(USER)',
+            'HOST': 'fastermenu-db-prod.ccgtp665sryr.eu-central-1.rds.amazonaws.com',
+            'PORT': '5432',
+
+            # 'NAME': os.environ['RDS_DB_NAME'],
+            # 'USER': os.environ['RDS_USERNAME'],
+            # 'PASSWORD': os.environ['RDS_PASSWORD'],
+            # 'HOST': os.environ['RDS_HOSTNAME'],
+            # 'PORT': os.environ['RDS_PORT'],
         }
     }
 else:
@@ -145,7 +152,7 @@ AWS_STORAGE_BUCKET_NAME = 'fastermenu-assets'
 AWS_S3_CUSTOM_DOMAIN = '{}.s3.{}.amazonaws.com'.format(AWS_STORAGE_BUCKET_NAME, AWS_REGION)
 AWS_LOCATION = 'static'
 
-if 'RDS_DB_NAME' in os.environ:
+if 'PRODUCTION' in os.environ:
 
     # AWS_S3_OBJECT_PARAMETERS = {
     #     'CacheControl': 'max-age=86400',

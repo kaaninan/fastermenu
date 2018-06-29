@@ -10,6 +10,11 @@ VENV_DIR = os.path.join(PROJECT_ROOT, 'venv')
 REPO = 'https://kaaninan@github.com/kaaninan/%s.git' % PROJECT_NAME
 
 env.hosts = ['root@46.101.151.145']
+# env.command_prefixes=["export RDS_HOSTNAME='fastermenu-db-prod.ccgtp665sryr.eu-central-1.rds.amazonaws.com'",]
+# env.command_prefixes=["export RDS_PORT='5432'",]
+# env.command_prefixes=["export RDS_USERNAME='fasteruser'",]
+# env.command_prefixes=["export RDS_PASSWORD='faster(USER)'",]
+# env.command_prefixes=["export RDS_DB_NAME='fasterdb'",]
 
 
 
@@ -59,11 +64,9 @@ def bootstrap():
     run('apt install git supervisor nginx memcached postgresql python3-dev python-pip python-virtualenv')
     run("export LC_ALL='en_US.UTF-8'")
     run("export LC_CTYPE='en_US.UTF-8'")
-    run("export RDS_HOSTNAME='fastermenu-db-prod.ccgtp665sryr.eu-central-1.rds.amazonaws.com'")
-    run("export RDS_PORT='5432'")
-    run("export RDS_USERNAME='fasteruser'")
-    run("export RDS_PASSWORD='faster(USER)'")
-    run("export RDS_DB_NAME='fasterdb'")
+    run("export PRODUCTION='TRUE'")
+
+    
 
     remove()
 
