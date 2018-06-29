@@ -48,7 +48,7 @@ def deploy():
                 # run('source venv/bin/activate && python manage.py makemigrations')
                 # run('python manage.py migrate')
                 run('python manage.py collectstatic --noinput')
-                run("sed -i -e 's/DEBUG=True/DEBUG=False/g' {}/fastermenu/settings.py".format((PROJECT_ROOT)))
+                # run("sed -i -e 's/DEBUG=True/DEBUG=False/g' {}/fastermenu/settings.py".format((PROJECT_ROOT)))
 
     restart()
 
