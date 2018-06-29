@@ -10,6 +10,7 @@ VENV_DIR = os.path.join(PROJECT_ROOT, 'venv')
 REPO = 'https://kaaninan@github.com/kaaninan/%s.git' % PROJECT_NAME
 
 env.hosts = ['root@46.101.151.145']
+# env.command_prefixes=["export PRODUCTION='true'",]
 # env.command_prefixes=["export RDS_HOSTNAME='fastermenu-db-prod.ccgtp665sryr.eu-central-1.rds.amazonaws.com'",]
 # env.command_prefixes=["export RDS_PORT='5432'",]
 # env.command_prefixes=["export RDS_USERNAME='fasteruser'",]

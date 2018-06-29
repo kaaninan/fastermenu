@@ -71,7 +71,7 @@ if 'PRODUCTION' in os.environ:
             
             'NAME': 'fasterdb',
             'USER': 'fasteruser',
-            'PASSWORD': 'faster(USER)',
+            'PASSWORD': 'faster(MENU)',
             'HOST': 'fastermenu-db-prod.ccgtp665sryr.eu-central-1.rds.amazonaws.com',
             'PORT': '5432',
 
