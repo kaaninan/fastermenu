@@ -203,8 +203,13 @@ def get_line_view(request):
     for item in data:
         item['table'] = Table.objects.get(id=item['table_id']).name
         order = list(Order.objects.filter(line=item['id']).values())
-        print(order)
-        item['order'] = order
+        item['order'] = []
+        for orderItem in order:
+            menu = Menu.objects.get(id=orderItem['menu_id'])
+            # orderObject = {}
+            orderItem['name'] = menu.name
+            # orderObject[''] = menu.name
+            item['order'].append(orderItem)
         # item['table'] = item.table.name
         # order = Order.objects.filter(line=item)
         # item.order = order
