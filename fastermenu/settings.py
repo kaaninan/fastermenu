@@ -71,7 +71,7 @@ DATABASES = {
         'NAME': 'fasterdb',
         'USER': 'fasteruser',
         'PASSWORD': 'faster(MENU)',
-        'HOST': 'fastermenu-db-prod.ccgtp665sryr.eu-central-1.rds.amazonaws.com',
+        'HOST': 'fastermenu-db-production.ccgtp665sryr.eu-central-1.rds.amazonaws.com',
         # 'HOST': 'fastermenu-db-staging.ccgtp665sryr.eu-central-1.rds.amazonaws.com',
         'PORT': '5432',
 
