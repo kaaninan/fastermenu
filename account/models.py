@@ -21,5 +21,5 @@ def save_user_profile(sender, instance, **kwargs):
 def save_profile(sender, instance, created, **kwargs):
     user = instance
     if created:
-        profile = UserProfile(user=user)
+        profile = Profile(user=user)
         profile.save()
