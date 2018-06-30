@@ -8,7 +8,9 @@ from redirect.views import *
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
-    url(r'^$', test_view, name='index'),
+    url(r'^$', home_view, name='index'),
+
+    url(r'^health/', health_view),
 
     url(r'^redirect/(?P<id>[\w\.-]+)/$', redirect_view, name="redirect"),
     # url(r'^logout/$', logout_view, name="logout"),
