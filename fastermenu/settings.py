@@ -200,7 +200,6 @@ else:
 
 
 
-
 MEDIAFILES_LOCATION = 'media'
 DEFAULT_FILE_STORAGE = 'fastermenu.storage_backends.MediaStorage'
 
