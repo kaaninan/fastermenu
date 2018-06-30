@@ -133,7 +133,7 @@
 
         this.interval = setInterval(function () {
             this.loadData();
-        }.bind(this), 20000); 
+        }.bind(this), 2000); 
     },
 
    beforeDestroy: function(){
@@ -161,10 +161,10 @@
         
         var btn = $(event.target);
         btn.attr('disabled', 'disabled').html("Onaylanıyor...");
-        setTimeout(function () {
-            btn.removeAttr('disabled').html('Ödeme Al');
-            item.isComplated = true;
-        }, 1000);
+        // setTimeout(function () {
+            // btn.removeAttr('disabled').html('Ödeme Al');
+            // item.isComplated = true;
+        // }, 1000);
 
 
             // CSRF Token for Django
@@ -202,7 +202,7 @@
                 // Log a message to the console
                 console.log("Hooray, it worked!");
                 console.log(status);
-                app.loadData();
+                // app.loadData();
             });
 
             // Callback handler that will be called on failure
@@ -227,8 +227,8 @@
         var btn = $(event.target);
         btn.attr('disabled', 'disabled').html("Tamamlanıyor...");
         setTimeout(function () {
-            btn.removeAttr('disabled').html('Ödeme Al');
-            item.isPaid = true;
+            // btn.removeAttr('disabled').html('Ödeme Al');
+            // item.isPaid = true;
         }, 1000);
 
 
@@ -267,7 +267,7 @@
                 // Log a message to the console
                 console.log("Hooray, it worked!");
                 console.log(status);
-                app.loadData();
+                // app.loadData();
             });
 
             // Callback handler that will be called on failure

@@ -6,7 +6,7 @@ SECRET_KEY = 'o9undphnksx)_+_x9g9o*l)$neksr4wcibi1*&dlk+z-r0jcij'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'www.localhost', '127.0.0.1', 'app.fastermenu.com', '.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['localhost', 'www.localhost', '127.0.0.1', '.fastermenu.com', '.elasticbeanstalk.com']
 
 
 # Application definition
@@ -189,9 +189,9 @@ AWS_LOCATION = 'static'
 
 if 'PRODUCTION' in os.environ:
 
-    # AWS_S3_OBJECT_PARAMETERS = {
-    #     'CacheControl': 'max-age=86400',
-    # }
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+    }
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     STATIC_URL = "https://{}/{}/".format(AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 else:
