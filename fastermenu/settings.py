@@ -6,7 +6,8 @@ SECRET_KEY = 'o9undphnksx)_+_x9g9o*l)$neksr4wcibi1*&dlk+z-r0jcij'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'www.localhost', '127.0.0.1', '.fastermenu.com', '.elasticbeanstalk.com']
+# ALLOWED_HOSTS = ['localhost', 'www.localhost', '127.0.0.1', '.fastermenu.com', '.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
