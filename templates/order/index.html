@@ -54,7 +54,7 @@
 				<div id="subCategory" style="display: none;">{{ menu.subcategory.count }}</div>
 				<!-- End -->
 				<i style="display: block" id="plus" class="fas fa-plus-circle"></i>
-				<img id="loader" style="display: none" src="{% static 'img/spinner.gif' %}">
+				<div style="display: none" id="loader" class="loader"></div>
 				<i id="check" style="display: none" class="fas fa-check"></i>
 			</div>
 		</div>
@@ -85,12 +85,12 @@
 
 
 <div class="row no-gutter sepetim">
-	<div class="col">
-		<a href="{% url 'order:cart' %}">
+	<a href="{% url 'order:cart' %}">
+		<div class="col sepetim-content">
 			<span id="sepetim"></span>
 			<i id="basket" class="fas fa-shopping-basket"></i>
-		</a>
-	</div>
+		</div>
+	</a>
 </div>
 
 </div>
@@ -221,9 +221,6 @@ $(document).ready(function(){
 
     $(".fa-plus-circle").click(function(){
 
-    	var d = $.session.get('bucket');
-    	console.log(d);
-
     	var element = $(this);
 
     	// Go Up One
@@ -249,20 +246,11 @@ $(document).ready(function(){
 		}
 
         element.css('display','none');
-        element.parent().find('img').css('display','block');
+        element.parent().find('#loader').css('display','block');
 
-   		newItem = 1;
-
-		if($.session.get('bucket')){
-			var old = $.session.get('bucket');
-			newItem = parseInt(old) + 1;
-		}
-		$.session.set('bucket', newItem);
-
-		// updateBucket();
 
         setTimeout(function(){
-        	element.parent().find('img').css('display','none');
+        	element.parent().find('#loader').css('display','none');
         	var check = element.parent().find('i')[1];
         	$(check).css('display','block');
 
@@ -270,11 +258,11 @@ $(document).ready(function(){
 
         	setTimeout(function(){
         		$(check).css('display','none');
-        		element.parent().find("img").css('display','none');
+        		element.parent().find("#loader").css('display','none');
         		element.css('display','block');
 
         	}, 1000);
-        }, 1000);
+        }, 500);
 
 
     });

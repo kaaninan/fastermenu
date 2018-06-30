@@ -170,21 +170,28 @@ body, html{
 	width: 30px;
 	height: 60px;
 	margin: auto;
+	padding-top: 15px;
 }
 .menu-item .add i{
 	cursor: pointer;
 	font-size: 30px;
-	line-height: 60px;
 	color: green;
 }
-.menu-item .add img{
-	width: 30px;
-	height: 45px;
-	/*margin: 0;*/
-	padding-top: 15px;
-	/*margin-top: 15px;*/
-	/*line-height: 60px;*/
+
+.menu-item .add .loader {
+    border: 4px solid #f3f3f3; /* Light grey */
+    border-top: 4px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 2s linear infinite;
 }
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 
 /* --- Menu Content - Title Sub --- */
 
@@ -251,12 +258,19 @@ body, html{
 	text-align: center;
 }
 
+.sepetim .sepetim-content{
+	width: 70px;
+}
+
 .sepetim a{
+	text-align: center;
 	color: white;
 	font-size: 25px;
 	line-height: 70px;
 	font-weight: normal;
 }
+
+.sepetim a:hover{ text-decoration: none; }
 
 
 

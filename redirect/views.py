@@ -18,6 +18,8 @@ def test_view(request):
     res['Location'] = location
     return res
 
+    
+
 # /redirect/XXXXXXXX Get ID, search Database and redirect related page
 def redirect_view(request, id):
     barcode_valid = False
@@ -66,7 +68,7 @@ def redirect_view(request, id):
                        table_valid=table_valid, table_active=table_active,
                        enterprise=enterprise, table=table)
 
+    # Delete shopping cart items
     delete_session_view(request)
 
     return redirect('order:index')
-    # return HttpResponse('OK', status=200)

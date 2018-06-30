@@ -24,7 +24,9 @@ urlpatterns = [
 
     # LINE
 
-    url(r'^getLine/$', get_line_view, name="getLine"),
+    url(r'^getLine/$', get_line, name="getLine"),
+    url(r'^setComplated/$', line_set_complated, name="setComplated"),
+    url(r'^setPaid/$', line_set_paid, name="setPaid"),
 
     # url(r'^my_exams/(?P<id>[\w+]+)/show/$', my_exams_show_view, name="my_exams_show"),
 

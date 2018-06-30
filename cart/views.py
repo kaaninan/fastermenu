@@ -3,9 +3,11 @@ from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 import json, pickle
 from menu.models import *
-from order.models import *
+from cart.models import *
 import ast
 
+
+# Order Page API for client
 
 def show_view(request):
     
@@ -193,9 +195,9 @@ def count_view(request):
 
 
 
+# List Orders Page API for enterprise
 
-
-def get_line_view(request):
+def get_line(request):
 
     data = list(Line.objects.filter(enterprise=request.user.profile.enterprise).values())
 
@@ -221,6 +223,31 @@ def get_line_view(request):
 
 
 
+def line_set_complated(request):
+
+    item = request.POST.get('id','')
+
+    data = Line.objects.get(enterprise=request.user.profile.enterprise, id=item)
+
+    data.isComplated = True;
+    data.complatedDate = datetime.now()
+    data.save()
+
+    return JsonResponse({'status':'success'})
+
+
+def line_set_paid(request):
+
+    item = request.POST.get('id','')
+
+    data = Line.objects.get(enterprise=request.user.profile.enterprise, id=item)
+
+    data.isPaid = True;
+    data.paidDate = datetime.now()
+    data.save()
+
+    return JsonResponse({'status':'success'})
+
 
 def add_line_view(request):
     cartSession = request.session['cart']
@@ -229,6 +256,7 @@ def add_line_view(request):
     line = Line()
     line.table = Table.objects.get(name=request.session.get('table', ''))
     line.enterprise = Enterprise.objects.get(name=request.session.get('enterprise', ''))
+    line.orderDate = datetime.now();
     line.save()
 
     totalPrice = 0.0
@@ -298,6 +326,8 @@ def add_line_view(request):
     data = {'OK':'OK'}
     return JsonResponse(data)
 
+
+# Delete Shopping Cart on session
 
 def delete_session_view(request):
     if "cart" in request.session:

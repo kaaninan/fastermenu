@@ -113,7 +113,7 @@ def complated_view(request):
 
     add_line_view(request)
 
-    # cartSession = request.session['cart']
+    delete_session_view(request)
 
 
     context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise}
