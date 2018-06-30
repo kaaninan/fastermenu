@@ -73,15 +73,15 @@
                                         <td>[[ item.orderDate | formatDate ]]</td>
                                         <td>[[ item.totalPrice ]] ₺</td>
                                         <td>
-                                            <div v-if="item.isComplated == false" v-on:click="setComplated(item, $event)">
+                                            <div v-show="item.isComplated == false" v-on:click="setComplated(item, $event)">
                                                 <button type="button" class="btn btn-block btn-success">Onayla</button>
                                             </div>
                                             
-                                            <div v-if="item.isPaid == false && item.isComplated == true" v-on:click="setPaid(item, $event)">
+                                            <div v-show="item.isPaid == false && item.isComplated == true" v-on:click="setPaid(item, $event)">
                                                 <button type="button" class="btn btn-block btn-warning">Ödeme Al</button>
                                             </div>
 
-                                            <div v-if="item.isPaid == true && item.isComplated == true">
+                                            <div v-show="item.isPaid == true && item.isComplated == true">
                                                 <b style="color: green">Tamamlandı</b>
                                             </div>
                                         </td>
@@ -121,7 +121,8 @@
         console.log('get data');
         $.get("{% url 'cart:getLine' %}", function (response) {
             this.isLoading = false   
-            console.log(response.data);
+            console.log('finish');
+            // console.log(response.data);
             this.items = response.data;
         }.bind(this));
       }
@@ -133,7 +134,7 @@
 
         this.interval = setInterval(function () {
             this.loadData();
-        }.bind(this), 2000); 
+        }.bind(this), 3000); 
     },
 
    beforeDestroy: function(){
@@ -226,10 +227,10 @@
         
         var btn = $(event.target);
         btn.attr('disabled', 'disabled').html("Tamamlanıyor...");
-        setTimeout(function () {
+        // setTimeout(function () {
             // btn.removeAttr('disabled').html('Ödeme Al');
             // item.isPaid = true;
-        }, 1000);
+        // }, 1000);
 
 
             // CSRF Token for Django

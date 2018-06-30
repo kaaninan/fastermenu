@@ -187,7 +187,7 @@ AWS_STORAGE_BUCKET_NAME = 'fastermenu-assets'
 AWS_S3_CUSTOM_DOMAIN = '{}.s3.{}.amazonaws.com'.format(AWS_STORAGE_BUCKET_NAME, AWS_REGION)
 AWS_LOCATION = 'static'
 
-if 'PRODUCTION' in os.environ:
+if 'AWS_STATIC' in os.environ:
 
     AWS_S3_OBJECT_PARAMETERS = {
         'CacheControl': 'max-age=86400',
