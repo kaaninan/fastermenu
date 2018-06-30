@@ -13,10 +13,11 @@ from cart.views import *
 
 def test_view(request):
 
-    location = 'https://fastermenu.com'
-    res = HttpResponse(location, status=302)
-    res['Location'] = location
-    return res
+    # location = 'https://fastermenu.com'
+    # res = HttpResponse(location, status=302)
+    # res['Location'] = location
+    # return res
+    return HttpResponse('FasterMenu')
 
     
 

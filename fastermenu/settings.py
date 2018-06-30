@@ -8,12 +8,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', 'www.localhost', '127.0.0.1', '.fastermenu.com', '.elasticbeanstalk.com']
 
-import requests
-try:
-    EC2_IP = requests.get('http://169.254.169.254/latest/meta-data/local-ipv4').text
-    ALLOWED_HOSTS.append(EC2_IP)
-except requests.exceptions.RequestException:
-    pass
+if 'PRODUCTION' in os.environ:
+    import requests
+    try:
+        EC2_IP = requests.get('http://169.254.169.254/latest/meta-data/local-ipv4').text
+        ALLOWED_HOSTS.append(EC2_IP)
+    except requests.exceptions.RequestException:
+        pass
 
 
 # Application definition
