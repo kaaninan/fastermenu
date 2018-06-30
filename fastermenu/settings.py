@@ -162,7 +162,6 @@ USE_TZ = True
 # Email
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # EMAIL_HOST = 'smtp.yandex.com'
 # EMAIL_PORT = 587
@@ -185,10 +184,9 @@ AWS_REGION = 'eu-central-1'
 AWS_SECRET_ACCESS_KEY = 'wJ5oTvaAUGVrWCWJy7rmmHqsfCbTl2pjl08TBzRq'
 AWS_STORAGE_BUCKET_NAME = 'fastermenu-assets'
 AWS_S3_CUSTOM_DOMAIN = '{}.s3.{}.amazonaws.com'.format(AWS_STORAGE_BUCKET_NAME, AWS_REGION)
-AWS_LOCATION = 'static'
 
 if 'AWS_STATIC' in os.environ:
-
+    AWS_LOCATION = 'static'
     AWS_S3_OBJECT_PARAMETERS = {
         'CacheControl': 'max-age=86400',
     }
@@ -197,9 +195,6 @@ if 'AWS_STATIC' in os.environ:
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATIC_URL = '/static/'
-
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# STATIC_URL = "https://{}/{}/".format(AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
 
 
