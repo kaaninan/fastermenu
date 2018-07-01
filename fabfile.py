@@ -7,15 +7,10 @@ from fabric.api import cd, env, prefix, run, sudo, task, local
 PROJECT_NAME = 'fastermenu'
 PROJECT_ROOT = '/opt/%s' % PROJECT_NAME
 VENV_DIR = os.path.join(PROJECT_ROOT, 'venv')
-REPO = 'https://kaaninan@github.com/kaaninan/%s.git' % PROJECT_NAME
+REPO = 'ssh://git@github.com/kaaninan/%s.git' % PROJECT_NAME
 
 env.hosts = ['root@46.101.151.145']
 # env.command_prefixes=["export PRODUCTION='true'",]
-# env.command_prefixes=["export RDS_HOSTNAME='fastermenu-db-prod.ccgtp665sryr.eu-central-1.rds.amazonaws.com'",]
-# env.command_prefixes=["export RDS_PORT='5432'",]
-# env.command_prefixes=["export RDS_USERNAME='fasteruser'",]
-# env.command_prefixes=["export RDS_PASSWORD='faster(USER)'",]
-# env.command_prefixes=["export RDS_DB_NAME='fasterdb'",]
 
 
 
@@ -24,10 +19,6 @@ def source_virtualenv():
     with prefix('source ' + os.path.join(VENV_DIR, 'bin/activate')):
         yield
 
-
-def clean():  
-    """Cleans Python bytecode"""
-    sudo('find . -name \'*.py?\' -exec rm -rf {} \;')
 
 
 
@@ -50,7 +41,6 @@ def deploy():
         run('git pull origin master')
         with source_virtualenv():
             with prefix('export DJANGO_SETTINGS_MODULE={}.settings'.format(PROJECT_NAME)):
-                # with prefix('env PRODUCTION=true'):
                 run('pip install -r requirements.txt')
                 run('python manage.py makemigrations')
                 run('python manage.py migrate')
@@ -75,6 +65,7 @@ def bootstrap():
     run('mkdir -p /root/logs/')
     run('touch /root/logs/gunicorn_supervisor.log')
     run('git clone {} {}'.format(REPO, PROJECT_ROOT))
+
     run('chmod +x /opt/{}/{}/conf/gunicorn'.format(PROJECT_NAME, PROJECT_NAME))
 
     with cd(PROJECT_ROOT):
@@ -88,15 +79,15 @@ def bootstrap():
                 run('python manage.py migrate')
                 run('python manage.py createsu')
                 run('python manage.py collectstatic --noinput')
-                # run("sed -i -e 's/DEBUG=True/DEBUG=False/g' {}/{}/settings.py".format((PROJECT_ROOT, PROJECT_NAME)))
 
-    # chown()
 
     # Deploy web and app server configs
     run('ln -s {}/{}/conf/supervisor.conf /etc/supervisor/conf.d/supervisor.conf'.format(PROJECT_ROOT, PROJECT_NAME))
     run('ln -s {}/{}/conf/nginx.conf /etc/nginx/sites-enabled/{}.conf'.format(PROJECT_ROOT, PROJECT_NAME, PROJECT_NAME))
 
     restart()
+
+
 
 @task
 def remove():
