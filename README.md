@@ -20,16 +20,25 @@
 1. **Production:** app.fastermenu.com
 2. **Staging:** beta.fastermenu.com
 
- **app.fastermenu.com**
+### **app.fastermenu.com**
+ 
 **Source:** AWS Elastic Beanstalk - fastermenu-production
+
 **Load Balancer:** AWS Application Load Balancer with SSL
+
 **Database:** AWS RDS PostgreSQL - fastermenu-db-production
+
 **Pipeline:** CodePipeline - Connected GitHub master branch
 
-**beta.fastermenu.com**
+
+### **beta.fastermenu.com**
+
 **Source:** DigitalOcean Droplet
+
 **Database:** AWS RDS PostgreSQL - fastermenu-db-production
+
 **Deployment:** Fabfile
+
 
 ## Deploy AWS Elastic Beanstalk
 Elastic Beanstalk configuration files in: **.ebextensions/**
