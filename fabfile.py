@@ -10,6 +10,7 @@ VENV_DIR = os.path.join(PROJECT_ROOT, 'venv')
 REPO = 'ssh://git@github.com/kaaninan/%s.git' % PROJECT_NAME
 
 env.hosts = ['root@46.101.151.145']
+# Not needed because it've done on server side manually
 # env.command_prefixes=["export PRODUCTION='true'",]
 
 
@@ -86,7 +87,6 @@ def bootstrap():
     run('ln -s {}/{}/conf/nginx.conf /etc/nginx/sites-enabled/{}.conf'.format(PROJECT_ROOT, PROJECT_NAME, PROJECT_NAME))
 
     restart()
-
 
 
 @task
