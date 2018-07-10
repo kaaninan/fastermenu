@@ -166,9 +166,9 @@ def update_count_view(request):
                 # Edit Already Saved Product Count
                 product['count'] = menu['count']
 
-                print('Product Price: '+ str(product['price']))
-                print('Product Count: '+ str(product['count']))
-                print('Product Total Price: '+ str(float(product['price']) * product['count']))
+                # print('Product Price: '+ str(product['price']))
+                # print('Product Count: '+ str(product['count']))
+                # print('Product Total Price: '+ str(float(product['price']) * product['count']))
 
                 product['totalPrice'] = float(product['price']) * product['count']
                 newList.append(product)

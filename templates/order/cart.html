@@ -61,65 +61,65 @@
 
 
 <div class="row cart">
-    <div class="col clear">
-    	<div class="back" style="display: none">
-    		<a href="/order">
-    			<i class="fas fa-chevron-circle-left"></i>
-    		</a>
-    	</div>
-        <div class="title"> Sepetim</div>
-    </div>
+	<div class="col clear">
+		<div class="back" style="display: none">
+			<a href="/order">
+				<i class="fas fa-chevron-circle-left"></i>
+			</a>
+		</div>
+		<div class="title"> Sepetim</div>
+	</div>
 </div>
 
 
+{% if cart %}
 <div class="row cart-items">
-    <div class="col-12 clear">
+	<div class="col-12 clear">
 
-        	{% for item in cart %}
-        	<div class="row item">
+			{% for item in cart %}
+			<div class="row item">
 
-        		<div id="menu_id" style="display: none;">{{ item.id }}</div>
-        		
-        		<div class="col-1 clear">
-        			<div class="count">{{ item.count }}</div>
-        		</div>
-        		<div class="col-8 clear">
-        			<div class="titles">
-	        			
-		        			<div class="title">{{ item.name }}</div>
-		        			<div class="subtitle">
-		        				{% if item.options == "-1" %}
-		        					{{ item.description }}
-		        				{% endif %}
+				<div id="menu_id" style="display: none;">{{ item.id }}</div>
+				
+				<div class="col-1 clear">
+					<div class="count">{{ item.count }}</div>
+				</div>
+				<div class="col-8 clear">
+					<div class="titles">
+						
+							<div class="title">{{ item.name }}</div>
+							<div class="subtitle">
+								{% if item.options == "-1" %}
+									{{ item.description }}
+								{% endif %}
 
-		        				{% if item.options != "-1" %}
-		        					{% for i in item.options_option %}
-		        						{{ i }}{% if not forloop.last %}, {% endif %}
-		        						{% if forloop.last %}<br>{% endif %}
-		        					{% endfor %}
-		        				{% endif %}
+								{% if item.options != "-1" %}
+									{% for i in item.options_option %}
+										{{ i }}{% if not forloop.last %}, {% endif %}
+										{% if forloop.last %}<br>{% endif %}
+									{% endfor %}
+								{% endif %}
 
-		        				{% if item.options != "-1" %}
-		        					{% for i in item.options_dropadd %}
-		        						{{ i }}{% if not forloop.last %}, {% endif %}
-		        						{% if forloop.last %} hariç.{% endif %}
-		        					{% endfor %}
-		        				{% endif %}
-		        			</div>
-		        			<div class="options" style="display: none;">{{ item.options }}</div>
-		        		<!-- </a> -->
-	        		</div>
-	        	</div>
-        		<div class="col-3 clear">
-        			<div class="price"><span id="price">{{ item.totalPrice|floatformat:2 }}</span> TL</div>
-        		</div>
-        		<div class="clear"></div>
-	        	
-        	</div>
-        	{% endfor %}
-    </div>
+								{% if item.options != "-1" %}
+									{% for i in item.options_dropadd %}
+										{{ i }}{% if not forloop.last %}, {% endif %}
+										{% if forloop.last %} hariç.{% endif %}
+									{% endfor %}
+								{% endif %}
+							</div>
+							<div class="options" style="display: none;">{{ item.options }}</div>
+						<!-- </a> -->
+					</div>
+				</div>
+				<div class="col-3 clear">
+					<div class="price"><span id="price">{{ item.totalPrice|floatformat:2 }}</span> TL</div>
+				</div>
+				<div class="clear"></div>
+				
+			</div>
+			{% endfor %}
+	</div>
 </div>
-
 
 
 <div class="row total">
@@ -145,6 +145,23 @@
 	</div>
 </div>
 
+{% endif %}
+
+{% if not cart %}
+<div class="row cart-empty">
+	<div class="middle">
+		<div class="inner">
+			<i id="basket" class="fas fa-shopping-basket"></i>
+			<div class="desc">Sepetinizde ürün bulunmuyor.</div>
+			<a href="{% url 'order:index' %}">
+				<div class="back">Menüye Dön</div>
+			</a>
+		</div>
+	</div>
+</div>
+{% endif %}
+
+
 {% endblock %}
 
 
@@ -157,24 +174,24 @@
 
 	  // CSRF Token for Django
 	  $.ajaxSetup({
-	    beforeSend: function(xhr, settings) {
-	      function getCookie(name) {
-	        var cookieValue = null;
-	        if (document.cookie && document.cookie != '') {
-	          var cookies = document.cookie.split(';');
-	          for (var i = 0; i < cookies.length; i++) {
-	            var cookie = jQuery.trim(cookies[i]);
-	            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-	              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-	              break;
-	            }
-	          }
-	        }
-	        return cookieValue;
-	      }if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-	        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-	      }
-	    } 
+		beforeSend: function(xhr, settings) {
+		  function getCookie(name) {
+			var cookieValue = null;
+			if (document.cookie && document.cookie != '') {
+			  var cookies = document.cookie.split(';');
+			  for (var i = 0; i < cookies.length; i++) {
+				var cookie = jQuery.trim(cookies[i]);
+				if (cookie.substring(0, name.length + 1) == (name + '=')) {
+				  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+				  break;
+				}
+			  }
+			}
+			return cookieValue;
+		  }if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+			xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+		  }
+		} 
 	  });
 
 	  // Option List to Json String
@@ -184,51 +201,51 @@
 	  console.log(serialized);
 
 	  request = $.ajax({
-	        url: "{% url 'cart:delete' %}",
-	        type: "post",
-	        data: serialized
-	    });
+			url: "{% url 'cart:delete' %}",
+			type: "post",
+			data: serialized
+		});
 
-	    // Callback handler that will be called on success
-	    request.done(function (response, textStatus, jqXHR){
-	        // Log a message to the console
-	        console.log("Hooray, it worked!");
-	        window.location.href = "{% url 'order:cart' %}";
+		// Callback handler that will be called on success
+		request.done(function (response, textStatus, jqXHR){
+			// Log a message to the console
+			console.log("Hooray, it worked!");
+			window.location.href = "{% url 'order:cart' %}";
 			return false;
-	    });
+		});
 
-	    // Callback handler that will be called on failure
-	    request.fail(function (jqXHR, textStatus, errorThrown){
-	        // Log the error to the console
-	        console.error(
-	            "The following error occurred: "+
-	            textStatus, errorThrown
-	        );
-	    });
+		// Callback handler that will be called on failure
+		request.fail(function (jqXHR, textStatus, errorThrown){
+			// Log the error to the console
+			console.error(
+				"The following error occurred: "+
+				textStatus, errorThrown
+			);
+		});
 	}
 
 	function updateCountBudget(id, price, count, option){
 
 	  // CSRF Token for Django
 	  $.ajaxSetup({
-	    beforeSend: function(xhr, settings) {
-	      function getCookie(name) {
-	        var cookieValue = null;
-	        if (document.cookie && document.cookie != '') {
-	          var cookies = document.cookie.split(';');
-	          for (var i = 0; i < cookies.length; i++) {
-	            var cookie = jQuery.trim(cookies[i]);
-	            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-	              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-	              break;
-	            }
-	          }
-	        }
-	        return cookieValue;
-	      }if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-	        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-	      }
-	    } 
+		beforeSend: function(xhr, settings) {
+		  function getCookie(name) {
+			var cookieValue = null;
+			if (document.cookie && document.cookie != '') {
+			  var cookies = document.cookie.split(';');
+			  for (var i = 0; i < cookies.length; i++) {
+				var cookie = jQuery.trim(cookies[i]);
+				if (cookie.substring(0, name.length + 1) == (name + '=')) {
+				  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+				  break;
+				}
+			  }
+			}
+			return cookieValue;
+		  }if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+			xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+		  }
+		} 
 	  });
 
 	  var serialized = $.param({id: id, price: price, option: option, count: count});
@@ -236,28 +253,28 @@
 	  console.log(serialized);
 
 	  request = $.ajax({
-	        url: "{% url 'cart:updateCount' %}",
-	        type: "post",
-	        data: serialized
-	    });
+			url: "{% url 'cart:updateCount' %}",
+			type: "post",
+			data: serialized
+		});
 
-	    // Callback handler that will be called on success
-	    request.done(function (response, textStatus, jqXHR){
-	        // Log a message to the console
-	        console.log("Hooray, it worked!");
-	        window.location.href = "{% url 'order:cart' %}";
+		// Callback handler that will be called on success
+		request.done(function (response, textStatus, jqXHR){
+			// Log a message to the console
+			console.log("Hooray, it worked!");
+			window.location.href = "{% url 'order:cart' %}";
 			return false;
 
-	    });
+		});
 
-	    // Callback handler that will be called on failure
-	    request.fail(function (jqXHR, textStatus, errorThrown){
-	        // Log the error to the console
-	        console.error(
-	            "The following error occurred: "+
-	            textStatus, errorThrown
-	        );
-	    });
+		// Callback handler that will be called on failure
+		request.fail(function (jqXHR, textStatus, errorThrown){
+			// Log the error to the console
+			console.error(
+				"The following error occurred: "+
+				textStatus, errorThrown
+			);
+		});
 	}
 
 
@@ -304,8 +321,8 @@
 
 
 	  $('.count').click(function(e){
-	  	element = $(this).parent().parent();
-  		menuTitle = element.find('.title').html();
+		element = $(this).parent().parent();
+		menuTitle = element.find('.title').html();
 		menuSubTitle = element.find('.options').html();
 		menuPrice = element.find('#price').html();
 		menuCount = element.find('.count').html();
@@ -331,18 +348,18 @@
 
 		// When click the plus button (item count)
 	  $(".fa-plus-circle").click(function(e){
-	  	e.preventDefault();
-	  	$('span#count').html(temp_count+1);
-	  	temp_count = temp_count + 1;
+		e.preventDefault();
+		$('span#count').html(temp_count+1);
+		temp_count = temp_count + 1;
 	  });
 
 	  // When click the minus button (item count)
 	  $(".fa-minus-circle").click(function(e){
-	  	e.preventDefault();
-	  	if(temp_count > 1){
-	  		$('span#count').html(temp_count-1);
-	  		temp_count = temp_count - 1;
-	  	}
+		e.preventDefault();
+		if(temp_count > 1){
+			$('span#count').html(temp_count-1);
+			temp_count = temp_count - 1;
+		}
 	  });
 
 
@@ -353,18 +370,18 @@
 
 	  // When click the DropAdd options
 	  $("li#options").click(function(e){
-	  	e.preventDefault();
-	  	var element = $(this);
-	  	
-	  	// Mark li element as a removed class
-	  	if(element.attr('class')){
-	  		element.removeClass('delete');
-	  	}else{
-	  		element.addClass('delete');	
-	  	}
+		e.preventDefault();
+		var element = $(this);
+		
+		// Mark li element as a removed class
+		if(element.attr('class')){
+			element.removeClass('delete');
+		}else{
+			element.addClass('delete');	
+		}
 
-	  	// Get subcategory id
-	  	var d = element.children().attr('id');
+		// Get subcategory id
+		var d = element.children().attr('id');
 	  });
 
 
@@ -372,11 +389,11 @@
 
 	  // When Clicked Dropdown Options
 	  $("label.container-radio").mousedown(function (e) {
-	  	var element = $(this);
-	  	var d = element.children().attr('id');
-	  	var extra = parseFloat(element.find("#price").html());
-	  	extraPrice = extra;
-	  	updatePrice();
+		var element = $(this);
+		var d = element.children().attr('id');
+		var extra = parseFloat(element.find("#price").html());
+		extraPrice = extra;
+		updatePrice();
 	  });
 
 	});

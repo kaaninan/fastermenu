@@ -583,6 +583,57 @@ body, html{
 }
 
 
+
+.cart-empty{
+	display: table;
+	position: absolute;
+	height: 80%;
+	/*margin-bottom: 220px;*/
+	width: 100%;
+}
+
+.cart-empty .middle {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.cart-empty .inner {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+.cart-empty i{
+	text-align: center;
+	font-size: 5rem;
+	color: #9B9B9B;
+}
+.cart-empty .desc{
+	text-align: center;
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+	font-size: 1rem;
+	color: #222222;
+}
+.cart-empty a .back{
+	width: 70%;
+	margin: auto;
+	background: #2D2D2D;
+	color: white;
+	font-weight: bold;
+	font-size: 1rem;
+	text-align: center;
+	padding: 10px;
+	border-radius: 3px;
+}
+
+.cart-empty a:hover{
+	text-decoration: none;
+}
+
+
+
+
 .total{
 	position: fixed;
 	bottom: 75px;
