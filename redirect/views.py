@@ -35,6 +35,9 @@ def redirect_view(request, id):
     table = None
     response_data = list()
 
+    request.session['enterprise'] = None
+    request.session['table'] = None
+
     # Get Barcode from database
     barcode = Barcode.objects.filter(barcode=id)
 

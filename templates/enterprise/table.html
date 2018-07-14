@@ -1,6 +1,31 @@
 {% extends 'enterprise/static/base.html' %}
 {% load static %}
 {% block body %}
+
+
+	<!-- Modal: Masa QR Kod -->
+	<div class="modal fade" id="modal-qr">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Masa QR Kodu</h4>
+				</div>
+
+				<div class="modal-body" style="text-align: center">
+					
+					<img id="qrCode">
+
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Vazgeç</button>
+					<button type="button" class="btn btn-success btn-success pull-left" id="button-print">Yazdır</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
 	
 	<!-- Modal: Masa Ekle -->
 	<div class="modal fade" id="modal-add">
@@ -165,6 +190,8 @@
 											{% if single.active == False %}<i class="fa fa-times-circle" style="color: red"></i>{% endif %}
 										</td>
 										<td>
+											<button name="item_qr_code" class="btn btn-default btn-sm">QR Kod</button>
+											&nbsp;
 											<button name="item_edit" class="btn btn-default btn-sm">Düzenle</button>
 											&nbsp;
 											<button name="item_delete" class="btn btn-danger btn-sm">Sil</button>
@@ -172,6 +199,7 @@
 
 										<!-- For jQuery -->
 										<td style="display: none" class="id">{{ single.id }}</td>
+										<td style="display: block" class="barcode">{{ single.barcode }}</td>
 									</tr>
 								{% endfor %}
 							{% endif %}
@@ -369,6 +397,20 @@
 				$('span#delete-table-name').html(itemName);
 
 				$('#modal-delete').modal('show');
+			});
+
+
+			// SHOW QR CODE
+
+			$("button[name='item_qr_code']").click(function(e){
+				itemID = $(this).parent().parent().find('.id').html();
+				itemBarcode = $(this).parent().parent().find('.barcode').html();
+
+				selectedID = itemID;
+				
+				$('#qrCode').attr('src','https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://app.fastermenu.com/redirect/'+itemBarcode);
+
+				$('#modal-qr').modal('show');
 			});
 
 
