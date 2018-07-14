@@ -1,272 +1,55 @@
 {% extends 'enterprise/static/base.html' %}
 {% load static %}
+
 {% block body %}
-    <div class="content-wrapper" id="app">
-        <div class="container">
-            <section class="content-header">
-                <h1>
-                Siparişler
-                </h1>
-                <ol class="breadcrumb">
-                    <li><a href="/enterprise"><i class="fa fa-dashboard"></i> Anasayfa</a></li>
-                    <li class="active">Siparişler</li>
-                </ol>
-            </section>
-            <section class="content">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="box">
-                            <!-- <div class="box-header">
-                                <h3 class="box-title">Responsive Hover Table</h3>
-                                <div class="box-tools">
-                                    <div class="input-group input-group-sm" style="width: 150px;">
-                                        <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
-                                        <div class="input-group-btn">
-                                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                                        </div>
-                                    </div>
+<div class="content-wrapper">
+
+    <div class="container">
+
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                İşletme Ayarları
+            </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+
+            <div class="box box-primary">
+                <form method="post" enctype="multipart/form-data">
+
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div class="box-body">
+                                    {% csrf_token %}
+                                    <h2>Firma Bilgileri</h2><br>
+                                    {{ form_enterprise.as_p }}
+                                    {{ form_enterprise.media }}
+                                    <hr>
+                                    <h2>Kişisel Bilgiler</h2><br>
+                                    {{ form.as_p }}
                                 </div>
-                            </div> -->
-                            <!-- /.box-header -->
-                            <div class="box-body table-responsive no-padding">
-                                <table class="table table-hover">
-                                    <tr style="font-size: 1.5rem;">
-                                        <th>#</th>
-                                        <th>Masa</th>
-                                        <th>Sipariş</th>
-                                        <th>Sipariş Zamanı</th>
-                                        <th>Toplam Ücret</th>
-                                        <th>İşlemler</th>
-                                    </tr>
-                                    <tr v-for="item in items" style="font-size: 1.5rem;">
-                                        <td>[[ item.id ]]</td>
-                                        <td>[[ item.table ]]</td>
-                                        <td>
-                                            <div v-for="(order, index) in item.order">
-                                                [[ order.count ]] tane
-                                                [[ order.name ]]
-                                                <div v-if="order.options != '-1'">
-                                                    [[ order.optionsReadable ]]
-                                                </div>
-                                                <!-- if not last item -->
-                                                <div v-if="index != item.order.length - 1">
-                                                    <hr>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>[[ item.orderDate | formatDate ]]</td>
-                                        <td>[[ item.totalPrice ]] ₺</td>
-                                        <td>
-                                            <div v-show="item.isComplated == false" v-on:click="setComplated(item, $event)">
-                                                <button type="button" class="btn btn-block btn-success">Onayla</button>
-                                            </div>
-                                            
-                                            <div v-show="item.isPaid == false && item.isComplated == true" v-on:click="setPaid(item, $event)">
-                                                <button type="button" class="btn btn-block btn-warning">Ödeme Al</button>
-                                            </div>
 
-                                            <div v-show="item.isPaid == true && item.isComplated == true">
-                                                <b style="color: green">Tamamlandı</b>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
                             </div>
-                            <div class="overlay" v-if="isLoading">
-                                <i class="fa fas fa-sync-alt fa-spin"></i>
-                            </div>
-                            <!-- /.box-body -->
+
                         </div>
-                        <!-- /.box -->
                     </div>
-                </div>
-            </section>
-        </div>
+
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn btn-primary pull-right" style="margin-left:15px">Kaydet</button>
+                        <!-- <a href="{% url 'enterprise:index' %}">
+                            <button type="button" class="btn btn btn-default pull-right">Cancel</button>
+                        </a> -->
+                    </div>
+                </form>
+            </div>
+
+        </section>
     </div>
+
+</div>    
 {% endblock %}
-
-{% block script %}
-
-<script type="text/javascript">
-
-    
-
-
-  var app = new Vue({
-    delimiters: ['[[', ']]'],
-    el: '#app',
-    data: {
-        isLoading: true,
-        items: [],
-        interval: null,
-    },
-    methods: {
-      loadData: function () {
-        console.log('get data');
-        $.get("{% url 'cart:getLine' %}", function (response) {
-            this.isLoading = false   
-            console.log('finish');
-            // console.log(response.data);
-            this.items = response.data;
-        }.bind(this));
-      }
-    },
-    mounted: function () {
-        console.log('Start Loading');
-        this.isLoading = true;
-        this.loadData();
-
-        this.interval = setInterval(function () {
-            this.loadData();
-        }.bind(this), 3000); 
-    },
-
-   beforeDestroy: function(){
-    clearInterval(this.interval);
-    }
-  });
-
-  // import moment from 'moment'
-
-    Vue.filter('formatDate', function(value) {
-      if (value) {
-        // return moment(String(value)).format('MM/DD/YYYY hh:mm')
-        return moment(String(value)).locale('tr').fromNow();
-      }
-    });
-
-
-
-    function setComplated(item, event){
-
-
-        var id = item.id;
-
-        console.log($(event.target));
-        
-        var btn = $(event.target);
-        btn.attr('disabled', 'disabled').html("Onaylanıyor...");
-        // setTimeout(function () {
-            // btn.removeAttr('disabled').html('Ödeme Al');
-            // item.isComplated = true;
-        // }, 1000);
-
-
-            // CSRF Token for Django
-            $.ajaxSetup({
-                beforeSend: function(xhr, settings) {
-                    function getCookie(name) {
-                        var cookieValue = null;
-                        if (document.cookie && document.cookie != '') {
-                            var cookies = document.cookie.split(';');
-                            for (var i = 0; i < cookies.length; i++) {
-                                var cookie = jQuery.trim(cookies[i]);
-                                if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                                    break;
-                                }
-                            }
-                        }
-                        return cookieValue;
-                    }if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-                        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-                    }
-                } 
-            });
-
-            var serialized = $.param({id: id});
-
-            request = $.ajax({
-                url: "{% url 'cart:setComplated' %}",
-                type: "post",
-                data: serialized
-            });
-
-            // Callback handler that will be called on success
-            request.done(function (response, textStatus, jqXHR){
-                // Log a message to the console
-                console.log("Hooray, it worked!");
-                console.log(status);
-                // app.loadData();
-            });
-
-            // Callback handler that will be called on failure
-            request.fail(function (jqXHR, textStatus, errorThrown){
-                // Log the error to the console
-                console.error(
-                    "The following error occurred: "+
-                    textStatus, errorThrown
-                );
-            });
-        }
-
-
-
-        function setPaid(item, event){
-
-
-        var id = item.id;
-
-        console.log($(event.target));
-        
-        var btn = $(event.target);
-        btn.attr('disabled', 'disabled').html("Tamamlanıyor...");
-        // setTimeout(function () {
-            // btn.removeAttr('disabled').html('Ödeme Al');
-            // item.isPaid = true;
-        // }, 1000);
-
-
-            // CSRF Token for Django
-            $.ajaxSetup({
-                beforeSend: function(xhr, settings) {
-                    function getCookie(name) {
-                        var cookieValue = null;
-                        if (document.cookie && document.cookie != '') {
-                            var cookies = document.cookie.split(';');
-                            for (var i = 0; i < cookies.length; i++) {
-                                var cookie = jQuery.trim(cookies[i]);
-                                if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                                    break;
-                                }
-                            }
-                        }
-                        return cookieValue;
-                    }if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-                        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-                    }
-                } 
-            });
-
-            var serialized = $.param({id: id});
-
-            request = $.ajax({
-                url: "{% url 'cart:setPaid' %}",
-                type: "post",
-                data: serialized
-            });
-
-            // Callback handler that will be called on success
-            request.done(function (response, textStatus, jqXHR){
-                // Log a message to the console
-                console.log("Hooray, it worked!");
-                console.log(status);
-                // app.loadData();
-            });
-
-            // Callback handler that will be called on failure
-            request.fail(function (jqXHR, textStatus, errorThrown){
-                // Log the error to the console
-                console.error(
-                    "The following error occurred: "+
-                    textStatus, errorThrown
-                );
-            });
-        }
-
-
-</script>
-
-{% endblock %}
-
