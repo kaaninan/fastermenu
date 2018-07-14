@@ -3,9 +3,13 @@ from __future__ import unicode_literals
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import logout
 from django.contrib import messages
+from django.core import serializers
+import json, pickle
+import ast
 
 from enterprise.models import *
 from enterprise.forms import *
@@ -93,10 +97,3 @@ def logout_view(request):
 	if request.user:
 		logout(request) 
 	return redirect('enterprise:login')
-
-
-
-
-
-
-
