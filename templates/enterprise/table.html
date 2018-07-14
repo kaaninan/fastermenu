@@ -9,32 +9,35 @@
 				<div class="modal-header">
 					<h4 class="modal-title">Masa Ekleme</h4>
 				</div>
+
 				<div class="modal-body">
 					<input id="add1" type="radio" name="radio-add" value="add-multiple">
 					<label for="add1">Toplu masa ekle</label><br>
 
 					<input id="add2" type="radio" name="radio-add" value="add-single">
 					<label for="add2">Bir tane masa ekle</label>
-				</div>
 
-				<div id="add-multiple" style="display: none">
-					<div class="form-group" style="margin: 0 20px;">
-						<hr>
-						<label for="table-count">Toplam kaç tane masanız var?</label>
-						<input type="text" class="form-control" id="table-count">
-						<span class="help-block">Girdiğiniz sayı kadar masa eklenecektir.</span>
+					<div id="add-multiple" style="display: none">
+						<div class="form-group">
+							<hr>
+							<label for="table-count">Toplam kaç tane masanız var?</label>
+							<input type="text" class="form-control" id="table-count">
+							<span class="help-block">Girdiğiniz sayı kadar masa eklenecektir.</span>
+						</div>
 					</div>
-				</div>
 
-				<div id="add-single" style="display: none">
-					<div class="form-group" style="margin: 0 20px;">
-						<hr>
-						<label for="table-name">Eklemek istediğiniz masa adı nedir?</label>
-						<input type="text" class="form-control" id="table-name">
-					</div><br>
+					<div id="add-single" style="display: none">
+						<div class="form-group">
+							<hr>
+							<label for="table-name">Eklemek istediğiniz masa adı nedir?</label>
+							<input type="text" class="form-control" id="table-name">
+						</div>
+					</div>
+
 				</div>
 				
 				<div class="modal-footer">
+					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="button-save">Vazgeç</button>
 					<button type="button" class="btn btn-success btn-success pull-left" id="button-add">Ekle</button>
 				</div>
 			</div>
@@ -50,25 +53,51 @@
 					<h4 class="modal-title">Masa Düzenle</h4>
 				</div>
 
-				<div class="form-group" style="margin: 0 20px;">
-					<label for="table-count">Masa Numarası</label>
-					<input type="text" class="form-control" name="edit-name">
-				</div>
+				<div class="modal-body">
 
-				<br>
+					<div class="form-group">
+						<label for="table-count">Masa Numarası</label>
+						<input type="text" class="form-control" name="edit-name">
+					</div>
 
-				<div class="form-group" style="margin: 0 20px;">
-					<input id="edit1" type="radio" name="radio-edit" value="active">
-					<label for="edit1">Aktif</label><br>
+					<br>
 
-					<input id="edit2" type="radio" name="radio-edit" value="deactive">
-					<label for="edit2">Kullanım Dışı</label>
+					<div class="form-group">
+						<input id="edit1" type="radio" name="radio-edit" value="active">
+						<label for="edit1">Aktif</label><br>
 
-					<span class="help-block">Kullanımda olmayan masaları burdan sistemden çıkartabilirsiniz.</span>
+						<input id="edit2" type="radio" name="radio-edit" value="deactive">
+						<label for="edit2">Kullanım Dışı</label>
+
+						<span class="help-block">Kullanımda olmayan masaları burdan sistemden çıkartabilirsiniz.</span>
+					</div>
+
 				</div>
 			
 				<div class="modal-footer">
+					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" id="button-save">Vazgeç</button>
 					<button type="button" class="btn btn-success btn-success pull-left" id="button-save">Kaydet</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Modal: Masa Sil -->
+	<div class="modal fade" id="modal-delete">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Masa Sil</h4>
+				</div>
+
+				<div class="modal-body">
+					<b><span id="delete-table-name"></span></b> numaralı masa silinecektir. Onaylıyor musunuz?
+				</div>
+			
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Vazgeç</button>
+					<button type="button" class="btn btn-danger pull-left" style="width: 80px" id="button-delete">Sil</button>
 				</div>
 			</div>
 		</div>
@@ -252,6 +281,54 @@
 
 
 
+		function deleteTable(id, name, status){
+
+			// CSRF Token for Django
+			$.ajaxSetup({
+				beforeSend: function(xhr, settings) {
+				function getCookie(name) {
+				var cookieValue = null;
+				if (document.cookie && document.cookie != '') {
+				  var cookies = document.cookie.split(';');
+				  for (var i = 0; i < cookies.length; i++) {
+					var cookie = jQuery.trim(cookies[i]);
+					if (cookie.substring(0, name.length + 1) == (name + '=')) {
+					  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+					  break;
+					}
+				  }
+				}
+				return cookieValue;
+				}if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+				xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+				}
+				} 
+			});
+
+			var serialized = $.param({id: id});
+
+			request = $.ajax({
+				url: "{% url 'api:table_delete' %}",
+				type: "post",
+				data: serialized
+			});
+
+
+			request.done(function (response, textStatus, jqXHR){
+				console.log('Done');
+				console.log(response);
+				window.location.href = "{% url 'enterprise:table' %}";
+				return false;
+			});
+
+			request.fail(function (jqXHR, textStatus, errorThrown){
+				console.error("The following error occurred: " + textStatus, errorThrown);
+			});
+		}
+
+
+
+
 
 		$(document).ready(function(){
 
@@ -262,7 +339,7 @@
 
 			// EDIT TABLE ITEM
 
-			$("button[name = 'item_edit']").click(function(e){
+			$("button[name='item_edit']").click(function(e){
 				itemID = $(this).parent().parent().find('.id').html();
 				itemName = $(this).parent().parent().find('._name').html();
 				itemStatus = $(this).parent().parent().find('._status').find('i').attr('class');
@@ -278,6 +355,20 @@
 				$('input[name="edit-name"]').val(itemName);
 
 				$('#modal-edit').modal('show');
+			});
+
+
+			// DELETE TABLE ITEM
+
+			$("button[name='item_delete']").click(function(e){
+				itemID = $(this).parent().parent().find('.id').html();
+				itemName = $(this).parent().parent().find('._name').html();
+
+				selectedID = itemID;
+
+				$('span#delete-table-name').html(itemName);
+
+				$('#modal-delete').modal('show');
 			});
 
 
@@ -299,6 +390,17 @@
 
 
 			});
+
+
+
+			// MODAL: DELETE TABLE
+
+			$('#button-delete').click(function(e){
+				id = selectedID;
+				deleteTable(id);
+			});
+
+
 
 
 			// MODAL: ADD TABLE

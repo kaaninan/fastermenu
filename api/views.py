@@ -82,6 +82,21 @@ def table_update(request):
 
 
 
+def table_delete(request):
+
+	# Get Post Parameters
+	postID = request.POST.get('id', '')
+
+	# Get item from database and update
+	item = Table.objects.get(id=postID)
+	item.delete()
+
+	data = {'OK':'OK'}
+	return JsonResponse(data)
+
+
+
+
 # ================================= BARCODE ==================================================
 
 
