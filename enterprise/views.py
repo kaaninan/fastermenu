@@ -19,6 +19,7 @@ def main_view(request):
 	# sTable = request.session.get('table', 'table')
 	# enterprise = get_object_or_404(Enterprise, name=sEnterprise)
 
+
 	context = {}
 	# context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise}
 	return render(request, "enterprise/index.html", context)
@@ -34,6 +35,20 @@ def order_view(request):
 	context = {'active_tab': 'order'}
 	# context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise}
 	return render(request, "enterprise/order.html", context)
+
+
+
+
+@login_required
+def table_view(request):
+
+	# sEnterprise = request.session.get('enterprise', 'enterprise')
+	# sTable = request.session.get('table', 'table')
+	# enterprise = get_object_or_404(Enterprise, name=sEnterprise)
+
+	context = {'active_tab': 'table'}
+	# context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise}
+	return render(request, "enterprise/table.html", context)
 
 
 

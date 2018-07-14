@@ -23,6 +23,7 @@ urlpatterns = [
 
     url(r'^order/$', order_view, name='order'),
     url(r'^profile/$', profile_view, name='profile'),
+    url(r'^table/$', table_view, name='table'),
 
 
 

@@ -11,43 +11,53 @@
             <h1>
                 İşletme Ayarları
             </h1>
+
+            <ol class="breadcrumb">
+                <li><a href="{% url 'enterprise:index' %}"><i class="fa fa-home"></i> Anasayfa</a></li>
+                <li class="active">Hesap Ayarları</li>
+            </ol>
+
         </section>
 
         <!-- Main content -->
         <section class="content">
 
+            <div class="row">
 
-            <div class="box box-primary">
-                <form method="post" enctype="multipart/form-data">
+                <div class="col-xs-12">
 
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-12">
+                    <div class="box box-primary">
+                        <form method="post" enctype="multipart/form-data">
 
-                                <div class="box-body">
-                                    {% csrf_token %}
-                                    <h2>Firma Bilgileri</h2><br>
-                                    {{ form_enterprise.as_p }}
-                                    {{ form_enterprise.media }}
-                                    <hr>
-                                    <h2>Kişisel Bilgiler</h2><br>
-                                    {{ form.as_p }}
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+
+                                        <div class="box-body">
+                                            {% csrf_token %}
+                                            <h2>Firma Bilgileri</h2><br>
+                                            {{ form_enterprise.as_p }}
+                                            {{ form_enterprise.media }}
+                                            <hr>
+                                            <h2>Kişisel Bilgiler</h2><br>
+                                            {{ form.as_p }}
+                                        </div>
+
+                                    </div>
+
                                 </div>
-
                             </div>
 
-                        </div>
+                            <div class="box-footer">
+                                <button type="submit" class="btn btn btn-primary pull-right" style="margin-left:15px">Kaydet</button>
+                                <!-- <a href="{% url 'enterprise:index' %}">
+                                    <button type="button" class="btn btn btn-default pull-right">Cancel</button>
+                                </a> -->
+                            </div>
+                        </form>
                     </div>
-
-                    <div class="box-footer">
-                        <button type="submit" class="btn btn btn-primary pull-right" style="margin-left:15px">Kaydet</button>
-                        <!-- <a href="{% url 'enterprise:index' %}">
-                            <button type="button" class="btn btn btn-default pull-right">Cancel</button>
-                        </a> -->
-                    </div>
-                </form>
+                </div>
             </div>
-
         </section>
     </div>
 
