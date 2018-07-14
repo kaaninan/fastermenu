@@ -7,6 +7,11 @@ from enterprise.models import *
 from barcode.models import *
 
 
+
+# ================================= TABLE ==================================================
+
+
+
 def table_create(request):
 
 	postOption = request.POST.get('option', '')
@@ -51,6 +56,33 @@ def table_create(request):
 	data = {'OK':'OK'}
 	return JsonResponse(data)
 
+
+def table_update(request):
+
+	# Get Post Parameters
+	postID = request.POST.get('id', '')
+	postName = request.POST.get('name', '')
+	postStatus = request.POST.get('status', '')
+
+	# Convert String to Bool
+	if postStatus == 'true':
+		postStatus = True
+	else:
+		postStatus = False
+
+	# Get item from database and update
+	item = Table.objects.get(id=postID)
+	item.name = postName
+	item.active = postStatus
+	item.save()
+
+	data = {'OK':'OK'}
+	return JsonResponse(data)
+
+
+
+
+# ================================= BARCODE ==================================================
 
 
 def barcode_create(request):

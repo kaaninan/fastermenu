@@ -2,14 +2,12 @@
 {% load static %}
 {% block body %}
 	
-	<!-- Masa Ekle -->
+	<!-- Modal: Masa Ekle -->
 	<div class="modal fade" id="modal-add">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">
-					<div id="modal-delete-title">Masa Ekleme</div>
-					</h4>
+					<h4 class="modal-title">Masa Ekleme</h4>
 				</div>
 				<div class="modal-body">
 					<input id="add1" type="radio" name="radio-add" value="add-multiple">
@@ -44,7 +42,40 @@
 	</div>
 
 
-	<div class="content-wrapper" id="app">
+	<!-- Modal: Masa Duzenle -->
+	<div class="modal fade" id="modal-edit">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Masa Düzenle</h4>
+				</div>
+
+				<div class="form-group" style="margin: 0 20px;">
+					<label for="table-count">Masa Numarası</label>
+					<input type="text" class="form-control" name="edit-name">
+				</div>
+
+				<br>
+
+				<div class="form-group" style="margin: 0 20px;">
+					<input id="edit1" type="radio" name="radio-edit" value="active">
+					<label for="edit1">Aktif</label><br>
+
+					<input id="edit2" type="radio" name="radio-edit" value="deactive">
+					<label for="edit2">Kullanım Dışı</label>
+
+					<span class="help-block">Kullanımda olmayan masaları burdan sistemden çıkartabilirsiniz.</span>
+				</div>
+			
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success btn-success pull-left" id="button-save">Kaydet</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="content-wrapper">
 		<div class="container">
 			
 			<section class="content-header">
@@ -72,58 +103,52 @@
 				
 				<br><br>
 
-				<div class="row">
-					<div class="col-xs-12">
-						<div class="box box-primary">
-							<div class="box-header">
-								<h3 class="box-title">Masalar</h3>
-								<div class="box-tools">
-									<div class="input-group input-group-sm" style="width: 150px;" style="position: relative">
-										<form type="get" action="{% url 'enterprise:index' %}">
-											<input type="text" name="search" class="form-control pull-right" style="border-radius:5px; height: 30px; z-index: 1; padding-right: 30px;" placeholder="Arama" value="{{ request.GET.search }}">
-										</form>
-									</div>
-								</div>
-							</div>
-							<div class="box-body table-responsive">
-								<table class="table table-hover">
-									{% if data|length == 0 %}
-										<tr>
-											<th>Şu anda hiç masa oluşturmadınız!</th>
-										</tr>
-									{% endif %}
-									{% if data|length != 0 %}
-										<tr>
-											<th>Module</th>
-											<th>Description</th>
-											<th>Difficulty</th>
-											<th>Created By</th>
-											<th>Actions</th>
-										</tr>
-										{% for single in data %}
-											<tr>
-												<td>{{ single.module.name }}</td>
-												<td>{{ single.description | truncatechars:20 }}</td>
-												<td>{{ single.difficulty }}</td>
-												<td>{{ single.createdby.get_full_name }}</td>
-												<td>
-													<a href="{% url 'enterprise:index' id=single.id %}">
-														<button class="btn btn-default btn-sm">Show</button>
-													</a>&nbsp;
-													<a href="{% url 'enterprise:index' id=single.id %}">
-														<button class="btn btn-warning btn-sm">Edit</button>
-													</a>&nbsp;
-													<a href="{% url 'enterprise:index' id=single.id %}">
-														<button class="btn btn-danger btn-sm">Delete</button>
-													</a>
-												</td>
-											</tr>
-										{% endfor %}
-									{% endif %}
-								</table>
+				
+				<div class="box box-primary">
+					<div class="box-header">
+						<h3 class="box-title">Masalar</h3>
+						<div class="box-tools">
+							<div class="input-group input-group-sm" style="width: 150px;" style="position: relative">
+								<form type="get" action="{% url 'enterprise:index' %}">
+									<input type="text" name="search" class="form-control pull-right" style="border-radius:5px; height: 30px; z-index: 1; padding-right: 30px;" placeholder="Arama" value="{{ request.GET.search }}">
+								</form>
 							</div>
 						</div>
 					</div>
+					<div class="box-body table-responsive">
+						<table class="table table-hover">
+							{% if tables|length == 0 %}
+								<tr>
+									<th>Şu anda hiç masa oluşturmadınız!</th>
+								</tr>
+							{% endif %}
+							{% if tables|length != 0 %}
+								<tr>
+									<th>Masa Numarası</th>
+									<th>Durum</th>
+									<th>İşlemler</th>
+								</tr>
+								{% for single in tables %}
+									<tr>
+										<td class="_name">{{ single.name }}</td>
+										<td class="_status">
+											{% if single.active == True %}<i class="fa fa-check-circle" style="color: green"></i>{% endif %}
+											{% if single.active == False %}<i class="fa fa-times-circle" style="color: red"></i>{% endif %}
+										</td>
+										<td>
+											<button name="item_edit" class="btn btn-default btn-sm">Düzenle</button>
+											&nbsp;
+											<button name="item_delete" class="btn btn-danger btn-sm">Sil</button>
+										</td>
+
+										<!-- For jQuery -->
+										<td style="display: none" class="id">{{ single.id }}</td>
+									</tr>
+								{% endfor %}
+							{% endif %}
+						</table>
+					</div>
+						
 				</div>
 			</section>
 		</div>
@@ -179,8 +204,104 @@
 		}
 
 
+		function updateTable(id, name, status){
+
+			// CSRF Token for Django
+			$.ajaxSetup({
+				beforeSend: function(xhr, settings) {
+				function getCookie(name) {
+				var cookieValue = null;
+				if (document.cookie && document.cookie != '') {
+				  var cookies = document.cookie.split(';');
+				  for (var i = 0; i < cookies.length; i++) {
+					var cookie = jQuery.trim(cookies[i]);
+					if (cookie.substring(0, name.length + 1) == (name + '=')) {
+					  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+					  break;
+					}
+				  }
+				}
+				return cookieValue;
+				}if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+				xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+				}
+				} 
+			});
+
+			var serialized = $.param({id: id, name: name, status: status});
+
+			request = $.ajax({
+				url: "{% url 'api:table_update' %}",
+				type: "post",
+				data: serialized
+			});
+
+
+			request.done(function (response, textStatus, jqXHR){
+				console.log('Done');
+				console.log(response);
+				window.location.href = "{% url 'enterprise:table' %}";
+				return false;
+			});
+
+			request.fail(function (jqXHR, textStatus, errorThrown){
+				console.error("The following error occurred: " + textStatus, errorThrown);
+			});
+		}
+
+
+
+
+
 		$(document).ready(function(){
 
+
+			// When Click the edit button, this variable set to selected item's id
+			var selectedID = null;
+
+
+			// EDIT TABLE ITEM
+
+			$("button[name = 'item_edit']").click(function(e){
+				itemID = $(this).parent().parent().find('.id').html();
+				itemName = $(this).parent().parent().find('._name').html();
+				itemStatus = $(this).parent().parent().find('._status').find('i').attr('class');
+				if(itemStatus == 'fa fa-check-circle'){
+					$('input[type=radio][id=edit1]').prop('checked', true);
+				}else if(itemStatus == 'fa fa-times-circle'){
+					$('input[type=radio][id=edit2]').prop('checked', true);
+				}
+
+				selectedID = itemID;
+
+				// Fill Edit Form with selected items
+				$('input[name="edit-name"]').val(itemName);
+
+				$('#modal-edit').modal('show');
+			});
+
+
+
+
+			// MODAL: UPDATE TABLE
+
+			$('#button-save').click(function(e){
+
+				// Get Edit Form Details
+
+				id = selectedID;
+				name = $('input[name="edit-name"]').val();
+				option = $('input[type=radio][name=radio-edit]:checked').val();
+				if(option == 'active'){ option = true; }
+				else { option = false; }
+
+				updateTable(id, name, option);
+
+
+			});
+
+
+			// MODAL: ADD TABLE
 
 			$('#button-add').click(function(e){
 				option = $('input[type=radio][name=radio-add]:checked').val();

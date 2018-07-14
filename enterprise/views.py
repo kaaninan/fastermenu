@@ -12,6 +12,7 @@ import json, pickle
 import ast
 
 from enterprise.models import *
+
 from enterprise.forms import *
 from account.forms import *
 
@@ -46,12 +47,10 @@ def order_view(request):
 @login_required
 def table_view(request):
 
-	# sEnterprise = request.session.get('enterprise', 'enterprise')
-	# sTable = request.session.get('table', 'table')
-	# enterprise = get_object_or_404(Enterprise, name=sEnterprise)
+	# Get Tables
+	tables = Table.objects.filter(enterprise=request.user.profile.enterprise)
 
-	context = {'active_tab': 'table'}
-	# context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise}
+	context = {'active_tab': 'table', 'tables': tables}
 	return render(request, "enterprise/table.html", context)
 
 
