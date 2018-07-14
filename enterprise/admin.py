@@ -5,8 +5,8 @@ from django.contrib import admin
 from .models import *
 
 class EnterpriseAdmin(admin.ModelAdmin):
-    list_display = ['name', 'perma', 'active']
-    list_display_links = ['name', 'perma']
+    list_display = ['name', 'active']
+    list_display_links = ['name']
     search_fields = ['name']
 
     class Meta:

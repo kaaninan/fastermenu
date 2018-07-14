@@ -1,3 +1,4 @@
+{% load static %}
 <header class="main-header">
     <nav class="navbar navbar-static-top">
       <div class="container">
@@ -15,6 +16,7 @@
             <li><a href="#">Kasa</a></li>
             <li><a href="#">Menü İşlemleri</a></li>
             <li><a href="#">Analiz</a></li>
+            <li><a href="{% url 'enterprise:profile' %}">İşletme</a></li>
           </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -28,14 +30,24 @@
               <!-- Menu Toggle Button -->
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <!-- The user image in the navbar-->
+                {% if user.profile.enterprise.logo %}
                 <img src="{{ user.profile.enterprise.logo.url }}" class="user-image" alt="User Image">
+                {% endif %}
+                {% if not user.profile.enterprise.logo %}
+                <img src="{% static 'plugins/adminlte/dist/img/user1-128x128.jpg' %}" class="user-image" alt="User Image">
+                {% endif %}
                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
                 <span class="hidden-xs">{{ user.profile.enterprise }}</span>
               </a>
               <ul class="dropdown-menu">
                 <!-- The user image in the menu -->
                 <li class="user-header">
+                  {% if user.profile.enterprise.logo %}
                   <img src="{{ user.profile.enterprise.logo.url }}" class="img-circle" alt="User Image">
+                  {% endif %}
+                  {% if not user.profile.enterprise.logo %}
+                  <img src="{% static 'plugins/adminlte/dist/img/user1-128x128.jpg' %}" class="img-circle" alt="User Image">
+                  {% endif %}
 
                   <p>
                     {{ user.profile.enterprise }}

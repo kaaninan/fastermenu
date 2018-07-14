@@ -23,6 +23,17 @@ def main_view(request):
 
 
 
+@login_required
+def profile_view(request):
+
+    # sEnterprise = request.session.get('enterprise', 'enterprise')
+    # sTable = request.session.get('table', 'table')
+    # enterprise = get_object_or_404(Enterprise, name=sEnterprise)
+
+    context = {}
+    # context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise}
+    return render(request, "enterprise/profile.html", context)
+
 
 
 def logout_view(request):
