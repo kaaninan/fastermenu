@@ -8,6 +8,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.core import serializers
+from django.db.models import Q
 import json, pickle
 import ast
 
@@ -48,7 +49,11 @@ def order_view(request):
 def table_view(request):
 
 	# Get Tables
-	tables = Table.objects.filter(enterprise=request.user.profile.enterprise)
+	query = request.GET.get('search')
+	if query:
+		tables = Table.objects.filter(Q(name__icontains=query), enterprise=request.user.profile.enterprise).distinct()
+	else:
+		tables = Table.objects.filter(enterprise=request.user.profile.enterprise)
 
 	context = {'active_tab': 'table', 'tables': tables}
 	return render(request, "enterprise/table.html", context)
