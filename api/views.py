@@ -12,16 +12,35 @@ def table_create(request):
 	postOption = request.POST.get('option', '')
 	postData = request.POST.get('data', '')
 	
-	# First Create Unique Barcode ID
-	barcodeID = barcode_create(request)
-	barcodeID = json.loads(barcodeID.content.decode('ascii'))
-	barcodeID = barcodeID['barcode']
-	barcode = Barcode.objects.get(id=barcodeID)
 
 	# Option could be add-multiple or add-single
 	if postOption == 'add-multiple':
-		pass
+		
+		for i in range(0, int(postData)):
+
+			# First Create Unique Barcode ID
+			barcodeID = barcode_create(request)
+			barcodeID = json.loads(barcodeID.content.decode('ascii'))
+			barcodeID = barcodeID['barcode']
+			barcode = Barcode.objects.get(id=barcodeID)
+
+			# Second Create Table Object
+			table = Table()
+			table.barcode = barcode
+			table.name = i + 1
+			table.active = True
+			table.enterprise = request.user.profile.enterprise
+			table.save()
+
 	elif postOption == 'add-single':
+
+		# First Create Unique Barcode ID
+		barcodeID = barcode_create(request)
+		barcodeID = json.loads(barcodeID.content.decode('ascii'))
+		barcodeID = barcodeID['barcode']
+		barcode = Barcode.objects.get(id=barcodeID)
+
+		# Second Create Table Object
 		table = Table()
 		table.barcode = barcode
 		table.name = postData
@@ -29,7 +48,7 @@ def table_create(request):
 		table.enterprise = request.user.profile.enterprise
 		table.save()
 
-	data = {'OK':barcodeID}
+	data = {'OK':'OK'}
 	return JsonResponse(data)
 
 
