@@ -215,6 +215,8 @@
 {% block script %}
 	<script type="text/javascript">
 
+		// ============================= jQuery Requests ============================================
+
 		function addTable(option, data){
 
 			// CSRF Token for Django
@@ -307,8 +309,6 @@
 		}
 
 
-
-
 		function deleteTable(id, name, status){
 
 			// CSRF Token for Django
@@ -365,6 +365,8 @@
 			var selectedID = null;
 
 
+			// ============================= TABLE ITEM BUTTON ============================================
+
 			// EDIT TABLE ITEM
 
 			$("button[name='item_edit']").click(function(e){
@@ -414,6 +416,7 @@
 			});
 
 
+			// ================================= MODAL BUTTON ============================================
 
 
 			// MODAL: UPDATE TABLE
@@ -421,6 +424,9 @@
 			$('#button-save').click(function(e){
 
 				// Get Edit Form Details
+
+				var btn = $(event.target);
+				btn.attr('disabled', 'disabled').html("Bekleyin...");
 
 				id = selectedID;
 				name = $('input[name="edit-name"]').val();
@@ -438,16 +444,22 @@
 			// MODAL: DELETE TABLE
 
 			$('#button-delete').click(function(e){
+
+				var btn = $(event.target);
+				btn.attr('disabled', 'disabled').html("Bekleyin...");
+
 				id = selectedID;
 				deleteTable(id);
 			});
 
 
 
-
 			// MODAL: ADD TABLE
 
 			$('#button-add').click(function(e){
+				var btn = $(event.target);
+				btn.attr('disabled', 'disabled').html("Bekleyin...");
+				
 				option = $('input[type=radio][name=radio-add]:checked').val();
 				data = null;
 				if(option == 'add-single'){
