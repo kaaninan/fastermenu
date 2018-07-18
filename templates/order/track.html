@@ -1,0 +1,110 @@
+{% extends 'order/static/base.html' %}
+{% load static %}
+
+{% block body %}
+
+
+<div class="row" id="app">
+	<div class="col-12">
+		<br>
+		<h2>Durum</h2>
+		<b id="status"></b>
+
+		<hr>
+
+		<h5>{{ line.enterprise }}</h5>
+		<h5>{{ line.table }}</h5>
+
+		<hr>
+
+		<h2>Siparis</h2>
+		
+		{% for item in orders %}
+
+			{{ item.count }} tane {{ item.menu.name }} - {{ item.optionsReadable }} - 
+			{{ item.totalPrice }} TL
+
+			<br>
+
+		{% endfor %}
+
+		<b>Toplam Fiyat: </b> {{ line.totalPrice }}<br>
+		<b>Siparis Zamani: </b> <span id="time"></span><br>
+
+	</div>
+</div>
+
+
+
+{% endblock %}
+
+
+{% block js %}
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		var time = "{{ line.orderDate|date:'Ymd His' }}";
+		var timeSpend = moment(String(time)).locale('tr').fromNow();
+		$('#time').html(timeSpend);
+
+		getLineStatus();
+	});
+
+	function getLineStatus(){
+
+		// CSRF Token for Django
+		$.ajaxSetup({
+			beforeSend: function(xhr, settings) {
+			  function getCookie(name) {
+				var cookieValue = null;
+				if (document.cookie && document.cookie != '') {
+				  var cookies = document.cookie.split(';');
+				  for (var i = 0; i < cookies.length; i++) {
+					var cookie = jQuery.trim(cookies[i]);
+					if (cookie.substring(0, name.length + 1) == (name + '=')) {
+					  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+					  break;
+					}
+				  }
+				}
+				return cookieValue;
+			  }if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+				xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+			  }
+			} 
+		});
+
+
+		var serialized = $.param({ id: {{line.id}} });
+
+		request = $.ajax({
+			url: "{% url 'api:line_status' %}",
+			type: "post",
+			data: serialized
+		});
+
+		request.done(function (response, textStatus, jqXHR){
+
+			if(response.lineStatus == true){
+				$('#status').html('Siparisiniz Hazirlandi. Yakinda masanizda olacak :)');
+			}else if(response.lineStatus == false){
+				$('#status').html('Siparisiniz Hazirlaniyor');
+			}
+
+			setTimeout(function(){
+				getLineStatus();
+			}, 2000);
+		});
+
+		request.fail(function (jqXHR, textStatus, errorThrown){
+			console.error(
+				"The following error occurred: "+
+				textStatus, errorThrown
+			);
+		});
+	};
+
+
+</script>
+{% endblock %}
+

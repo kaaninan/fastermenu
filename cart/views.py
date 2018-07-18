@@ -257,6 +257,8 @@ def line_set_paid(request):
 def add_line_view(request):
     cartSession = request.session['cart']
 
+    # Get Enterprise, Table and Shopping List from Session
+
     # Add Line
     line = Line()
     line.table = Table.objects.get(name=request.session.get('table', ''))
@@ -328,7 +330,7 @@ def add_line_view(request):
     line.save()
     
 
-    data = {'OK':'OK'}
+    data = {'line': str(line.id)}
     return JsonResponse(data)
 
 

@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render, get_object_or_404
 from enterprise.models import *
 from menu.models import *
+from cart.models import *
 from cart.views import *
 import json
 
@@ -111,13 +112,35 @@ def complated_view(request):
     sTable = request.session.get('table', 'table')
     enterprise = get_object_or_404(Enterprise, name=sEnterprise)
 
-    add_line_view(request)
+    # Add Line and Get Line ID
+    line_id = add_line_view(request)
+    line_id = json.loads(line_id.content.decode('ascii'))
+    line_id = line_id['line']
 
+    # Delete Shopping List from Session
     delete_session_view(request)
 
 
-    context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise}
+    context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise, 'line_id': line_id}
     return render(request, "order/complated.html", context)
+
+
+
+def track_view(request, id):
+
+    sEnterprise = request.session.get('enterprise', 'enterprise')
+    sTable = request.session.get('table', 'table')
+    enterprise = get_object_or_404(Enterprise, name=sEnterprise)
+
+    # Siparisi bul
+    line = get_object_or_404(Line, id=id)
+
+    # Siparis icerigini bul
+    orders = Order.objects.filter(line=line)
+
+
+    context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise, 'line': line, 'orders': orders}
+    return render(request, "order/track.html", context)
 
 
 
