@@ -33,15 +33,16 @@ def main_view(request):
 
 @login_required
 def order_view(request):
-
-	# sEnterprise = request.session.get('enterprise', 'enterprise')
-	# sTable = request.session.get('table', 'table')
-	# enterprise = get_object_or_404(Enterprise, name=sEnterprise)
-
+	
 	context = {'active_tab': 'order'}
-	# context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise}
 	return render(request, "enterprise/order.html", context)
 
+
+@login_required
+def cash_view(request):
+
+	context = {'active_tab': 'cash'}
+	return render(request, "enterprise/cash.html", context)
 
 
 

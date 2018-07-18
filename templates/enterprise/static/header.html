@@ -13,7 +13,7 @@
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="{% if active_tab == 'order' %} active{% endif %}"><a href="{% url 'enterprise:order' %}">Siparişler <span class="sr-only">(current)</span></a></li>
-            <li class="{% if active_tab == 'cash' %} active{% endif %}"><a href="#">Kasa</a></li>
+            <li class="{% if active_tab == 'cash' %} active{% endif %}"><a href="{% url 'enterprise:cash' %}">Kasa</a></li>
             <li class="{% if active_tab == 'menu' %} active{% endif %}"><a href="#">Menü</a></li>
             <li class="{% if active_tab == 'table' %} active{% endif %}"><a href="{% url 'enterprise:table' %}">Masalar</a></li>
             <li class="{% if active_tab == 'analyze' %} active{% endif %}"><a href="#">Analiz</a></li>

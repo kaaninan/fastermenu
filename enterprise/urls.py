@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^reset/done/$', auth_views.password_reset_complete, name='password_reset_complete'),
 
     url(r'^order/$', order_view, name='order'),
+    url(r'^cash/$', cash_view, name='cash'),
     url(r'^profile/$', profile_view, name='profile'),
     url(r'^table/$', table_view, name='table'),
 

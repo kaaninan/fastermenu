@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 import json, pickle
@@ -205,6 +205,42 @@ def count_view(request):
 def get_line(request):
 
     data = list(Line.objects.filter(enterprise=request.user.profile.enterprise).values())
+
+
+    for item in data:
+        item['table'] = Table.objects.get(id=item['table_id']).name
+        order = list(Order.objects.filter(line=item['id']).values())
+        item['order'] = []
+        for orderItem in order:
+            menu = Menu.objects.get(id=orderItem['menu_id'])
+            # orderObject = {}
+            orderItem['name'] = menu.name
+            # orderObject[''] = menu.name
+            item['order'].append(orderItem)
+        # item['table'] = item.table.name
+        # order = Order.objects.filter(line=item)
+        # item.order = order
+
+    # dictionaries = [ obj.as_dict() for obj in self.get_queryset() ]
+    # return HttpResponse(json.dumps({"data": data}), content_type='application/json')
+
+    return JsonResponse({'data':data})
+
+
+def get_line_cash(request):
+
+    table_id = request.GET.get('table', '')
+    print('HEY')
+    print(table_id)
+
+    if table_id != '':
+        print('Dolu')
+        print(table_id)
+        table = Table.objects.filter(name=table_id)
+        data = list(Line.objects.filter(enterprise=request.user.profile.enterprise, isComplated=True, table=table).values())
+    else:
+        print('Bos')
+        data = list(Line.objects.filter(enterprise=request.user.profile.enterprise, isComplated=True).values())
 
 
     for item in data:

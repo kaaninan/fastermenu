@@ -5,36 +5,31 @@
 	<div class="content-wrapper" id="app">
 		<div class="container">
 			<section class="content-header">
-				<h1>Siparişler</h1>
-
+				<h1>Kasa</h1>
+				
 				<ol class="breadcrumb">
 					<li><a href="{% url 'enterprise:index' %}"><i class="fa fa-home"></i> Anasayfa</a></li>
-					<li class="active">Siparişler</li>
+					<li class="active">Kasa</li>
 				</ol>
 			</section>
 			<section class="content">
 				<div class="row">
 					<div class="col-xs-12">
+
+						<div class="input-group input-group-sm" style="width: 200px;" style="position: relative">
+							<form type="get" action="{% url 'enterprise:cash' %}">
+								<input type="text" name="search" class="form-control pull-right" style="border-radius:5px; height: 30px; z-index: 1; padding-right: 30px;" placeholder="Masa Numarası Arama" value="{{ request.GET.search }}">
+							</form>
+						</div>
+						<br>
+
 						<div class="box">
-							<!-- <div class="box-header">
-								<h3 class="box-title">Responsive Hover Table</h3>
-								<div class="box-tools">
-									<div class="input-group input-group-sm" style="width: 150px;">
-										<input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
-										<div class="input-group-btn">
-											<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-										</div>
-									</div>
-								</div>
-							</div> -->
-							<!-- /.box-header -->
 							<div class="box-body table-responsive no-padding">
 								<table class="table table-hover">
 									<tr style="font-size: 1.5rem;">
 										<th>#</th>
 										<th>Masa</th>
 										<th>Sipariş</th>
-										<th>Sipariş Zamanı</th>
 										<th>Toplam Ücret</th>
 										<th>İşlemler</th>
 									</tr>
@@ -54,7 +49,6 @@
 												</div>
 											</div>
 										</td>
-										<td>[[ item.orderDate | formatDate ]]</td>
 										<td>[[ item.totalPrice ]] ₺</td>
 										<td>
 											<div v-show="item.isComplated == false" v-on:click="setComplated(item, $event)">
@@ -97,17 +91,19 @@
 			interval: null,
 		},
 		methods: {
-			loadData: function () {
-				$.get("{% url 'cart:getLine' %}", function (response) {
-					this.isLoading = false   
-					console.log('finish');
-					this.items = response.data;
-				}.bind(this));
-			}
+		  loadData: function () {
+			// Get Search Input
+			var table = "{{request.GET.search}}";
+			$.get("{% url 'cart:get_line_cash' %}", {table: table}, function (response) {
+				this.isLoading = false
+				this.items = response.data;
+			}.bind(this));
+		  }
 		},
 		mounted: function () {
 			this.isLoading = true;
 			this.loadData();
+
 			this.interval = setInterval(function () {
 				this.loadData();
 			}.bind(this), 3000); 
@@ -119,76 +115,12 @@
 	});
 
 
-	// Date Time Filter
-	Vue.filter('formatDate', function(value) {
-		if (value) {
-			return moment(String(value)).locale('tr').fromNow();
-		}
-	});
-
-
-	// Set Line as Complated
-	function setComplated(item, event){
-
-		var id = item.id;
-
-		var btn = $(event.target);
-		btn.attr('disabled', 'disabled').html("Onaylanıyor...");
-		// setTimeout(function () {
-			// btn.removeAttr('disabled').html('Ödeme Al');
-			// item.isComplated = true;
-		// }, 1000);
-
-
-		// CSRF Token for Django
-		$.ajaxSetup({
-			beforeSend: function(xhr, settings) {
-				function getCookie(name) {
-					var cookieValue = null;
-					if (document.cookie && document.cookie != '') {
-						var cookies = document.cookie.split(';');
-						for (var i = 0; i < cookies.length; i++) {
-							var cookie = jQuery.trim(cookies[i]);
-							if (cookie.substring(0, name.length + 1) == (name + '=')) {
-								cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-								break;
-							}
-						}
-					}
-					return cookieValue;
-				}if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-					xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-				}
-			} 
-		});
-
-		var serialized = $.param({id: id});
-
-		request = $.ajax({
-			url: "{% url 'cart:setComplated' %}",
-			type: "post",
-			data: serialized
-		});
-
-		request.done(function (response, textStatus, jqXHR){
-			console.log(status);
-			// app.loadData();
-		});
-
-		request.fail(function (jqXHR, textStatus, errorThrown){
-			console.error(
-				"The following error occurred: "+
-				textStatus, errorThrown
-			);
-		});
-	}
-
-
 	// Set Line as Paid
 	function setPaid(item, event){
 
 		var id = item.id;
-
+		
+		var btn = $(event.target);
 		btn.attr('disabled', 'disabled').html("Tamamlanıyor...");
 		// setTimeout(function () {
 			// btn.removeAttr('disabled').html('Ödeme Al');
