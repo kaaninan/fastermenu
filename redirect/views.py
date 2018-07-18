@@ -35,6 +35,7 @@ def redirect_view(request, id):
     table = None
     response_data = list()
 
+    # Delete Old Session
     request.session['enterprise'] = None
     request.session['table'] = None
 
