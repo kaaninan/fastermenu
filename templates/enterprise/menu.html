@@ -9,7 +9,7 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Menü Ekleme</h4>
+					<h4 class="modal-title">Ürün Ekleme</h4>
 				</div>
 
 				<form id="add-form" method="post" action="{% url 'api:menu_create' %}" enctype="multipart/form-data">
@@ -36,7 +36,7 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Menü Düzenle</h4>
+					<h4 class="modal-title">Ürün Düzenle</h4>
 				</div>
 
 				<div class="modal-body">
@@ -135,6 +135,7 @@
 										<th>#</th>
 										<th>Ürün Adı</th>
 										<th>Fiyat</th>
+										<th>Stok Durumu</th>
 										<th>İşlemler</th>
 									</tr>
 									
@@ -143,6 +144,10 @@
 										<td class="menu-id">{{ menu.id }}</td>
 										<td class="menu-name">{{ menu.name }}</td>
 										<td>{{ menu.price|floatformat:2 }} TL</td>
+										<td>
+											{% if menu.stock == True %}<i class="fa fa-check-circle" style="color: green"></i>{% endif %}
+											{% if menu.stock == False %}<i class="fa fa-times-circle" style="color: red"></i>{% endif %}
+										</td>
 										<td>
 											<button type="button" class="btn btn-default btn-edit">Göster</button>
 											&nbsp;&nbsp;
