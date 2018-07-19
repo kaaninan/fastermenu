@@ -1,0 +1,407 @@
+{% extends 'enterprise/static/base.html' %}
+{% load static %}
+
+{% block body %}
+
+	<!-- Modal: Kategori Ekle -->
+	<div class="modal fade" id="modal-add">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Kategori Ekleme</h4>
+				</div>
+
+				<div class="modal-body">
+
+					<div class="form-group">
+						<label for="table-name">Eklemek istediğiniz kategorinin adı nedir?</label>
+						<input type="text" class="form-control" name="add-category-name">
+					</div>
+
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Vazgeç</button>
+					<button type="button" class="btn btn-success btn-success pull-left" id="button-add">Ekle</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Modal: Kategori Duzenle -->
+	<div class="modal fade" id="modal-edit">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Kategori Düzenle</h4>
+				</div>
+
+				<div class="modal-body">
+
+					<div class="form-group">
+						<label for="table-count">Kategori Adı</label>
+						<input type="text" class="form-control" name="edit-category-name">
+					</div>
+
+				</div>
+			
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Vazgeç</button>
+					<button type="button" class="btn btn-success btn-success pull-left" id="button-save">Kaydet</button>
+					<button type="button" class="btn btn-success btn-danger pull-right" id="button-delete" data-dismiss="modal" data-toggle="modal" data-target="#modal-delete">Sil</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Modal: Kategori Sil -->
+	<div class="modal fade" id="modal-delete">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Masa Sil</h4>
+				</div>
+
+				<div class="modal-body">
+					<b><span id="delete-table-name"></span></b> isimli kategori ve <b>içerisindeki menüler</b> silinecektir. Onaylıyor musunuz?
+				</div>
+			
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Vazgeç</button>
+					<button type="button" class="btn btn-danger pull-left" style="width: 80px" id="button-delete-2">Sil</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="content-wrapper">
+		<div class="container">
+
+			<section class="content-header">
+				<h1>Menü ve Kategori Ayarları</h1>
+				
+				<ol class="breadcrumb">
+					<li><a href="{% url 'enterprise:index' %}"><i class="fa fa-home"></i> Anasayfa</a></li>
+					<li class="active">Kategori</li>
+				</ol>
+			</section>
+
+			<section class="content">
+
+				{% if messages %}
+					{% for message in messages %}
+						<div class="alert alert-success alert-dismissible" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							{{ message }}
+						</div>
+					{% endfor %}
+				{% endif %}
+
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="box box-solid">
+							<div class="box-header with-border">
+								<i class="fa fa-comment-alt"></i>
+								<h3 class="box-title">Menüler Nasıl Eklenir?</h3>
+							</div>
+							<div class="box-body">
+								<ol>
+									<li>Kategori ekleyin</li>
+									<li>Kategori içerisine menüleri ekleyin</li>
+									<li>Menülerinizi düzenleyerek alt seçenekler ve fiyatları belirleyin</li>
+								</ol>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-12">
+
+						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-add">
+							<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Kategori Ekle
+						</button>
+						
+						<br><br>
+
+						<div class="box">
+
+							<div class="box-header">
+								<h3 class="box-title">Kategoriler</h3>
+
+								<!-- Search -->
+								<div class="box-tools">
+									<div class="input-group input-group-sm" style="width: 150px;" style="position: relative">
+										<form type="get" action="{% url 'enterprise:category' %}">
+											<input type="text" name="search" class="form-control pull-right" style="border-radius:5px; height: 30px; z-index: 1; padding-right: 30px;" placeholder="Arama" value="{{ request.GET.search }}">
+										</form>
+									</div>
+								</div>
+
+							</div>
+
+							<div class="box-body table-responsive no-padding">
+
+								<table class="table table-hover">
+									<tr style="font-size: 1.5rem;">
+										<th>#</th>
+										<th>Kategori Adı</th>
+										<th>İçerdiği Menü Sayısı</th>
+										<th>İşlemler</th>
+									</tr>
+									
+									{% for category in categories %}
+									<tr>
+										<td class="category-id">{{ category.id }}</td>
+										<td class="category-name">{{ category.name }}</td>
+										<td>{{ category.menuCount }}</td>
+										<td>
+											<a href="{% url 'enterprise:menu' id=category.id %}">
+												<button type="button" class="btn btn-success">Menülere Git</button>
+											</a>
+											&nbsp;&nbsp;
+											<button type="button" class="btn btn-warning btn-edit">Düzenle</button>
+										</td>
+									</tr>
+									{% endfor %}
+
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+{% endblock %}
+
+{% block script %}
+	<script type="text/javascript">
+
+		// ============================= jQuery Requests ============================================
+
+		function addCategory(name, enterprise){
+
+			// CSRF Token for Django
+			$.ajaxSetup({
+				beforeSend: function(xhr, settings) {
+				function getCookie(name) {
+				var cookieValue = null;
+				if (document.cookie && document.cookie != '') {
+				  var cookies = document.cookie.split(';');
+				  for (var i = 0; i < cookies.length; i++) {
+					var cookie = jQuery.trim(cookies[i]);
+					if (cookie.substring(0, name.length + 1) == (name + '=')) {
+					  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+					  break;
+					}
+				  }
+				}
+				return cookieValue;
+				}if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+				xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+				}
+				} 
+			});
+
+			var serialized = $.param({name: name, enterprise: enterprise});
+
+			request = $.ajax({
+				url: "{% url 'api:category_create' %}",
+				type: "post",
+				data: serialized
+			});
+
+
+			request.done(function (response, textStatus, jqXHR){
+				console.log('Done');
+				console.log(response);
+				window.location.href = "{% url 'enterprise:category' %}";
+				return false;
+			});
+
+			request.fail(function (jqXHR, textStatus, errorThrown){
+				console.error("The following error occurred: " + textStatus, errorThrown);
+			});
+		}
+
+
+		function updateCategory(id, name, enterprise){
+
+			// CSRF Token for Django
+			$.ajaxSetup({
+				beforeSend: function(xhr, settings) {
+				function getCookie(name) {
+				var cookieValue = null;
+				if (document.cookie && document.cookie != '') {
+				  var cookies = document.cookie.split(';');
+				  for (var i = 0; i < cookies.length; i++) {
+					var cookie = jQuery.trim(cookies[i]);
+					if (cookie.substring(0, name.length + 1) == (name + '=')) {
+					  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+					  break;
+					}
+				  }
+				}
+				return cookieValue;
+				}if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+				xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+				}
+				} 
+			});
+
+			var serialized = $.param({id: id, name: name, enterprise: enterprise});
+
+			request = $.ajax({
+				url: "{% url 'api:category_update' %}",
+				type: "post",
+				data: serialized
+			});
+
+
+			request.done(function (response, textStatus, jqXHR){
+				console.log('Done');
+				console.log(response);
+				window.location.href = "{% url 'enterprise:category' %}";
+				return false;
+			});
+
+			request.fail(function (jqXHR, textStatus, errorThrown){
+				console.error("The following error occurred: " + textStatus, errorThrown);
+			});
+		}
+
+
+		function deleteCategory(id, enterprise){
+
+			// CSRF Token for Django
+			$.ajaxSetup({
+				beforeSend: function(xhr, settings) {
+				function getCookie(name) {
+				var cookieValue = null;
+				if (document.cookie && document.cookie != '') {
+				  var cookies = document.cookie.split(';');
+				  for (var i = 0; i < cookies.length; i++) {
+					var cookie = jQuery.trim(cookies[i]);
+					if (cookie.substring(0, name.length + 1) == (name + '=')) {
+					  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+					  break;
+					}
+				  }
+				}
+				return cookieValue;
+				}if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+				xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+				}
+				} 
+			});
+
+			var serialized = $.param({id: id, enterprise: enterprise});
+
+			request = $.ajax({
+				url: "{% url 'api:category_delete' %}",
+				type: "post",
+				data: serialized
+			});
+
+
+			request.done(function (response, textStatus, jqXHR){
+				console.log('Done');
+				console.log(response);
+				window.location.href = "{% url 'enterprise:category' %}";
+				return false;
+			});
+
+			request.fail(function (jqXHR, textStatus, errorThrown){
+				console.error("The following error occurred: " + textStatus, errorThrown);
+			});
+		}
+
+
+
+
+		$(document).ready(function(){
+
+
+			// When Click the edit button, this variable set to selected item's id
+			var selectedID = null;
+
+
+			// ============================= TABLE ITEM BUTTON ============================================
+
+
+			// EDIT TABLE ITEM
+
+			$(".btn-edit").click(function(e){
+				itemID = $(this).parent().parent().find('.category-id').html();
+				itemName = $(this).parent().parent().find('.category-name').html();
+
+				selectedID = itemID;
+
+				// Fill Edit Form with selected items
+				$('input[name="edit-category-name"]').val(itemName);
+
+				// Fill Delete Form with selected items (if click Delete button, it shows)
+				$('span#delete-table-name').html(itemName);
+
+				$('#modal-edit').modal('show');
+			});
+
+
+
+			// ================================= MODAL BUTTON ============================================
+
+
+			// MODAL: ADD
+
+			$('#button-add').click(function(e){
+				var btn = $(event.target);
+				btn.attr('disabled', 'disabled').html("Bekleyin...");
+				
+				name = $('input[name="add-category-name"]').val();
+				enterprise = '{{ request.user.profile.enterprise.id }}'
+
+				addCategory(name, enterprise);
+			});
+
+			
+
+			// MODAL: UPDATE
+
+			$('#button-save').click(function(e){
+
+				// Get Edit Form Details
+
+				var btn = $(event.target);
+				btn.attr('disabled', 'disabled').html("Bekleyin...");
+
+				id = selectedID;
+				name = $('input[name="edit-category-name"]').val();
+				enterprise = '{{ request.user.profile.enterprise.id }}'
+
+				updateCategory(id, name, enterprise);
+
+
+			});
+
+
+			// MODAL: DELETE
+
+			$('#button-delete-2').click(function(e){
+
+				var btn = $(event.target);
+				btn.attr('disabled', 'disabled').html("Bekleyin...");
+
+				id = selectedID;
+				enterprise = '{{ request.user.profile.enterprise.id }}'
+				
+				deleteCategory(id, enterprise);
+			});
+
+		});
+	</script>
+{% endblock %}

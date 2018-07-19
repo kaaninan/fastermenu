@@ -13,6 +13,7 @@ import json, pickle
 import ast
 
 from enterprise.models import *
+from menu.models import *
 
 from enterprise.forms import *
 from account.forms import *
@@ -44,6 +45,41 @@ def cash_view(request):
 	context = {'active_tab': 'cash'}
 	return render(request, "enterprise/cash.html", context)
 
+
+@login_required
+def category_view(request):
+
+	# Get Categories
+	query = request.GET.get('search')
+	if query:
+		categories = Category.objects.filter(Q(name__icontains=query), enterprise=request.user.profile.enterprise).distinct()
+	else:
+		categories = Category.objects.filter(enterprise=request.user.profile.enterprise)
+
+
+	# Get Category Menu Count
+	for category in categories:
+		menus = Menu.objects.filter(category=category)
+		category.menuCount = menus.count
+
+	context = {'active_tab': 'menu', 'categories': categories}
+	return render(request, "enterprise/category.html", context)
+
+
+
+@login_required
+def menu_view(request, id):
+
+	# Get Categories
+	categories = Category.objects.filter(enterprise=request.user.profile.enterprise)
+
+	# Get Category Menu Count
+	for category in categories:
+		menus = Menu.objects.filter(category=category)
+		category.menuCount = menus.count
+
+	context = {'active_tab': 'menu', 'menus': categories}
+	return render(request, "enterprise/menu.html", context)
 
 
 @login_required

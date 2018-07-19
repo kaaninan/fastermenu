@@ -23,7 +23,9 @@ urlpatterns = [
 
     url(r'^order/$', order_view, name='order'),
     url(r'^cash/$', cash_view, name='cash'),
-    url(r'^profile/$', profile_view, name='profile'),
+    url(r'^category/$', category_view, name='category'),
+    url(r'^category/(?P<id>[\w+]+)/$', menu_view, name='menu'),
     url(r'^table/$', table_view, name='table'),
+    url(r'^profile/$', profile_view, name='profile'),
 
 ]

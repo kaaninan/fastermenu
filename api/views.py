@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
+from django.contrib import messages
 import json, pickle, uuid
 
 from enterprise.models import *
@@ -143,4 +144,70 @@ def line_status(request):
 
 	data = {'lineStatus': line.isComplated}
 	return JsonResponse(data)
+
+
+
+
+# ================================= CATEGORY ==================================================
+
+
+def category_create(request):
+
+	postName = request.POST.get('name', '')
+	postEnterprise = request.POST.get('enterprise', '')
+
+	# Get Enterprise
+	enterprise = Enterprise.objects.get(id=postEnterprise)
+	
+	# Save Category
+	item = Category()
+	item.name = postName
+	item.enterprise = enterprise
+	item.save()
+
+	# messages.success(request, "İşlem Başarılı!")
+
+	data = {'OK':'OK'}
+	return JsonResponse(data)
+
+
+def category_update(request):
+
+	# Get Post Parameters
+	postID = request.POST.get('id', '')
+	postName = request.POST.get('name', '')
+	postEnterprise = request.POST.get('enterprise', '')
+
+	# Get Enterprise
+	enterprise = Enterprise.objects.get(id=postEnterprise)
+
+	# Get item from database and update
+	item = Category.objects.get(id=postID, enterprise=enterprise)
+	item.name = postName
+	item.save()
+
+	# messages.success(request, "İşlem Başarılı!")
+
+	data = {'OK':'OK'}
+	return JsonResponse(data)
+
+
+def category_delete(request):
+
+	# Get Post Parameters
+	postID = request.POST.get('id', '')
+	postEnterprise = request.POST.get('enterprise', '')
+
+	# Get Enterprise
+	enterprise = Enterprise.objects.get(id=postEnterprise)
+
+	# Get item from database and update
+	item = Category.objects.get(id=postID, enterprise=enterprise)
+	item.delete()
+
+	# messages.success(request, "İşlem Başarılı!")
+
+	data = {'OK':'OK'}
+	return JsonResponse(data)
+
 

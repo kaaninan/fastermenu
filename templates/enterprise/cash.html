@@ -16,11 +16,17 @@
 				<div class="row">
 					<div class="col-xs-12">
 
-						<div class="input-group input-group-sm" style="width: 200px;" style="position: relative">
+						<div class="input-group input-group-sm" style="width: 160px;">
 							<form type="get" action="{% url 'enterprise:cash' %}">
-								<input type="text" name="search" class="form-control pull-right" style="border-radius:5px; height: 30px; z-index: 1; padding-right: 30px;" placeholder="Masa Numarası Arama" value="{{ request.GET.search }}">
-							</form>
+								<div class="input-group" style="float: left;">
+									<input type="text" name="search" style="width: 158px; border-radius: 3px;" class="form-control" placeholder="Arama" value="{{ request.GET.search }}">
+								</div>
+								<div class="input-group-btn" style="float: left; margin-left: -3px">
+									<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+								</div>
+							</form>	
 						</div>
+
 						<br>
 
 						<div class="box">
