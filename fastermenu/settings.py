@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_cleanup',
+    'bootstrap3',
     'storages',
     'fastermenu',
     'enterprise',
@@ -214,3 +215,7 @@ if 'PRODUCTION' in os.environ:
 
     if EC2_PRIVATE_IP:
         ALLOWED_HOSTS.append(EC2_PRIVATE_IP)
+
+
+BOOTSTRAP3 = {'set_placeholder': False, 'set_required': False}
+

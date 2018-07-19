@@ -111,8 +111,8 @@
 							<div class="box-body">
 								<ol>
 									<li>Kategori ekleyin</li>
-									<li>Kategori içerisine menüleri ekleyin</li>
-									<li>Menülerinizi düzenleyerek alt seçenekler ve fiyatları belirleyin</li>
+									<li>Kategori içerisine ürünleri ekleyin</li>
+									<li>Ürünlerizi düzenleyerek alt seçenekler ve fiyatları belirleyin</li>
 								</ol>
 							</div>
 						</div>
@@ -150,7 +150,7 @@
 									<tr style="font-size: 1.5rem;">
 										<th>#</th>
 										<th>Kategori Adı</th>
-										<th>İçerdiği Menü Sayısı</th>
+										<th>İçerdiği Ürün Sayısı</th>
 										<th>İşlemler</th>
 									</tr>
 									
@@ -161,7 +161,7 @@
 										<td>{{ category.menuCount }}</td>
 										<td>
 											<a href="{% url 'enterprise:menu' id=category.id %}">
-												<button type="button" class="btn btn-success">Menülere Git</button>
+												<button type="button" class="btn btn-success">Menüye Git</button>
 											</a>
 											&nbsp;&nbsp;
 											<button type="button" class="btn btn-warning btn-edit">Düzenle</button>

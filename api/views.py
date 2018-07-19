@@ -211,3 +211,82 @@ def category_delete(request):
 	return JsonResponse(data)
 
 
+
+
+# ================================= MENU ==================================================
+
+
+def menu_create(request):
+
+	postName = request.POST.get('name', '')
+	postDescription = request.POST.get('description', '')
+	postPicture = request.FILES.get('pictures', '')
+	postPrice = request.POST.get('price', '')
+	postStock = request.POST.get('stock', '')
+	postCategory = request.POST.get('category', '')
+	postEnterprise = request.POST.get('enterprise', '')
+
+	# Convert String to Bool
+	if postStock == 'on':
+		postStock = True
+	else:
+		postStock = False
+
+
+	# Get Enterprise & Category
+	enterprise = Enterprise.objects.get(id=int(postEnterprise))
+	category = Category.objects.get(id=int(postCategory))
+
+	# Save
+	item = Menu()
+	item.name = postName
+	item.description = postDescription
+	item.picture = postPicture
+	item.price = float(postPrice)
+	item.stock = postStock
+	item.category = category
+	item.enterprise = enterprise
+	item.save()
+
+	data = {'OK':'OK'}
+	return JsonResponse(data)
+
+
+def menu_update(request):
+
+	# Get Post Parameters
+	postID = request.POST.get('id', '')
+	postName = request.POST.get('name', '')
+	postEnterprise = request.POST.get('enterprise', '')
+
+	# Get Enterprise
+	enterprise = Enterprise.objects.get(id=postEnterprise)
+
+	# Get item from database and update
+	item = Menu.objects.get(id=postID, enterprise=enterprise)
+	item.name = postName
+	item.save()
+
+	# messages.success(request, "İşlem Başarılı!")
+
+	data = {'OK':'OK'}
+	return JsonResponse(data)
+
+
+def menu_delete(request):
+
+	# Get Post Parameters
+	postID = request.POST.get('id', '')
+	postEnterprise = request.POST.get('enterprise', '')
+
+	# Get Enterprise
+	enterprise = Enterprise.objects.get(id=postEnterprise)
+
+	# Get item from database and update
+	item = Menu.objects.get(id=postID, enterprise=enterprise)
+	item.delete()
+
+	# messages.success(request, "İşlem Başarılı!")
+
+	data = {'OK':'OK'}
+	return JsonResponse(data)

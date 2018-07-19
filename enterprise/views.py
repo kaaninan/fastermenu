@@ -17,6 +17,7 @@ from menu.models import *
 
 from enterprise.forms import *
 from account.forms import *
+from menu.forms import *
 
 
 @login_required
@@ -70,15 +71,20 @@ def category_view(request):
 @login_required
 def menu_view(request, id):
 
-	# Get Categories
-	categories = Category.objects.filter(enterprise=request.user.profile.enterprise)
+	# Get Menus
+	query = request.GET.get('search')
+	if query:
+		menus = Menu.objects.filter(Q(name__icontains=query), enterprise=request.user.profile.enterprise, category=id)
+	else:
+		menus = Menu.objects.filter(enterprise=request.user.profile.enterprise, category=id)
 
-	# Get Category Menu Count
-	for category in categories:
-		menus = Menu.objects.filter(category=category)
-		category.menuCount = menus.count
+	# Get Category
+	category = Category.objects.get(id=id, enterprise=request.user.profile.enterprise)
 
-	context = {'active_tab': 'menu', 'menus': categories}
+	# Add Menu Form
+	form = MenuForm()
+
+	context = {'active_tab': 'menu', 'menus': menus, 'category': category, 'form': form}
 	return render(request, "enterprise/menu.html", context)
 
 
@@ -103,7 +109,7 @@ def profile_view(request):
 	print(request.user.username)
 
 	form_enterprise = EnterpriseForm(request.POST or None, request.FILES or None, instance=request.user.profile.enterprise)
-	form = ProfileUpdateForm(request.POST or None, request.FILES or None, instance=request.user)
+	form = ProfileUpdateForm(request.POST or None, instance=request.user)
 	
 	if form.is_valid() and form_enterprise.is_valid():
 

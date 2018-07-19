@@ -14,6 +14,10 @@ urlpatterns = [
 	url(r'^category_update/$', category_update, name="category_update"),
 	url(r'^category_delete/$', category_delete, name="category_delete"),
 
+	url(r'^menu_create/$', menu_create, name="menu_create"),
+	url(r'^menu_update/$', menu_update, name="menu_update"),
+	url(r'^menu_delete/$', menu_delete, name="menu_delete"),
+
 	url(r'^line_status/$', line_status, name="line_status"),
 
 ]
