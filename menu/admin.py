@@ -23,25 +23,25 @@ class CategoryAdmin(admin.ModelAdmin):
         model = Category
 
 
-class SubMenuCategoryAdmin(admin.ModelAdmin):
+class MenuSubCategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'enterprise']
     list_display_links = ['name']
     search_fields = ['name']
 
     class Meta:
-        model = SubMenuCategory
+        model = MenuSubCategory
 
 
-class SubMenuCategoryOptionAdmin(admin.ModelAdmin):
-    list_display = ['menu', 'subMenu', 'name', 'price']
+class MenuSubCategoryOptionAdmin(admin.ModelAdmin):
+    list_display = ['subMenu', 'name', 'price']
     list_display_links = ['name']
     search_fields = ['name']
 
     class Meta:
-        model = SubMenuCategoryOption
+        model = MenuSubCategoryOption
 
 
 admin.site.register(Menu, MenuAdmin)
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(SubMenuCategory, SubMenuCategoryAdmin)
-admin.site.register(SubMenuCategoryOption, SubMenuCategoryOptionAdmin)
+admin.site.register(MenuSubCategory, MenuSubCategoryAdmin)
+admin.site.register(MenuSubCategoryOption, MenuSubCategoryOptionAdmin)

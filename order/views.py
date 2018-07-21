@@ -29,7 +29,7 @@ def main_view(request):
     for category in categories:
         menus = Menu.objects.filter(category=category)
         for menu in menus:
-            subcategory = SubMenuCategory.objects.filter(menu=menu)
+            subcategory = MenuSubCategory.objects.filter(menu=menu)
             menu.subcategory = subcategory
         category.menu = menus
 
@@ -50,11 +50,13 @@ def details_view(request, id):
     # Get Menu Content
     menu = get_object_or_404(Menu, id=id)
 
-    subMenus = SubMenuCategory.objects.filter(menu=menu)
+    subMenus = MenuSubCategory.objects.filter(menu=menu)
+
     print(subMenus)
 
     for subMenu in subMenus:
-        options = SubMenuCategoryOption.objects.filter(menu=menu, subMenu=subMenu)
+        options = MenuSubCategoryOption.objects.filter(subMenu=subMenu)
+        print(options)
         subMenu.options = options
 
     # Get Options of Menu
@@ -91,7 +93,7 @@ def cart_view(request):
             item['options_option'] = []
             item['options_dropadd'] = []
             for op in item['options']:
-                op_object = SubMenuCategoryOption.objects.get(id=op)
+                op_object = MenuSubCategoryOption.objects.get(id=op)
                 op_type = op_object.subMenu.type
                 if op_type == 'option':
                     item['options_option'].append(op_object)

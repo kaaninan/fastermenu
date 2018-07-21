@@ -57,6 +57,9 @@
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://momentjs.com/downloads/moment-with-locales.js"></script>
 
+    <!-- FIX: Bootstrap button stay focused after click -->
+    <script type="text/javascript"> document.addEventListener('click', function(e) { if(document.activeElement.toString() == '[object HTMLButtonElement]'){ document.activeElement.blur(); } }); </script>
+
     <!-- in Menu View -->
     <script src="{% static 'plugins/jquery-form/jquery.form.min.js' %}"></script>
 

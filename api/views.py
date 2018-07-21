@@ -218,6 +218,7 @@ def category_delete(request):
 
 def menu_create(request):
 
+
 	postName = request.POST.get('name', '')
 	postDescription = request.POST.get('description', '')
 	postPicture = request.FILES.get('pictures', '')
@@ -225,6 +226,7 @@ def menu_create(request):
 	postStock = request.POST.get('stock', '')
 	postCategory = request.POST.get('category', '')
 	postEnterprise = request.POST.get('enterprise', '')
+	postOptions = list()
 
 	# Convert String to Bool
 	if postStock == 'on':
@@ -233,11 +235,48 @@ def menu_create(request):
 		postStock = False
 
 
+
+	# Get Options as a List
+	for key, item in request.POST.items():
+
+		# Get Options
+		# 1- optionName-X
+		# 2- optionType-X
+		# 3- optionFields-X (Dropadd)
+
+		if 'optionName' in key:
+
+			# key = optionName-0 or optionName-1
+			params = key.split('-')
+
+			optionName = item
+
+			# Get Related optionType (only one for this optionName)
+			optionType = request.POST['optionType-'+params[1]]
+			optionFields = []
+
+			if optionType == 'dropadd':
+
+				# Get Field List (only one for this optionName) it is a list
+				stt = 'optionFields-'+params[1]+'[]'
+				for fieldItem in request.POST.getlist(stt):
+					if fieldItem != '': # Sometimes it's empty, for any reason. I dont know yet :( (on jQuery side)
+						optionFields.append(fieldItem)
+
+			# Create temp object and append postOption
+			tempList = {}
+			tempList['name'] = optionName
+			tempList['type'] = optionType
+			tempList['fields'] = optionFields
+			postOptions.append(tempList)
+
+
+
 	# Get Enterprise & Category
 	enterprise = Enterprise.objects.get(id=int(postEnterprise))
 	category = Category.objects.get(id=int(postCategory))
 
-	# Save
+	# Save Menu
 	item = Menu()
 	item.name = postName
 	item.description = postDescription
@@ -247,6 +286,23 @@ def menu_create(request):
 	item.category = category
 	item.enterprise = enterprise
 	item.save()
+
+	# Save SubCategories if exists
+	if len(postOptions) > 0:
+		for optionItem in postOptions:
+			subCat = MenuSubCategory()
+			subCat.name = optionItem['name']
+			subCat.type = optionItem['type']
+			subCat.menu = item
+			subCat.enterprise = enterprise
+			subCat.save()
+
+			for fieldItem in optionItem['fields']:
+				subCatItem = MenuSubCategoryOption()
+				subCatItem.subMenu = subCat
+				subCatItem.name = fieldItem
+				subCatItem.price = 0
+				subCatItem.save()
 
 	data = {'OK':'OK'}
 	return JsonResponse(data)

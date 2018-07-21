@@ -34,7 +34,7 @@ class Menu(models.Model):
 
 
 
-class SubMenuCategory(models.Model):
+class MenuSubCategory(models.Model):
     TYPES = (
         ('option', 'Option'),
         ('dropadd', 'Drop-Add'),
@@ -53,9 +53,8 @@ class SubMenuCategory(models.Model):
 
 
 
-class SubMenuCategoryOption(models.Model):
-    menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
-    subMenu = models.ForeignKey(SubMenuCategory, on_delete=models.CASCADE)
+class MenuSubCategoryOption(models.Model):
+    subMenu = models.ForeignKey(MenuSubCategory, on_delete=models.CASCADE)
     name = models.CharField(max_length=120, verbose_name="Name")
     price = models.FloatField(null=False)
 

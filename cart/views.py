@@ -327,7 +327,7 @@ def add_line_view(request):
             orderListOption = []
             orderListDropadd = []
             for op in order.options:
-                op_object = SubMenuCategoryOption.objects.get(id=op)
+                op_object = MenuSubCategoryOption.objects.get(id=op)
                 op_type = op_object.subMenu.type
                 if op_type == 'option':
                     print(op_object)
