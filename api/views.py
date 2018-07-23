@@ -243,6 +243,7 @@ def menu_create(request):
 		# 1- optionName-X
 		# 2- optionType-X
 		# 3- optionFields-X (Dropadd)
+		# 3- optionFields-X-p (Option)
 
 		if 'optionName' in key:
 
@@ -261,7 +262,35 @@ def menu_create(request):
 				stt = 'optionFields-'+params[1]+'[]'
 				for fieldItem in request.POST.getlist(stt):
 					if fieldItem != '': # Sometimes it's empty, for any reason. I dont know yet :( (on jQuery side)
-						optionFields.append(fieldItem)
+						objField = {}
+						objField['name'] = fieldItem
+						objField['price'] = 0
+						optionFields.append(objField)
+
+
+			elif optionType == 'option':
+
+				# Get Field List (only one for this optionName) it is a list
+				stt = 'optionFields-'+params[1]+'-p[]'
+
+				# example data: ['1 Porsiyon', '0', '2 Porsiyon', '20']
+				# [0] => Name - [1] => Price & [2] => Name - [3] => Price
+
+				idx = 0
+				for fieldItem in request.POST.getlist(stt):
+					if idx % 2 == 0:
+						name = fieldItem
+						price = request.POST.getlist(stt)[idx+1]
+
+						# Empty Control
+						if price == '':
+							price = 0
+
+						objField = {}
+						objField['name'] = name
+						objField['price'] = price
+						optionFields.append(objField)
+					idx += 1
 
 			# Create temp object and append postOption
 			tempList = {}
@@ -298,10 +327,11 @@ def menu_create(request):
 			subCat.save()
 
 			for fieldItem in optionItem['fields']:
+				print(fieldItem['name'])
 				subCatItem = MenuSubCategoryOption()
 				subCatItem.subMenu = subCat
-				subCatItem.name = fieldItem
-				subCatItem.price = 0
+				subCatItem.name = fieldItem['name']
+				subCatItem.price = fieldItem['price']
 				subCatItem.save()
 
 	data = {'OK':'OK'}

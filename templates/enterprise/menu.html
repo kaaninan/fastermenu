@@ -277,7 +277,7 @@
 											</select>
 										</div>
 
-										<!-- Dropadd Inputs: Displays when click 'Malzeme Secme' -->
+										<!-- Inputs: Displays when click 'Ucretsiz Secimler' -->
 										<div class="form-group dropadd-div" style="display: none">
 											<label>Seçim Listesi</label>
 											<div class="controls">
@@ -291,6 +291,43 @@
 												</div>
 											</div>
 											<p class="help-block">Bu listeye 'soğan', 'acı biber' gibi tercihleri ekleyebilirsiniz.</p>
+										</div>
+
+										<!-- Inputs: Displays when click 'Ucretli Secimler' -->
+										<div class="form-group option-div" style="display: none">
+											<label>Seçim Listesi</label>
+											<div class="input-area">
+												<div class="input-fields">
+													<div class="row entry-p">
+														<div class="col-xs-6" style="padding-right: 0">
+															<div class="form-group" style="margin-bottom: 10px">
+																<input class="form-control" name="optionFields-`+count+`-p[]" type="text" placeholder="Seçeneği Giriniz" />
+															</div>
+														</div>
+														<div class="col-sm-4 col-xs-3" style="padding: 0 0; margin-left: -1px">
+															<div class="form-group" style="margin-bottom: 10px">
+																<input class="form-control" name="optionFields-`+count+`-p[]" type="number" step="0.1" placeholder="Eklenecek Fiyatı Giriniz (₺)" />
+															</div>
+														</div>
+														<div class="col-sm-2 col-xs-3 div-del-btn-p" style="padding-left: 10px; display:none">
+															<div class="form-group">
+																<button type="button" class="btn btn-danger btn-block btn-delete-p">Sil</button>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<button type="button" class="btn btn-default btn-add-p">Ekle</button>
+											</div>
+											<p class="help-block">Bu listeye porsiyon gibi tercihleri ekleyebilirsiniz. Örnek: </p>
+											<p class="help-block">
+												<ul>
+													<li>1 Porsiyon - 0</li>
+													<li>1.5 Porsiyon - 10 TL</li>
+												</ul>
+											</p>
+											<p class="help-block" style="color: orange">Yazdığınız fiyat, ürün fiyatının üzerine eklenecektir.</p>
 										</div>
 
 										<div class="form-group">
@@ -312,22 +349,24 @@
 		});
 
 
+
 		// 1.1
 		// in Extra Options
 		// When Click 'Secenek Turu (Select-Option), show related inputs'
 		function changeSelect(e){
 			if(e.value == 'option'){
 				$(e).parent().parent().find('.dropadd-div').hide();
+				$(e).parent().parent().find('.option-div').show();
 
 			}else if(e.value == 'dropadd'){
 				$(e).parent().parent().find('.dropadd-div').show();
+				$(e).parent().parent().find('.option-div').hide();
 			}
 		}
 
 		// 1.2
-		// in Malzeme Secme - Inputs
-		// When click the + button, add new input
-		// When click the - button, delete input
+		// in Ucretsiz Secenek - Inputs
+		// When click the + button, add new input - When click the - button, delete input
 		$(function(){
 			$(document).on('click', '.btn-add', function(e){
 				e.preventDefault();
@@ -346,6 +385,31 @@
 			
 			}).on('click', '.btn-remove', function(e){
 				$(this).parents('.entry:first').remove();
+				e.preventDefault();
+				return false;
+			});
+		});
+
+
+		// 1.3
+		// in Ucretli Secenek - Inputs
+		// When click the + button, add new input - When click the - button, delete input
+		$(function(){
+
+			$(document).on('click', '.btn-add-p', function(e){
+				e.preventDefault();
+
+				var controlForm = $(this).parent().parent().children('.input-area'),
+					currentEntry = $(this).parent().parent().children('.input-area').find('.input-fields:first'),
+					newEntry = $(currentEntry.clone()).appendTo(controlForm);
+
+				// Show Delete Button
+				$(controlForm).find('.input-fields:last').find('.div-del-btn-p').show();
+
+				newEntry.find('input').val('');
+			
+			}).on('click', '.btn-delete-p', function(e){
+				$(this).parents('.input-fields:first').remove();
 				e.preventDefault();
 				return false;
 			});
