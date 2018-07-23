@@ -24,10 +24,10 @@ urlpatterns = [
 
     # LINE
 
-    url(r'^getLine/$', get_line, name="getLine"),
+    url(r'^get_line/$', get_line, name="get_line"),
     url(r'^get_line_cash/$', get_line_cash, name="get_line_cash"),
-    url(r'^setComplated/$', line_set_complated, name="setComplated"),
-    url(r'^setPaid/$', line_set_paid, name="setPaid"),
+    url(r'^set_complated/$', line_set_complated, name="set_complated"),
+    url(r'^set_paid/$', line_set_paid, name="set_paid"),
 
     # url(r'^my_exams/(?P<id>[\w+]+)/show/$', my_exams_show_view, name="my_exams_show"),
 

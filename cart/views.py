@@ -204,7 +204,7 @@ def count_view(request):
 
 def get_line(request):
 
-    data = list(Line.objects.filter(enterprise=request.user.profile.enterprise).values())
+    data = list(Line.objects.filter(enterprise=request.user.profile.enterprise).values()[:20])
 
 
     for item in data:
@@ -212,17 +212,13 @@ def get_line(request):
         order = list(Order.objects.filter(line=item['id']).values())
         item['order'] = []
         for orderItem in order:
-            menu = Menu.objects.get(id=orderItem['menu_id'])
-            # orderObject = {}
-            orderItem['name'] = menu.name
-            # orderObject[''] = menu.name
+            try:
+                menu = Menu.objects.get(id=orderItem['menu_id'])
+                orderItem['name'] = menu.name
+            except Exception as e:
+                orderItem['name'] = ''
+            
             item['order'].append(orderItem)
-        # item['table'] = item.table.name
-        # order = Order.objects.filter(line=item)
-        # item.order = order
-
-    # dictionaries = [ obj.as_dict() for obj in self.get_queryset() ]
-    # return HttpResponse(json.dumps({"data": data}), content_type='application/json')
 
     return JsonResponse({'data':data})
 

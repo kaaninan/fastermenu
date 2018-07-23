@@ -43,14 +43,19 @@
 										<td>[[ item.table ]]</td>
 										<td>
 											<div v-for="(order, index) in item.order">
-												[[ order.count ]] tane
-												[[ order.name ]]
-												<div v-if="order.options != '-1'">
-													[[ order.optionsReadable ]]
+												<div v-if="order.name != ''">
+													[[ order.count ]] tane
+													[[ order.name ]]
+													<div v-if="order.options != '-1'">
+														[[ order.optionsReadable ]]
+													</div>
+													<!-- if not last item -->
+													<div v-if="index != item.order.length - 1">
+														<hr>
+													</div>
 												</div>
-												<!-- if not last item -->
-												<div v-if="index != item.order.length - 1">
-													<hr>
+												<div v-show="order.name == '' ">
+													Menu Silinmis
 												</div>
 											</div>
 										</td>
@@ -98,7 +103,7 @@
 		},
 		methods: {
 			loadData: function () {
-				$.get("{% url 'cart:getLine' %}", function (response) {
+				$.get("{% url 'cart:get_line' %}", function (response) {
 					this.isLoading = false   
 					console.log('finish');
 					this.items = response.data;
@@ -165,7 +170,7 @@
 		var serialized = $.param({id: id});
 
 		request = $.ajax({
-			url: "{% url 'cart:setComplated' %}",
+			url: "{% url 'cart:set_complated' %}",
 			type: "post",
 			data: serialized
 		});
@@ -221,7 +226,7 @@
 		var serialized = $.param({id: id});
 
 		request = $.ajax({
-			url: "{% url 'cart:setPaid' %}",
+			url: "{% url 'cart:set_paid' %}",
 			type: "post",
 			data: serialized
 		});
