@@ -185,6 +185,9 @@
 
 		// ================================= MODAL UI EVENTS ============================================
 
+		// When Click the edit button, this variable set to selected item's id
+		var selectedID = null;
+
 		$(function(){
 
 
@@ -538,10 +541,6 @@
 		$(function(){
 
 
-			// When Click the edit button, this variable set to selected item's id
-			var selectedID = null;
-
-
 			// ============================= TABLE ITEM BUTTON ============================================
 
 
@@ -569,6 +568,8 @@
 			$(".btn-delete").click(function(e){
 				itemID = $(this).parent().parent().find('.menu-id').html();
 				itemName = $(this).parent().parent().find('.menu-name').html();
+
+				console.log(itemID);
 
 				selectedID = itemID;
 
