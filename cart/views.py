@@ -204,7 +204,7 @@ def count_view(request):
 
 def get_line(request):
 
-    data = list(Line.objects.filter(enterprise=request.user.profile.enterprise).values()[:20])
+    data = list(Line.objects.filter(enterprise=request.user.profile.enterprise).values())
 
 
     for item in data:
@@ -225,17 +225,13 @@ def get_line(request):
 
 def get_line_cash(request):
 
+    # For Search
     table_id = request.GET.get('table', '')
-    print('HEY')
-    print(table_id)
 
     if table_id != '':
-        print('Dolu')
-        print(table_id)
         table = Table.objects.filter(name=table_id)
         data = list(Line.objects.filter(enterprise=request.user.profile.enterprise, isComplated=True, table=table).values())
     else:
-        print('Bos')
         data = list(Line.objects.filter(enterprise=request.user.profile.enterprise, isComplated=True).values())
 
 
@@ -244,17 +240,16 @@ def get_line_cash(request):
         order = list(Order.objects.filter(line=item['id']).values())
         item['order'] = []
         for orderItem in order:
-            menu = Menu.objects.get(id=orderItem['menu_id'])
-            # orderObject = {}
-            orderItem['name'] = menu.name
-            # orderObject[''] = menu.name
-            item['order'].append(orderItem)
-        # item['table'] = item.table.name
-        # order = Order.objects.filter(line=item)
-        # item.order = order
+            try:
+                menu = Menu.objects.get(id=orderItem['menu_id'])
+                orderItem['name'] = menu.name
+            except Exception as e:
+                # print('ERROR')
+                orderItem['name'] = ''
 
-    # dictionaries = [ obj.as_dict() for obj in self.get_queryset() ]
-    # return HttpResponse(json.dumps({"data": data}), content_type='application/json')
+            item['order'].append(orderItem)
+
+    print(data)
 
     return JsonResponse({'data':data})
 

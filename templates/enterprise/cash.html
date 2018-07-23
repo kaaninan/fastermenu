@@ -44,14 +44,19 @@
 										<td>[[ item.table ]]</td>
 										<td>
 											<div v-for="(order, index) in item.order">
-												[[ order.count ]] tane
-												[[ order.name ]]
-												<div v-if="order.options != '-1'">
-													[[ order.optionsReadable ]]
+												<div v-if="order.name != ''">
+													[[ order.count ]] tane
+													[[ order.name ]]
+													<div v-if="order.options != '-1'">
+														[[ order.optionsReadable ]]
+													</div>
+													<!-- if not last item -->
+													<div v-if="index != item.order.length - 1">
+														<hr>
+													</div>
 												</div>
-												<!-- if not last item -->
-												<div v-if="index != item.order.length - 1">
-													<hr>
+												<div v-show="order.name == '' ">
+													Menu Silinmis
 												</div>
 											</div>
 										</td>
