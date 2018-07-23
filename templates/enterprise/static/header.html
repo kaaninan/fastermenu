@@ -16,7 +16,7 @@
             <li class="{% if active_tab == 'cash' %} active{% endif %}"><a href="{% url 'enterprise:cash' %}">Kasa</a></li>
             <li class="{% if active_tab == 'menu' %} active{% endif %}"><a href="{% url 'enterprise:category' %}">Menü</a></li>
             <li class="{% if active_tab == 'table' %} active{% endif %}"><a href="{% url 'enterprise:table' %}">Masalar</a></li>
-            <li class="{% if active_tab == 'analyze' %} active{% endif %}"><a href="#">Analiz</a></li>
+            <li class="{% if active_tab == 'analyze' %} active{% endif %}"><a href="{% url 'enterprise:analyze' %}">Analiz</a></li>
             <li class="{% if active_tab == 'profile' %} active{% endif %}"><a href="{% url 'enterprise:profile' %}">Hesap Ayarları</a></li>
           </ul>
         </div>

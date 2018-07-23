@@ -249,7 +249,6 @@ def get_line_cash(request):
 
             item['order'].append(orderItem)
 
-    print(data)
 
     return JsonResponse({'data':data})
 

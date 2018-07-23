@@ -9,11 +9,13 @@ from django.contrib.auth import logout
 from django.contrib import messages
 from django.core import serializers
 from django.db.models import Q
-import json, pickle
-import ast
+import json, pickle, ast
+from datetime import timedelta
+from django.utils import timezone
 
 from enterprise.models import *
 from menu.models import *
+from cart.models import *
 
 from enterprise.forms import *
 from account.forms import *
@@ -33,6 +35,9 @@ def main_view(request):
 	return render(request, "enterprise/index.html", context)
 
 
+
+
+
 @login_required
 def order_view(request):
 	
@@ -40,11 +45,16 @@ def order_view(request):
 	return render(request, "enterprise/order.html", context)
 
 
+
+
+
 @login_required
 def cash_view(request):
 
 	context = {'active_tab': 'cash'}
 	return render(request, "enterprise/cash.html", context)
+
+
 
 
 @login_required
@@ -68,6 +78,8 @@ def category_view(request):
 
 
 
+
+
 @login_required
 def menu_view(request, id):
 
@@ -88,6 +100,9 @@ def menu_view(request, id):
 	return render(request, "enterprise/menu.html", context)
 
 
+
+
+
 @login_required
 def table_view(request):
 
@@ -100,6 +115,55 @@ def table_view(request):
 
 	context = {'active_tab': 'table', 'tables': tables}
 	return render(request, "enterprise/table.html", context)
+
+
+
+
+
+@login_required
+def analyze_view(request):
+
+
+	some_day_last_week = timezone.now().date() - timedelta(days=7)
+	monday_of_last_week = some_day_last_week - timedelta(days=(some_day_last_week.isocalendar()[2] - 1))
+	monday_of_this_week = monday_of_last_week + timedelta(days=7)
+	
+
+	data_daily = Line.objects.filter(enterprise=request.user.profile.enterprise, orderDate__gte=timezone.now().date())
+	data_weekly = Line.objects.filter(enterprise=request.user.profile.enterprise, orderDate__gte=monday_of_this_week)
+	data_montly = Line.objects.filter(enterprise=request.user.profile.enterprise, orderDate__month__gte=timezone.now().month)
+
+
+	total_daily = 0
+	total_weekly  = 0
+	total_montly = 0
+
+	for item in data_daily:
+		total_daily += item.totalPrice
+
+	for item in data_weekly:
+		total_weekly += item.totalPrice
+
+	for item in data_montly:
+		total_montly += item.totalPrice
+
+
+	# Get Sales
+	sales = {}
+	sales['daily'] = data_daily.count
+	sales['weekly'] = data_weekly.count
+	sales['montly'] = data_montly.count
+
+	# Get Endorsement
+	endorsement = {}
+	endorsement['daily'] = total_daily
+	endorsement['weekly'] = total_weekly
+	endorsement['montly'] = total_montly
+
+	context = {'active_tab': 'analyze', 'sales': sales, 'endorsement': endorsement}
+	return render(request, "enterprise/analyze.html", context)
+
+
 
 
 
