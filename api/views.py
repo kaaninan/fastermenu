@@ -464,7 +464,8 @@ def menu_update(request):
 	item = get_object_or_404(Menu, id=postID)
 	item.name = postName
 	item.description = postDescription
-	item.picture = postPicture
+	if postPicture != '':
+		item.picture = postPicture
 	item.price = float(postPrice)
 	item.stock = postStock
 	item.category = category

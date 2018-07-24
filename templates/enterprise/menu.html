@@ -487,7 +487,11 @@
 				$('input[name="name"]').val(response.details.name);
 				$('input[name="description"]').val(response.details.description);
 				$('input[name="price"]').val(response.details.price);
-				$('img#menu_pic').attr('src', '' + response.details.picture);
+				if(response.details.picture != 'none'){
+					$('img#menu_pic').attr('src', '' + response.details.picture);
+				}else{
+					$('img#menu_pic').hide();
+				}
 				if (response.details.stock == true){
 					$('input[name="stock"]').prop('checked','checked');
 				}else{
