@@ -8,9 +8,9 @@
 
 <div class="row details">
 
-    {% if menu.pictures.url %}
+    {% if menu.picture %}
     <div class="col-4 clear">
-        <img src="{{ menu.pictures.url }}">
+        <img src="{{ menu.picture.url }}">
     </div>
 
     <div class="col-8 clear">
@@ -22,7 +22,7 @@
     </div>
     {% endif %}
 
-    {% if not menu.pictures.url %}
+    {% if not menu.picture %}
     <div class="col-12">
         <div class="product">
             <div id="productId" style="display: none;">{{ menu.id }}</div>

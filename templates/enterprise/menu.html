@@ -4,20 +4,22 @@
 
 {% block body %}
 
-	<!-- Modal: Ürün Ekle -->
-	<div class="modal fade" id="modal-add">
+	<!-- Modal: Ürün Ekle ve Duzenle -->
+	<div class="modal fade" id="modal-menu">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title">Ürün Ekleme</h4>
 				</div>
 
-				<form id="add-form" method="post" action="{% url 'api:menu_create' %}" enctype="multipart/form-data">
+				<form id="add-form" method="post" enctype="multipart/form-data">
 					<div class="modal-body">
 						{% csrf_token %}
+						<img id="menu_pic" src="" width="100px" crossorigin="anonymous" style="margin-bottom: 15px; display: none">
 						{% bootstrap_form form %}
-						<input type="text" name="enterprise" style="display: none" value="{{ request.user.profile.enterprise.id }}">
-						<input type="text" name="category" style="display: none" value="{{ category.id }}">
+						<input type="text" name="enterprise" style="display: none">
+						<input type="text" name="category" style="display: none">
+						<input type="text" name="id" style="display: none">
 						<hr>
 						
 						<!-- Options -->
@@ -31,8 +33,8 @@
 					</div>
 					
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-success" id="add-button" style="width: 49%; float: left;">Ekle</button>
 						<button type="button" class="btn btn-default" data-dismiss="modal" style="width: 49%; float: left">Vazgeç</button>
+						<button type="submit" class="btn btn-success" id="add-button" style="width: 49%; float: left;">Ekle</button>
 					</div>
 				</form>
 			</div>
@@ -40,30 +42,7 @@
 	</div>
 
 
-	<!-- Modal: Ürün Duzenle -->
-	<div class="modal fade" id="modal-edit">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Ürün Düzenle</h4>
-				</div>
-
-				<div class="modal-body">
-
-					<div class="form-group">
-						<label for="table-count">Menü Adı</label>
-						<input type="text" class="form-control" name="edit-category-name">
-					</div>
-
-				</div>
-			
-				<div class="modal-footer">
-					<button type="button" class="btn btn-success btn-success pull-left" id="button-save" style="width: 49%; float: left">Kaydet</button>
-					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left;">Vazgeç</button>
-				</div>
-			</div>
-		</div>
-	</div>
+	
 
 
 	<!-- Modal: Ürün Sil -->
@@ -79,8 +58,8 @@
 				</div>
 			
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger pull-left" id="button-delete" style="width: 49%; float: left">Sil</button>
 					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left;">Vazgeç</button>
+					<button type="button" class="btn btn-danger pull-left" id="button-delete" style="width: 49%; float: left">Sil</button>
 				</div>
 			</div>
 		</div>
@@ -115,7 +94,7 @@
 				<div class="row">
 					<div class="col-xs-12">
 
-						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-add">
+						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-menu" onclick="changeModalType('add');">
 							<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Ürün Ekle
 						</button>
 						
@@ -158,9 +137,9 @@
 											{% if menu.stock == False %}<i class="fa fa-times-circle" style="color: red"></i>{% endif %}
 										</td>
 										<td>
-											<button type="button" class="btn btn-default btn-edit">Göster</button>
+											<button type="button" class="btn btn-default btn-show">Göster</button>
 											&nbsp;&nbsp;
-											<button type="button" class="btn btn-warning btn-edit">Düzenle</button>
+											<button type="button" class="btn btn-warning btn-edit" data-loading-text="Bekleyin..">Düzenle</button>
 											&nbsp;&nbsp;
 											<button type="button" class="btn btn-danger btn-delete">Sil</button>
 										</td>
@@ -187,57 +166,29 @@
 
 		// When Click the edit button, this variable set to selected item's id
 		var selectedID = null;
+		// Increase when click the 'Secenek Ekle' button for input names ex. optionField-IDX
+		var count = 0;
 
 		$(function(){
 
-
-			// MODAL: ADD
-
+			// MODAL: ADD-EDIT
 			$('#add-form').submit(function(e) {
 				var btn = $('#add-button');
-				// btn.attr('disabled', 'disabled').html("Bekleyin...");
+				btn.attr('disabled', 'disabled').html("Bekleyin...");
 				e.preventDefault();
 
 				var options = {
 					beforeSubmit: function(arr, $form, options) { 
-						console.log(arr);
-						console.log($form);
-						console.log(options);
-					    // The array of form data takes the following form: 
-					    // [ { name: 'username', value: 'jresig' }, { name: 'password', value: 'secret' } ] 
-					     
-					    // return false to cancel submit                  
 					},
-					success: function(){
-						// window.location.href = "{% url 'enterprise:menu' id=category.id %}";
+					success: function(e){
+						// console.log(e);
+						window.location.href = "{% url 'enterprise:menu' id=category.id %}";
 					}
 				};
 				$(this).ajaxSubmit(options);
 			});
 
-			
-
-			// MODAL: UPDATE
-
-			$('#button-save').click(function(e){
-
-				// Get Edit Form Details
-
-				var btn = $(event.target);
-				btn.attr('disabled', 'disabled').html("Bekleyin...");
-
-				id = selectedID;
-				name = $('input[name="edit-category-name"]').val();
-				enterprise = '{{ request.user.profile.enterprise.id }}'
-
-				updateCategory(id, name, enterprise);
-
-
-			});
-
-
 			// MODAL: DELETE
-
 			$('#button-delete').click(function(e){
 				var btn = $(event.target);
 				btn.attr('disabled', 'disabled').html("Bekleyin...");
@@ -245,7 +196,35 @@
 				enterprise = '{{ request.user.profile.enterprise.id }}'
 				deleteItem(id, enterprise);
 			});
+
 		});
+
+
+		// FUNC: Change Modal Add or Edit
+		function changeModalType(type){
+			// Clean First
+			$('#add-form').clearForm();
+			$('.input_fields_wrap').html('');
+			count = 0;
+			// Fill Required Data
+			$('input[name=enterprise]').val('{{ request.user.profile.enterprise.id }}');
+			$('input[name=category]').val('{{ category.id }}');
+
+			if(type == 'add'){
+				$('#modal-menu .modal-title').html('Ürün Ekle');
+				$('#modal-menu #menu_pic').hide();
+				$('#add-button').html('Ekle');
+				$('input[name="stock"]').prop('checked','checked');	
+				$('#add-form').attr('action', '{% url 'api:menu_create' %}');
+				
+			}else if(type == 'edit'){
+				$('#modal-menu .modal-title').html('Ürün Düzenle');
+				$('#modal-menu #menu_pic').show();
+				$('#add-button').html('Güncelle');
+				$('#add-form').attr('action', '{% url 'api:menu_update' %}');
+
+			}
+		}
 
 
 
@@ -258,13 +237,13 @@
 
 			var wrapper         = $(".input_fields_wrap"); //Fields wrapper
 			var add_button      = $(".add_field_button"); //Add button ID
-			var count 			= 0;
 
 			$(add_button).click(function(e){
 				e.preventDefault();
 
 				$(wrapper).append(`
-				                  	<div>
+				                  	<div class='option-form'>
+				                  		<input type="text" name="optionId-`+count+`" style="display:none" />
 					                  	<div class="form-group">
 											<label class="control-label">Seçenek Başlığı</label>
 											<input type="text" maxlength="30" class="form-control" name="optionName-`+count+`" required />
@@ -285,6 +264,7 @@
 											<label>Seçim Listesi</label>
 											<div class="controls">
 												<div class="entry input-group col-xs-12" style="margin-bottom: 10px">
+													<input type="text" name="optionFieldsId-`+count+`[]" style="display:none" />
 													<input class="form-control" name="optionFields-`+count+`[]" type="text" placeholder="Seçeneği Giriniz" />
 													<span class="input-group-btn">
 														<button class="btn btn-success btn-add" type="button">
@@ -302,6 +282,7 @@
 											<div class="input-area">
 												<div class="input-fields">
 													<div class="row entry-p">
+														<input type="text" name="optionFieldsId-`+count+`-p[]" style="display:none" />
 														<div class="col-xs-6" style="padding-right: 0">
 															<div class="form-group" style="margin-bottom: 10px">
 																<input class="form-control" name="optionFields-`+count+`-p[]" type="text" placeholder="Seçeneği Giriniz" />
@@ -374,8 +355,6 @@
 			$(document).on('click', '.btn-add', function(e){
 				e.preventDefault();
 
-				// console.log();
-
 				var controlForm = $(this).parent().parent().parent(),
 					currentEntry = $(this).parents('.entry:first'),
 					newEntry = $(currentEntry.clone()).appendTo(controlForm);
@@ -418,21 +397,6 @@
 			});
 		});
 
-
-
-
-		// ================================ GET INPUT VALUES ========================================
-
-
-		function getOptionValues(){
-			var inps = document.getElementsByName('optionType[]');
-			for (var i = 0; i <inps.length; i++) {
-				var inp=inps[i];
-				console.log("optionType["+i+"].value="+inp.value);
-			}
-		};
-
-
 		
 
 
@@ -440,53 +404,7 @@
 		// ============================= jQuery REQUESTS ============================================
 
 
-		// NOT NOW
-		function updateCategory(id, name, enterprise){
 
-			// CSRF Token for Django
-			$.ajaxSetup({
-				beforeSend: function(xhr, settings) {
-				function getCookie(name) {
-				var cookieValue = null;
-				if (document.cookie && document.cookie != '') {
-				  var cookies = document.cookie.split(';');
-				  for (var i = 0; i < cookies.length; i++) {
-					var cookie = jQuery.trim(cookies[i]);
-					if (cookie.substring(0, name.length + 1) == (name + '=')) {
-					  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-					  break;
-					}
-				  }
-				}
-				return cookieValue;
-				}if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-				xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-				}
-				} 
-			});
-
-			var serialized = $.param({id: id, name: name, enterprise: enterprise});
-
-			request = $.ajax({
-				url: "{% url 'api:category_update' %}",
-				type: "post",
-				data: serialized
-			});
-
-
-			request.done(function (response, textStatus, jqXHR){
-				console.log('Done');
-				console.log(response);
-				window.location.href = "{% url 'enterprise:category' %}";
-				return false;
-			});
-
-			request.fail(function (jqXHR, textStatus, errorThrown){
-				console.error("The following error occurred: " + textStatus, errorThrown);
-			});
-		}
-
-		// WORKS
 		function deleteItem(id, enterprise){
 
 			// CSRF Token for Django
@@ -521,10 +439,104 @@
 
 
 			request.done(function (response, textStatus, jqXHR){
-				console.log('Done');
-				console.log(response);
 				window.location.href = "{% url 'enterprise:menu' id=category.id %}";
 				return false;
+			});
+
+			request.fail(function (jqXHR, textStatus, errorThrown){
+				console.error("The following error occurred: " + textStatus, errorThrown);
+			});
+		}
+
+
+		function getItem(id, enterprise, btn){
+
+			// CSRF Token for Django
+			$.ajaxSetup({
+				beforeSend: function(xhr, settings) {
+				function getCookie(name) {
+				var cookieValue = null;
+				if (document.cookie && document.cookie != '') {
+				  var cookies = document.cookie.split(';');
+				  for (var i = 0; i < cookies.length; i++) {
+					var cookie = jQuery.trim(cookies[i]);
+					if (cookie.substring(0, name.length + 1) == (name + '=')) {
+					  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+					  break;
+					}
+				  }
+				}
+				return cookieValue;
+				}if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+				xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+				}
+				} 
+			});
+
+			var serialized = $.param({id: id, enterprise: enterprise});
+
+			request = $.ajax({
+				url: "{% url 'api:menu_get' %}",
+				type: "post",
+				data: serialized
+			});
+
+
+			request.done(function (response, textStatus, jqXHR){
+
+				// Fill Edit Form with selected items
+				$('input[name="id"]').val(response.details.id);
+				$('input[name="name"]').val(response.details.name);
+				$('input[name="description"]').val(response.details.description);
+				$('input[name="price"]').val(response.details.price);
+				$('img#menu_pic').attr('src', '' + response.details.picture);
+				if (response.details.stock == true){
+					$('input[name="stock"]').prop('checked','checked');
+				}else{
+					$('input[name="stock"]').prop('checked','');
+				}
+
+				// Fill Option Fields = Simulate Clicks
+				response.details.options.forEach(function(item, k){
+					$(".add_field_button").click();
+					var optionField = $(".input_fields_wrap").find('.option-form:last');
+
+					// Fill Name and Select Type
+					optionField.find('input[name="optionId-'+k+'"]').val(item.id);
+					optionField.find('input[name="optionName-'+k+'"]').val(item.name);
+					optionField.find('select').val(item.type).trigger('change');
+
+					// Fill Inside
+					item.options.forEach(function(itemX, key){
+						if(item.type == 'dropadd'){
+							var dropField = optionField.find('.dropadd-div');
+
+							// Click Add Button
+							if(key != 0){ dropField.find('.btn-add').click();}
+							
+							dropField.find('input[name="optionFieldsId-'+k+'[]"]:last').val(itemX.id);
+							dropField.find('input[name="optionFields-'+k+'[]"]:last').val(itemX.name);
+
+						}else if(item.type == 'option'){
+							var optionListField = optionField.find('.option-div');
+
+							// Click Add Button
+							if(key != 0){ optionListField.find('.btn-add-p').click();}
+
+							// Find All Inputs (id, name, price) and select last 3 one
+							// Because all fields (name, price) are same name for 1 option (for example Porsiyon).
+							inputs = optionListField.find('input')
+							inputs = inputs.slice(Math.max(inputs.length - 3, 0))
+							$(inputs[0]).val(itemX.id);
+							$(inputs[1]).val(itemX.name);
+							$(inputs[2]).val(itemX.price);
+						}
+					});
+
+				})
+
+				btn.button('reset');
+				$('#modal-menu').modal('show');
 			});
 
 			request.fail(function (jqXHR, textStatus, errorThrown){
@@ -540,25 +552,21 @@
 
 		$(function(){
 
-
-			// ============================= TABLE ITEM BUTTON ============================================
-
-
 			// EDIT TABLE ITEM
 
 			$(".btn-edit").click(function(e){
-				itemID = $(this).parent().parent().find('.menu-id').html();
-				itemName = $(this).parent().parent().find('.menu-name').html();
+				itemID = $(this).parents('tr').find('.menu-id').html();
 
-				selectedID = itemID;
+				changeModalType('edit');
 
-				// Fill Edit Form with selected items
-				$('input[name="edit-category-name"]').val(itemName);
+				var btn = $(this);
+    			btn.button('loading');
 
-				// Fill Delete Form with selected items (if click Delete button, it shows)
-				$('span#delete-table-name').html(itemName);
+				// btn.attr('disabled', 'disabled').html("Bekleyin...");
 
-				$('#modal-edit').modal('show');
+				// Get Menu Details from API
+				getItem(itemID, {{ request.user.profile.enterprise.id }}, btn);
+
 			});
 
 
@@ -568,8 +576,6 @@
 			$(".btn-delete").click(function(e){
 				itemID = $(this).parent().parent().find('.menu-id').html();
 				itemName = $(this).parent().parent().find('.menu-name').html();
-
-				console.log(itemID);
 
 				selectedID = itemID;
 

@@ -52,15 +52,9 @@ def details_view(request, id):
 
     subMenus = MenuSubCategory.objects.filter(menu=menu)
 
-    print(subMenus)
-
     for subMenu in subMenus:
         options = MenuSubCategoryOption.objects.filter(subMenu=subMenu)
-        print(options)
         subMenu.options = options
-
-    # Get Options of Menu
-
 
 
     context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise, 'menu': menu, 'subMenus': subMenus, 'backButton': True}
@@ -82,6 +76,7 @@ def cart_view(request):
 
     # print(cartSession)
 
+    # Ayni urunden birden fazla eklendiyse
     # Tekrar eden urunleri bul, Menu objesinin icine count alani ekle ve orayi arttir
     for item in cartSession:
         dbMenu = Menu.objects.get(id=item['id'])

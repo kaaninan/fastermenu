@@ -17,6 +17,7 @@ urlpatterns = [
 	url(r'^menu_create/$', menu_create, name="menu_create"),
 	url(r'^menu_update/$', menu_update, name="menu_update"),
 	url(r'^menu_delete/$', menu_delete, name="menu_delete"),
+	url(r'^menu_get/$', menu_get, name="menu_get"),
 
 	url(r'^line_status/$', line_status, name="line_status"),
 
