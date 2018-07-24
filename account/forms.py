@@ -4,10 +4,10 @@ from django.contrib.auth.models import User
 
 
 class SignUpForm(UserCreationForm):
-	email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
-	first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-	last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-	enterprise = forms.CharField(max_length=100, required=True, help_text='İşletmenizin adı')
+	email = forms.EmailField(max_length=254, label='Email Adresi', help_text='Lütfen geçerli bir mail adresi giriniz.', widget=forms.TextInput(attrs={'autocomplete': 'email'}))
+	first_name = forms.CharField(max_length=30, required=True, label='Adınız', widget=forms.TextInput(attrs={'autocomplete': 'given-name'}))
+	last_name = forms.CharField(max_length=30, required=True, label='Soyadınız', widget=forms.TextInput(attrs={'autocomplete': 'family-name'}))
+	enterprise = forms.CharField(max_length=100, required=True, label='İşletmenizin adı')
 
 	class Meta:
 		model = User
