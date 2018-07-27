@@ -10,7 +10,7 @@ urlpatterns = [
 
     url(r'^$', main_view, name="index"),
 
-    url(r'^login/$', auth_views.login, {'template_name': 'registration/login.html'}, name='login'),
+    url(r'^login/$', login_view, name='login'),
     url(r'^register/$', signup_view, name='register'),
     url(r'^logout/$', logout_view, name='logout'),
 

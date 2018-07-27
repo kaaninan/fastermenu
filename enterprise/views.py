@@ -164,8 +164,6 @@ def analyze_view(request):
 @login_required
 def profile_view(request):
 
-	print(request.user.username)
-
 	form_enterprise = EnterpriseForm(request.POST or None, request.FILES or None, instance=request.user.profile.enterprise)
 	form = ProfileUpdateForm(request.POST or None, instance=request.user)
 	
@@ -175,16 +173,16 @@ def profile_view(request):
 		user.username = form.cleaned_data.get('email')
 		enterprise = form_enterprise.save()
 
-		# paw = form.cleaned_data.get('password1')
-		# if paw:
-		# 	user.set_password(paw)
-		# 	messages.success(request, "Successful. Your password has been changed.")
-		# else:
-		# 	messages.success(request, "Successful")
+		paw = form.cleaned_data.get('password1')
+		if paw:
+			user.set_password(paw)
+			messages.success(request, "Successful. Your password has been changed.")
+			user.save()
+			user_login = authenticate(username=request.user.username, password=paw)
+			login(request, user_login)
 
-		user.save()
-		user_login = authenticate(username=request.user.username, password=paw)
-		login(request, user_login)
+		else:
+			messages.success(request, "Successful")
 
 		return redirect('enterprise:profile')
 

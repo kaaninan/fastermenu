@@ -149,7 +149,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 LOGIN_REDIRECT_URL = '/enterprise/'
+LOGOUT_REDIRECT_URL = '/enterprise/login'
 LOGIN_URL = '/enterprise/login'
+
 
 
 # Internationalization
