@@ -25,6 +25,13 @@ from menu.forms import *
 @login_required
 def main_view(request):
 
+	# Redirect System Admin to /admin
+	try:
+		if not request.user.profile:
+			pass
+	except Exception as e:
+		return redirect('admin:index')
+
 	context = {}
 	return render(request, "enterprise/index.html", context)
 

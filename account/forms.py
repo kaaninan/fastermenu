@@ -37,17 +37,6 @@ class SignUpForm(UserCreationForm):
 
 
 
-class ProfileForm(UserCreationForm):
-	email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
-	first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-	last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-	password1 = forms.CharField(max_length=100, required=False, help_text='Yeni sifre')
-	password2 = forms.CharField(max_length=100, required=False, help_text='Tekrar Yeni Sifre')
-
-	class Meta:
-		model = User
-		fields = ('email', 'first_name', 'last_name', 'password1', 'password2', )
-
 
 class ProfileUpdateForm(forms.ModelForm):
 	email = forms.EmailField(max_length=254, help_text='Mail adresiniz aynı zamanda kullanıcı adınızdır.')
