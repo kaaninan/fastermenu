@@ -4,14 +4,14 @@ from django.contrib.auth.models import User
 
 
 class SignUpForm(UserCreationForm):
-	email = forms.EmailField(max_length=254, label='Email Adresi', help_text='Lütfen geçerli bir mail adresi giriniz.', widget=forms.TextInput(attrs={'autocomplete': 'email'}))
-	first_name = forms.CharField(max_length=30, required=True, label='Adınız', widget=forms.TextInput(attrs={'autocomplete': 'given-name'}))
-	last_name = forms.CharField(max_length=30, required=True, label='Soyadınız', widget=forms.TextInput(attrs={'autocomplete': 'family-name'}))
-	enterprise = forms.CharField(max_length=100, required=True, label='İşletmenizin adı')
-
+	enterprise = forms.CharField(max_length=100, required=True)
+	
+	def __init__(self, *args, **kwargs):
+		super(UserCreationForm, self).__init__(*args, **kwargs)
+		self.fields.pop('password2')
 	class Meta:
 		model = User
-		fields = ('email', 'first_name', 'last_name', 'password1', 'password2', )
+		fields = ('email', 'first_name', 'last_name', 'password1', )
 
 
 class ProfileForm(UserCreationForm):

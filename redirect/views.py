@@ -17,11 +17,7 @@ def health_view(request):
 
 
 def home_view(request):
-
-    location = 'https://fastermenu.com'
-    res = HttpResponse(location, status=302)
-    res['Location'] = location
-    return res
+    return redirect('enterprise:login')
 
     
 

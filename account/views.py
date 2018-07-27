@@ -24,6 +24,7 @@ def signup_view(request):
 			# Create new Enterprise
 			enterprise = Enterprise()
 			enterprise.name = form.cleaned_data.get('enterprise')
+			print (enterprise.name)
 			enterprise.save()
 
 			# Connect Enterprise to Acoounts.Profile model

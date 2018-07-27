@@ -25,13 +25,7 @@ from menu.forms import *
 @login_required
 def main_view(request):
 
-	# sEnterprise = request.session.get('enterprise', 'enterprise')
-	# sTable = request.session.get('table', 'table')
-	# enterprise = get_object_or_404(Enterprise, name=sEnterprise)
-
-
 	context = {}
-	# context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise}
 	return render(request, "enterprise/index.html", context)
 
 
@@ -181,12 +175,12 @@ def profile_view(request):
 		user.username = form.cleaned_data.get('email')
 		enterprise = form_enterprise.save()
 
-		paw = form.cleaned_data.get('password1')
-		if paw:
-			user.set_password(paw)
-			messages.success(request, "Successful. Your password has been changed.")
-		else:
-			messages.success(request, "Successful")
+		# paw = form.cleaned_data.get('password1')
+		# if paw:
+		# 	user.set_password(paw)
+		# 	messages.success(request, "Successful. Your password has been changed.")
+		# else:
+		# 	messages.success(request, "Successful")
 
 		user.save()
 		user_login = authenticate(username=request.user.username, password=paw)
@@ -194,10 +188,6 @@ def profile_view(request):
 
 		return redirect('enterprise:profile')
 
-
-	# sEnterprise = request.session.get('enterprise', 'enterprise')
-	# sTable = request.session.get('table', 'table')
-	# enterprise = get_object_or_404(Enterprise, name=sEnterprise)
 
 	context = {'active_tab': 'profile', 'form': form, 'form_enterprise': form_enterprise}
 	return render(request, "enterprise/profile.html", context)
