@@ -37,46 +37,50 @@
 
 {% for category in categories %}
 
-<div class="row menu-title">
-	<div class="col-12 clear">
-		<div class="head">
-			<div class="name">{{ category.name }}</div>
-		</div>
-	</div>
-</div>
+	{% if category.menu.count != 0 %}
 
-{% for menu in category.menu %}
-<div class="row menu-item">
-		<div class="col-2 col-sm-1 clear">
-			<div class="add" id="{{ menu.id }}">
-				<!-- For jQuery -->
-				<div id="subCategory" style="display: none;">{{ menu.subcategory.count }}</div>
-				<!-- End -->
-				<i style="display: block" id="plus" class="fas fa-plus-circle"></i>
-				<div style="display: none" id="loader" class="loader"></div>
-				<i id="check" style="display: none" class="fas fa-check"></i>
+		<div class="row menu-title">
+			<div class="col-12 clear">
+				<div class="head">
+					<div class="name">{{ category.name }}</div>
+				</div>
 			</div>
 		</div>
 
-	
-		<div class="col-7 col-sm-8 clear">
-			<div class="record">
-				<a href="{% url 'order:detail' id=menu.id %}">
-					<div class="title">
-						<div class="main">{{ menu.name }}</div>
-						<div class="sub">Seçeceğiniz malzemeler ile</div>
+		{% for menu in category.menu %}
+		<div class="row menu-item">
+				<div class="col-2 col-sm-1 clear">
+					<div class="add" id="{{ menu.id }}">
+						<!-- For jQuery -->
+						<div id="subCategory" style="display: none;">{{ menu.subcategory.count }}</div>
+						<!-- End -->
+						<i style="display: block" id="plus" class="fas fa-plus-circle"></i>
+						<div style="display: none" id="loader" class="loader"></div>
+						<i id="check" style="display: none" class="fas fa-check"></i>
 					</div>
-				</a>
-			</div>
+				</div>
+
+			
+				<div class="col-7 col-sm-8 clear">
+					<div class="record">
+						<a href="{% url 'order:detail' id=menu.id %}">
+							<div class="title">
+								<div class="main">{{ menu.name }}</div>
+								<div class="sub">Seçeceğiniz malzemeler ile</div>
+							</div>
+						</a>
+					</div>
+				</div>
+
+				<div class="col-3 clear">
+					<div class="price"><span id="price">{{ menu.price|floatformat:2 }}</span> TL</div>
+				</div>
+
 		</div>
 
-		<div class="col-3 clear">
-			<div class="price"><span id="price">{{ menu.price|floatformat:2 }}</span> TL</div>
-		</div>
+		{% endfor %}
 
-</div>
-
-{% endfor %}
+	{% endif %}
 
 {% endfor %}
 
