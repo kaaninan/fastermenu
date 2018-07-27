@@ -103,7 +103,7 @@
 		},
 		methods: {
 			loadData: function () {
-				$.get("{% url 'cart:get_line' %}", function (response) {
+				$.get("{% url 'api:line_get' %}", function (response) {
 					this.isLoading = false   
 					console.log('finish');
 					this.items = response.data;
@@ -170,7 +170,7 @@
 		var serialized = $.param({id: id});
 
 		request = $.ajax({
-			url: "{% url 'cart:set_complated' %}",
+			url: "{% url 'api:line_set_complated' %}",
 			type: "post",
 			data: serialized
 		});
@@ -227,7 +227,7 @@
 		var serialized = $.param({id: id});
 
 		request = $.ajax({
-			url: "{% url 'cart:set_paid' %}",
+			url: "{% url 'api:line_set_paid' %}",
 			type: "post",
 			data: serialized
 		});

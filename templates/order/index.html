@@ -128,7 +128,7 @@ function getBudgetCount(){
 	});
 
 	request = $.ajax({
-        url: "{% url 'cart:count' %}",
+        url: "{% url 'api:cart_count' %}",
         type: "post"
     });
 
@@ -186,7 +186,7 @@ function addBudget(id, price){
 	var serialized = $.param({id: id, price: price, option: -1, count: 1});
 
 	request = $.ajax({
-        url: "{% url 'cart:add' %}",
+        url: "{% url 'api:cart_add' %}",
         type: "post",
         data: serialized
     });

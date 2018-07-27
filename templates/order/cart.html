@@ -201,7 +201,7 @@
 	  console.log(serialized);
 
 	  request = $.ajax({
-			url: "{% url 'cart:delete' %}",
+			url: "{% url 'api:cart_delete' %}",
 			type: "post",
 			data: serialized
 		});
@@ -253,7 +253,7 @@
 	  console.log(serialized);
 
 	  request = $.ajax({
-			url: "{% url 'cart:updateCount' %}",
+			url: "{% url 'api:cart_update_count' %}",
 			type: "post",
 			data: serialized
 		});

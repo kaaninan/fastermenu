@@ -177,7 +177,7 @@ function addBudget(id, price, count, option){
   console.log(typeof(optionParsed));
 
   request = $.ajax({
-        url: "{% url 'cart:add' %}",
+        url: "{% url 'api:cart_add' %}",
         type: "post",
         data: serialized
     });

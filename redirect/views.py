@@ -7,7 +7,7 @@ import json
 
 from barcode.models import *
 from enterprise.models import *
-from cart.views import *
+from api.views import *
 
 
 
@@ -60,8 +60,8 @@ def redirect_view(request, id):
                 if table.active:
                     table_active = True
 
-                    request.session['enterprise'] = enterprise.name
-                    request.session['table'] = table.name
+                    request.session['enterprise'] = enterprise.id
+                    request.session['table'] = table.id
                     
                 else:
                     table_active = False
@@ -74,6 +74,6 @@ def redirect_view(request, id):
                        enterprise=enterprise, table=table)
 
     # Delete shopping cart items
-    delete_session_view(request)
+    cart_session_delete(request)
 
     return redirect('order:index')

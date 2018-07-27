@@ -5,15 +5,17 @@ from django.shortcuts import render, get_object_or_404
 from enterprise.models import *
 from menu.models import *
 from cart.models import *
-from cart.views import *
+from api.views import *
 import json
+
 
 def main_view(request):
 
-    sEnterprise = request.session.get('enterprise', 'enterprise')
-    sTable = request.session.get('table', 'table')
+    sEnterprise = request.session.get('enterprise', '')
+    sTable = request.session.get('table', '')
 
-    enterprise = get_object_or_404(Enterprise, name=sEnterprise)
+    enterprise = get_object_or_404(Enterprise, id=sEnterprise)
+    table = get_object_or_404(Table, id=sTable)
 
     # Get Menu
     categories = Category.objects.filter(enterprise=enterprise)
@@ -35,17 +37,18 @@ def main_view(request):
 
 
 
-    context = {'enterprise': enterprise, 'table': sTable, 'categories': categories, 'addedState': addedState}
+    context = {'enterprise': enterprise, 'table': table, 'categories': categories, 'addedState': addedState}
     return render(request, "order/index.html", context)
 
 
 
 def details_view(request, id):
 
-    sEnterprise = request.session.get('enterprise', 'enterprise')
-    sTable = request.session.get('table', 'table')
+    sEnterprise = request.session.get('enterprise', '')
+    sTable = request.session.get('table', '')
 
-    enterprise = get_object_or_404(Enterprise, name=sEnterprise)
+    enterprise = get_object_or_404(Enterprise, id=sEnterprise)
+    table = get_object_or_404(Table, id=sTable)
 
     # Get Menu Content
     menu = get_object_or_404(Menu, id=id)
@@ -57,16 +60,18 @@ def details_view(request, id):
         subMenu.options = options
 
 
-    context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise, 'menu': menu, 'subMenus': subMenus, 'backButton': True}
+    context = {'enterprise': enterprise, 'table': table, 'menu': menu, 'subMenus': subMenus, 'backButton': True}
     return render(request, "order/details.html", context)
 
 
 
 def cart_view(request):
 
-    sEnterprise = request.session.get('enterprise', 'enterprise')
-    sTable = request.session.get('table', 'table')
-    enterprise = get_object_or_404(Enterprise, name=sEnterprise)
+    sEnterprise = request.session.get('enterprise', '')
+    sTable = request.session.get('table', '')
+
+    enterprise = get_object_or_404(Enterprise, id=sEnterprise)
+    table = get_object_or_404(Table, id=sTable)
 
     cartSession = request.session.get('cart', '')
 
@@ -98,36 +103,40 @@ def cart_view(request):
         cartTotal = cartTotal + item['totalPrice']
 
 
-    context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise, 'cart': cartSession, 'total':cartTotal, 'backButton': True}
+    context = {'enterprise': enterprise, 'table': table, 'cart': cartSession, 'total':cartTotal, 'backButton': True}
     return render(request, "order/cart.html", context)
 
 
 
 def complated_view(request):
 
-    sEnterprise = request.session.get('enterprise', 'enterprise')
-    sTable = request.session.get('table', 'table')
-    enterprise = get_object_or_404(Enterprise, name=sEnterprise)
+    sEnterprise = request.session.get('enterprise', '')
+    sTable = request.session.get('table', '')
+
+    enterprise = get_object_or_404(Enterprise, id=sEnterprise)
+    table = get_object_or_404(Table, id=sTable)
 
     # Add Line and Get Line ID
-    line_id = add_line_view(request)
+    line_id = line_add(request)
     line_id = json.loads(line_id.content.decode('ascii'))
     line_id = line_id['line']
 
     # Delete Shopping List from Session
-    delete_session_view(request)
+    cart_session_delete(request)
 
 
-    context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise, 'line_id': line_id}
+    context = {'enterprise': enterprise, 'table': table, 'enterprise': enterprise, 'line_id': line_id}
     return render(request, "order/complated.html", context)
 
 
 
 def track_view(request, id):
 
-    sEnterprise = request.session.get('enterprise', 'enterprise')
-    sTable = request.session.get('table', 'table')
-    enterprise = get_object_or_404(Enterprise, name=sEnterprise)
+    sEnterprise = request.session.get('enterprise', '')
+    sTable = request.session.get('table', '')
+
+    enterprise = get_object_or_404(Enterprise, id=sEnterprise)
+    table = get_object_or_404(Table, id=sTable)
 
     # Siparisi bul
     line = get_object_or_404(Line, id=id)
@@ -136,7 +145,7 @@ def track_view(request, id):
     orders = Order.objects.filter(line=line)
 
 
-    context = {'enterprise': enterprise, 'table': sTable, 'enterprise': enterprise, 'line': line, 'orders': orders}
+    context = {'enterprise': enterprise, 'table': table, 'line': line, 'orders': orders}
     return render(request, "order/track.html", context)
 
 
