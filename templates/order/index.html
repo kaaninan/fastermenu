@@ -12,6 +12,8 @@
 {% endif %}
 
 <div class="row enterprise">
+
+	{% if enterprise.logo %}
     <div class="col-4 clear">
         <img src="{{enterprise.logo.url}}">
     </div>
@@ -24,6 +26,20 @@
             <div class="table"><b>Masa:</b> {{table}}</div>
         </div>
     </div>
+    {% endif %}
+    
+
+    {% if not enterprise.logo %}
+
+    <div class="col-12">
+        <div class="titleDiv">
+            <div class="name">{{enterprise.name}}</div>
+            <div class="location">Levent</div>
+            <div class="table"><b>Masa:</b> {{table}}</div>
+        </div>
+    </div>
+
+    {% endif %}
 </div>
 
 
