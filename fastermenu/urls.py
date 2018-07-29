@@ -20,5 +20,6 @@ urlpatterns = [
     url(r'^enterprise/', include('enterprise.urls')),
 
     url(r'^api/', include('api.urls')),
+    url(r'^barcode/', include('barcode.urls')),
     
 ]

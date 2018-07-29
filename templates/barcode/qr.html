@@ -1,0 +1,91 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>FasterMenu Barcode</title>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400">
+
+    <style type="text/css">
+
+        @media all {
+            /*.page-break { display: none; }*/
+        }
+
+        @media print {
+            .page-break { display: block; page-break-before: always; }
+        }
+        
+        .wrapper{
+            width: 970px;
+            margin: 20px auto;
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+
+        .card{
+            width: 280px;            
+            padding: 10px;
+            padding-top: 15px;
+            border: 1px dashed #ccc;
+            float: left;
+        }
+
+        .card .logo{
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .card .qr{
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .print{
+            text-align: center;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 5px;
+            width: 100px;
+            cursor: pointer;
+            border: 2px solid red;
+            color: red;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="wrapper" id="wrapper">
+
+    <div class="print" onclick="window.print();">YAZDIR</div>
+
+    {% for item in barcodes %}
+    
+        <div class="card">
+            <div class="logo">
+                <img src="https://app.fastermenu.com/static/registration/images/logo2.png" width="150px">
+            </div>
+            <div class="qr">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://app.fastermenu.com/redirect/{{ item.barcode }}">
+            </div>
+            <div>
+                <div style="text-align: center; ">{{ item.name }}</div> 
+            </div>
+        </div>
+
+        {% if forloop.counter|divisibleby:12 %}
+        <div style="clear: both;"></div>
+        <div class="page-break"></div>
+        <br><br>
+        {% endif %}
+
+    {% endfor %}
+
+    <div style="clear: both;"></div>
+
+
+</div>
+
+</body>
+</html>

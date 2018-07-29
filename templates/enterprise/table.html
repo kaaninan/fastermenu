@@ -19,7 +19,11 @@
 				
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left">Vazgeç</button>
-					<button type="button" class="btn btn-success btn-success pull-left" id="button-print" style="width: 49%; float: left;">Yazdır</button>
+					<div style="width: 49%; float: right;">
+						<a target="_blank" id="print">
+							<button type="button" class="btn btn-success btn-success pull-left btn-block" id="button-print">Yazdır</button>
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -154,6 +158,12 @@
 				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-add">
 					<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Masa Ekle
 				</button>
+				&nbsp;&nbsp;
+				<a href="{% url 'barcode:multiple' %}" target="_blank">
+					<button type="button" class="btn btn-primary">
+						<i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;QR Kodları Yazdır
+					</button>
+				</a>
 				
 				<br><br>
 
@@ -410,6 +420,7 @@
 
 				selectedID = itemID;
 				
+				$('#print').attr('href',`{% url 'barcode:single' %}?barcode=`+itemBarcode);
 				$('#qrCode').attr('src','https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://app.fastermenu.com/redirect/'+itemBarcode);
 
 				$('#modal-qr').modal('show');

@@ -21,6 +21,8 @@ from enterprise.forms import *
 from account.forms import *
 from menu.forms import *
 
+from barcode.render import *
+
 
 @login_required
 def main_view(request):
