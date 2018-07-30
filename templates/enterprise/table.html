@@ -49,8 +49,12 @@
 					<div id="add-multiple" style="display: none">
 						<div class="form-group">
 							<hr>
+							<div class="error-add" style="display: none">
+								<span style="color: red"></span>
+								<br><br>
+							</div>
 							<label for="table-count">Toplam kaç tane masanız var?</label>
-							<input type="text" class="form-control" id="table-count">
+							<input type="number" min="0" max="50" class="form-control" id="table-count">
 							<span class="help-block">Girdiğiniz sayı kadar masa eklenecektir.</span>
 						</div>
 					</div>
@@ -58,6 +62,10 @@
 					<div id="add-single" style="display: none">
 						<div class="form-group">
 							<hr>
+							<div class="error-add" style="display: none">
+								<span style="color: red"></span>
+								<br><br>
+							</div>
 							<label for="table-name">Eklemek istediğiniz masa adı nedir?</label>
 							<input type="text" class="form-control" id="table-name">
 						</div>
@@ -145,15 +153,6 @@
 			</section>
 
 			<section class="content">
-				
-				{% if messages %}
-					{% for message in messages %}
-						<div class="alert alert-success alert-dismissible" role="alert">
-							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							{{ message }}
-						</div>
-					{% endfor %}
-				{% endif %}
 
 				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-add">
 					<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Masa Ekle
@@ -261,10 +260,18 @@
 
 
 			request.done(function (response, textStatus, jqXHR){
-				console.log('Done');
-				console.log(response);
-				window.location.href = "{% url 'enterprise:table' %}";
-				return false;
+				
+				if(response.msg != 'success'){
+					$('.error-add').show();
+					$('.error-add span').html(response.msg);
+
+					// Buton eski haline dondur
+					var btn = $('#button-add');
+					btn.attr('disabled', false).html("Ekle");
+				}else{
+					window.location.href = "{% url 'enterprise:table' %}";
+					return false;
+				}
 			});
 
 			request.fail(function (jqXHR, textStatus, errorThrown){
@@ -470,6 +477,8 @@
 			$('#button-add').click(function(e){
 				var btn = $(event.target);
 				btn.attr('disabled', 'disabled').html("Bekleyin...");
+
+				$('.error-add').hide();
 				
 				option = $('input[type=radio][name=radio-add]:checked').val();
 				data = null;

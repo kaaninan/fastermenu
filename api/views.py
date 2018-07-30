@@ -15,197 +15,197 @@ from cart.models import *
 
 def cart_add(request):
 
-    productId = request.POST.get('id', '')
-    productCount = request.POST.get('count', '')
-    productPrice = request.POST.get('price', '')
-    productOptions = request.POST.get('option', '')
-    displayAlert = request.POST.get('displayAlert', '') # For index.html jQuery
-    # Option String List to Normal List
-    if(productOptions != '-1'):
-        productOptions = ast.literal_eval(productOptions)
+	productId = request.POST.get('id', '')
+	productCount = request.POST.get('count', '')
+	productPrice = request.POST.get('price', '')
+	productOptions = request.POST.get('option', '')
+	displayAlert = request.POST.get('displayAlert', '') # For index.html jQuery
+	# Option String List to Normal List
+	if(productOptions != '-1'):
+		productOptions = ast.literal_eval(productOptions)
 
 
-    menu = {}
-    menu['id'] = int(productId)
-    menu['price'] = float(productPrice)
-    menu['count'] = int(productCount)
-    menu['options'] = productOptions
-    menu['totalPrice'] = float(productPrice.replace(',','.'))
+	menu = {}
+	menu['id'] = int(productId)
+	menu['price'] = float(productPrice)
+	menu['count'] = int(productCount)
+	menu['options'] = productOptions
+	menu['totalPrice'] = float(productPrice.replace(',','.'))
 
-    newList = list()
+	newList = list()
 
-    # deneme = serializers.serialize("json", menu)
+	# deneme = serializers.serialize("json", menu)
 
-    # Listeyi Cek, For'da dondur, yeni liste olustur
-    # eger ayni urunden varsa countu arttir ve liseteye ekle, yeni urunse direk yeni listeye ekle
-    # sessionu sil ve yeni listeyi ekle
+	# Listeyi Cek, For'da dondur, yeni liste olustur
+	# eger ayni urunden varsa countu arttir ve liseteye ekle, yeni urunse direk yeni listeye ekle
+	# sessionu sil ve yeni listeyi ekle
 
-    
-    added = False
+	
+	added = False
 
-    # Daha once sepet session'u olusturulmus mu?
-    if "cart" in request.session:
-        productList = request.session['cart']
+	# Daha once sepet session'u olusturulmus mu?
+	if "cart" in request.session:
+		productList = request.session['cart']
 
-        # Daha once ayni urun eklenmis mi?
-        for product in productList:
-            # product = json.loads(product)
-            if product['id'] == menu['id'] and product['options'] == menu['options']:
-                # Edit Already Saved Product Count
-                product['count'] = product['count'] + menu['count']
-                product['totalPrice'] = float(product['price']) * product['count']
-                added = True
-                newList.append(product)
-            else:
-                newList.append(product)
+		# Daha once ayni urun eklenmis mi?
+		for product in productList:
+			# product = json.loads(product)
+			if product['id'] == menu['id'] and product['options'] == menu['options']:
+				# Edit Already Saved Product Count
+				product['count'] = product['count'] + menu['count']
+				product['totalPrice'] = float(product['price']) * product['count']
+				added = True
+				newList.append(product)
+			else:
+				newList.append(product)
 
-        # Yeni bir urun ise
-        if(added == False):
-            newList.append(menu)
-        
-        request.session['cart'] = newList
+		# Yeni bir urun ise
+		if(added == False):
+			newList.append(menu)
+		
+		request.session['cart'] = newList
 
-    else:
-        productList = []
-        productList.append(menu)
-        request.session['cart'] = productList
+	else:
+		productList = []
+		productList.append(menu)
+		request.session['cart'] = productList
 
-    
-    if displayAlert:
-        request.session['added'] = 'success'
-    
-    data = {'OK':'OK'}
-    return JsonResponse(data)
+	
+	if displayAlert:
+		request.session['added'] = 'success'
+	
+	data = {'OK':'OK'}
+	return JsonResponse(data)
 
 def cart_delete(request):
 
-    productId = request.POST.get('id', '')
-    productCount = request.POST.get('count', '')
-    productPrice = request.POST.get('price', '')
-    productOptions = request.POST.get('option', '')
-    # Option String List to Normal List
-    if(productOptions != '-1'):
-        productOptions = ast.literal_eval(productOptions)
+	productId = request.POST.get('id', '')
+	productCount = request.POST.get('count', '')
+	productPrice = request.POST.get('price', '')
+	productOptions = request.POST.get('option', '')
+	# Option String List to Normal List
+	if(productOptions != '-1'):
+		productOptions = ast.literal_eval(productOptions)
 
-    menu = {}
-    menu['id'] = int(productId)
-    menu['price'] = float(productPrice)
-    menu['count'] = int(productCount)
-    menu['options'] = productOptions
-    menu['totalPrice'] = float(productPrice.replace(',','.'))
+	menu = {}
+	menu['id'] = int(productId)
+	menu['price'] = float(productPrice)
+	menu['count'] = int(productCount)
+	menu['options'] = productOptions
+	menu['totalPrice'] = float(productPrice.replace(',','.'))
 
-    str_menu = json.dumps(menu)
+	str_menu = json.dumps(menu)
 
-    newList = list()
+	newList = list()
 
-    # Listeyi Cek, For'da dondur, yeni liste olustur
-    # eger ayni urunden varsa yeni liseteye ekleme, eski urunleri tekrar yeni listeye ekle
-    # sessionu sil ve yeni listeyi ekle
+	# Listeyi Cek, For'da dondur, yeni liste olustur
+	# eger ayni urunden varsa yeni liseteye ekleme, eski urunleri tekrar yeni listeye ekle
+	# sessionu sil ve yeni listeyi ekle
 
-    
-    # Daha once sepet session'u olusturulmus mu?
-    if "cart" in request.session:
-        productList = request.session['cart']
+	
+	# Daha once sepet session'u olusturulmus mu?
+	if "cart" in request.session:
+		productList = request.session['cart']
 
-        # Eklenen urunu yeni listeye ekleme
-        for product in productList:
-            if product['id'] == menu['id'] and product['options'] == menu['options']:
-                pass
-            else:
-                newList.append(product)
-        
-        request.session['cart'] = newList
+		# Eklenen urunu yeni listeye ekleme
+		for product in productList:
+			if product['id'] == menu['id'] and product['options'] == menu['options']:
+				pass
+			else:
+				newList.append(product)
+		
+		request.session['cart'] = newList
 
 
-    data = {'OK':'OK'}
-    return JsonResponse(data)
+	data = {'OK':'OK'}
+	return JsonResponse(data)
 
 def cart_show(request):
-    
-    if "cart" in request.session:
-        result = request.session["cart"]
+	
+	if "cart" in request.session:
+		result = request.session["cart"]
 
-    else:
-        result = False
+	else:
+		result = False
 
-    data = {'result':result}
-    return JsonResponse(data)
+	data = {'result':result}
+	return JsonResponse(data)
 
 def cart_count(request):
 
-    count = 0
-    
-    if "cart" in request.session:
-        result = request.session["cart"]
-        for item in result:
-            print(item)
-            count += item['count']
+	count = 0
+	
+	if "cart" in request.session:
+		result = request.session["cart"]
+		for item in result:
+			print(item)
+			count += item['count']
 
-    else:
-        result = False
+	else:
+		result = False
 
-    data = {'result':count}
-    return JsonResponse(data)
+	data = {'result':count}
+	return JsonResponse(data)
 
 def cart_update_count(request):
 
-    productId = request.POST.get('id', '')
-    productCount = request.POST.get('count', '')
-    productPrice = request.POST.get('price', '')
-    productOptions = request.POST.get('option', '')
-    # Option String List to Normal List
-    if(productOptions != '-1'):
-        productOptions = ast.literal_eval(productOptions)
+	productId = request.POST.get('id', '')
+	productCount = request.POST.get('count', '')
+	productPrice = request.POST.get('price', '')
+	productOptions = request.POST.get('option', '')
+	# Option String List to Normal List
+	if(productOptions != '-1'):
+		productOptions = ast.literal_eval(productOptions)
 
 
-    menu = {}
-    menu['id'] = int(productId)
-    menu['price'] = float(productPrice)
-    menu['count'] = int(productCount)
-    menu['options'] = productOptions
-    menu['totalPrice'] = float(productPrice.replace(',','.'))
+	menu = {}
+	menu['id'] = int(productId)
+	menu['price'] = float(productPrice)
+	menu['count'] = int(productCount)
+	menu['options'] = productOptions
+	menu['totalPrice'] = float(productPrice.replace(',','.'))
 
-    newList = list()
+	newList = list()
 
-    # Listeyi Cek, For'da dondur, yeni liste olustur
-    # eger ayni urunden varsa yeni liseteye ekleme, eski urunleri tekrar yeni listeye ekle
-    # sessionu sil ve yeni listeyi ekle
+	# Listeyi Cek, For'da dondur, yeni liste olustur
+	# eger ayni urunden varsa yeni liseteye ekleme, eski urunleri tekrar yeni listeye ekle
+	# sessionu sil ve yeni listeyi ekle
 
-    
-    # Daha once sepet session'u olusturulmus mu?
-    if "cart" in request.session:
-        productList = request.session['cart']
+	
+	# Daha once sepet session'u olusturulmus mu?
+	if "cart" in request.session:
+		productList = request.session['cart']
 
-        # Eklenmis olan urunu listeden bul
-        for product in productList:
-            # product = json.loads(product)
-            if product['id'] == menu['id'] and product['options'] == menu['options']:
-                # Edit Already Saved Product Count
-                product['count'] = menu['count']
+		# Eklenmis olan urunu listeden bul
+		for product in productList:
+			# product = json.loads(product)
+			if product['id'] == menu['id'] and product['options'] == menu['options']:
+				# Edit Already Saved Product Count
+				product['count'] = menu['count']
 
-                # print('Product Price: '+ str(product['price']))
-                # print('Product Count: '+ str(product['count']))
-                # print('Product Total Price: '+ str(float(product['price']) * product['count']))
+				# print('Product Price: '+ str(product['price']))
+				# print('Product Count: '+ str(product['count']))
+				# print('Product Total Price: '+ str(float(product['price']) * product['count']))
 
-                product['totalPrice'] = float(product['price']) * product['count']
-                newList.append(product)
-            else:
-                newList.append(product)
-        
-        request.session['cart'] = newList
+				product['totalPrice'] = float(product['price']) * product['count']
+				newList.append(product)
+			else:
+				newList.append(product)
+		
+		request.session['cart'] = newList
 
 
-    data = {'OK':'OK'}
-    return JsonResponse(data)
+	data = {'OK':'OK'}
+	return JsonResponse(data)
 
 def cart_session_delete(request):
 	# Delete Shopping Cart on session
-    if "cart" in request.session:
-        del request.session['cart']
-        data = {'result':'success'}
-    else:
-        data = {'result':'nothing'}
-    return JsonResponse(data)
+	if "cart" in request.session:
+		del request.session['cart']
+		data = {'result':'success'}
+	else:
+		data = {'result':'nothing'}
+	return JsonResponse(data)
 
 
 
@@ -213,156 +213,156 @@ def cart_session_delete(request):
 
 
 def line_add(request):
-    cartSession = request.session['cart']
+	cartSession = request.session['cart']
 
-    # Get Enterprise, Table and Shopping List from Session
+	# Get Enterprise, Table and Shopping List from Session
 
-    # Add Line
-    line = Line()
-    line.table = Table.objects.get(id=request.session.get('table', ''))
-    line.enterprise = Enterprise.objects.get(id=request.session.get('enterprise', ''))
-    line.orderDate = datetime.now();
-    line.save()
+	# Add Line
+	line = Line()
+	line.table = Table.objects.get(id=request.session.get('table', ''))
+	line.enterprise = Enterprise.objects.get(id=request.session.get('enterprise', ''))
+	line.orderDate = datetime.now();
+	line.save()
 
-    totalPrice = 0.0
+	totalPrice = 0.0
 
-    # Add Orders
-    for item in cartSession:
-        # Create Order
-        menu = Menu.objects.get(id=item['id'])
-        order = Order()
-        order.menu = menu
-        order.count = item['count']
-        order.options = item['options']
-        order.price = item['price']
-        order.totalPrice = item['totalPrice']
-        order.line = line
-        order.enterprise = Enterprise.objects.get(id=request.session.get('enterprise', ''))
+	# Add Orders
+	for item in cartSession:
+		# Create Order
+		menu = Menu.objects.get(id=item['id'])
+		order = Order()
+		order.menu = menu
+		order.count = item['count']
+		order.options = item['options']
+		order.price = item['price']
+		order.totalPrice = item['totalPrice']
+		order.line = line
+		order.enterprise = Enterprise.objects.get(id=request.session.get('enterprise', ''))
 
-        totalPrice += item['totalPrice']
+		totalPrice += item['totalPrice']
 
-        # Add Readable Options
+		# Add Readable Options
 
-        optionsReadable = ''
+		optionsReadable = ''
 
-        if order.options != '-1':
-            orderListOption = []
-            orderListDropadd = []
-            for op in order.options:
-                op_object = MenuSubCategoryOption.objects.get(id=op)
-                op_type = op_object.subMenu.type
-                if op_type == 'option':
-                    print(op_object)
-                    orderListOption.append(op_object)
-                elif op_type == 'dropadd':
-                    print(op_object)
-                    orderListDropadd.append(op_object)
+		if order.options != '-1':
+			orderListOption = []
+			orderListDropadd = []
+			for op in order.options:
+				op_object = MenuSubCategoryOption.objects.get(id=op)
+				op_type = op_object.subMenu.type
+				if op_type == 'option':
+					print(op_object)
+					orderListOption.append(op_object)
+				elif op_type == 'dropadd':
+					print(op_object)
+					orderListDropadd.append(op_object)
 
-            if len(orderListOption) != 0:
-                for index, item in enumerate(orderListOption):
-                    optionsReadable += item.name
-                    if index+1 != len(orderListOption):
-                        optionsReadable += ', '
-                    elif index+1 == len(orderListOption):
-                        optionsReadable += '\n'
+			if len(orderListOption) != 0:
+				for index, item in enumerate(orderListOption):
+					optionsReadable += item.name
+					if index+1 != len(orderListOption):
+						optionsReadable += ', '
+					elif index+1 == len(orderListOption):
+						optionsReadable += '\n'
 
-            if len(orderListDropadd) != 0:
-                for index, item in enumerate(orderListDropadd):
-                    optionsReadable += item.name
-                    if index+1 != len(orderListDropadd):
-                        optionsReadable += ', '
-                    elif index+1 == len(orderListDropadd):
-                        optionsReadable += ' hariç'
+			if len(orderListDropadd) != 0:
+				for index, item in enumerate(orderListDropadd):
+					optionsReadable += item.name
+					if index+1 != len(orderListDropadd):
+						optionsReadable += ', '
+					elif index+1 == len(orderListDropadd):
+						optionsReadable += ' hariç'
 
-            order.optionsReadable = optionsReadable
+			order.optionsReadable = optionsReadable
 
-        else:
-            order.optionsReadable = order.menu.description
+		else:
+			order.optionsReadable = order.menu.description
 
-        
-        order.save();
+		
+		order.save();
 
 
-    line = Line.objects.get(id = line.id)
-    line.totalPrice = totalPrice
-    line.save()
-    
+	line = Line.objects.get(id = line.id)
+	line.totalPrice = totalPrice
+	line.save()
+	
 
-    data = {'line': str(line.id)}
-    return JsonResponse(data)
+	data = {'line': str(line.id)}
+	return JsonResponse(data)
 
 def line_get(request):
 
-    data = list(Line.objects.filter(enterprise=request.user.profile.enterprise).values())
+	data = list(Line.objects.filter(enterprise=request.user.profile.enterprise).values())
 
 
-    for item in data:
-        item['table'] = Table.objects.get(id=item['table_id']).name
-        order = list(Order.objects.filter(line=item['id']).values())
-        item['order'] = []
-        for orderItem in order:
-            try:
-                menu = Menu.objects.get(id=orderItem['menu_id'])
-                orderItem['name'] = menu.name
-            except Exception as e:
-                orderItem['name'] = ''
-            
-            item['order'].append(orderItem)
+	for item in data:
+		item['table'] = Table.objects.get(id=item['table_id']).name
+		order = list(Order.objects.filter(line=item['id']).values())
+		item['order'] = []
+		for orderItem in order:
+			try:
+				menu = Menu.objects.get(id=orderItem['menu_id'])
+				orderItem['name'] = menu.name
+			except Exception as e:
+				orderItem['name'] = ''
+			
+			item['order'].append(orderItem)
 
-    return JsonResponse({'data':data})
+	return JsonResponse({'data':data})
 
 def line_get_cash(request):
 
-    # For Search
-    table_id = request.GET.get('table', '')
+	# For Search
+	table_id = request.GET.get('table', '')
 
-    if table_id != '':
-        table = Table.objects.filter(name=table_id)
-        data = list(Line.objects.filter(enterprise=request.user.profile.enterprise, isComplated=True, table=table).values())
-    else:
-        data = list(Line.objects.filter(enterprise=request.user.profile.enterprise, isComplated=True).values())
-
-
-    for item in data:
-        item['table'] = Table.objects.get(id=item['table_id']).name
-        order = list(Order.objects.filter(line=item['id']).values())
-        item['order'] = []
-        for orderItem in order:
-            try:
-                menu = Menu.objects.get(id=orderItem['menu_id'])
-                orderItem['name'] = menu.name
-            except Exception as e:
-                # print('ERROR')
-                orderItem['name'] = ''
-
-            item['order'].append(orderItem)
+	if table_id != '':
+		table = Table.objects.filter(name=table_id)
+		data = list(Line.objects.filter(enterprise=request.user.profile.enterprise, isComplated=True, table=table).values())
+	else:
+		data = list(Line.objects.filter(enterprise=request.user.profile.enterprise, isComplated=True).values())
 
 
-    return JsonResponse({'data':data})
+	for item in data:
+		item['table'] = Table.objects.get(id=item['table_id']).name
+		order = list(Order.objects.filter(line=item['id']).values())
+		item['order'] = []
+		for orderItem in order:
+			try:
+				menu = Menu.objects.get(id=orderItem['menu_id'])
+				orderItem['name'] = menu.name
+			except Exception as e:
+				# print('ERROR')
+				orderItem['name'] = ''
+
+			item['order'].append(orderItem)
+
+
+	return JsonResponse({'data':data})
 
 def line_set_complated(request):
 
-    item = request.POST.get('id','')
+	item = request.POST.get('id','')
 
-    data = Line.objects.get(enterprise=request.user.profile.enterprise, id=item)
+	data = Line.objects.get(enterprise=request.user.profile.enterprise, id=item)
 
-    data.isComplated = True;
-    data.complatedDate = datetime.now()
-    data.save()
+	data.isComplated = True;
+	data.complatedDate = datetime.now()
+	data.save()
 
-    return JsonResponse({'status':'success'})
+	return JsonResponse({'status':'success'})
 
 def line_set_paid(request):
 
-    item = request.POST.get('id','')
+	item = request.POST.get('id','')
 
-    data = Line.objects.get(enterprise=request.user.profile.enterprise, id=item)
+	data = Line.objects.get(enterprise=request.user.profile.enterprise, id=item)
 
-    data.isPaid = True;
-    data.paidDate = datetime.now()
-    data.save()
+	data.isPaid = True;
+	data.paidDate = datetime.now()
+	data.save()
 
-    return JsonResponse({'status':'success'})
+	return JsonResponse({'status':'success'})
 
 
 
@@ -374,13 +374,43 @@ def table_create(request):
 
 	postOption = request.POST.get('option', '')
 	postData = request.POST.get('data', '')
+
+	msg = '' # Return message
+
+	# Control Table Count
+	tables = Table.objects.filter(enterprise=request.user.profile.enterprise).count()
 	
 
 	# Option could be add-multiple or add-single
 	if postOption == 'add-multiple':
-		
-		for i in range(0, int(postData)):
 
+		if (tables + int(postData)) >= 51:
+			msg = 'En fazla 50 tane masa ekleyebilirsiniz. Daha fazlası için bizimle iletişime geçin.'
+
+		else:
+			for i in range(0, int(postData)):
+
+				# First Create Unique Barcode ID
+				barcodeID = barcode_create(request)
+				barcodeID = json.loads(barcodeID.content.decode('ascii'))
+				barcodeID = barcodeID['barcode']
+				barcode = Barcode.objects.get(id=barcodeID)
+
+				# Second Create Table Object
+				table = Table()
+				table.barcode = barcode
+				table.name = i + 1
+				table.active = True
+				table.enterprise = request.user.profile.enterprise
+				table.save()
+			msg = 'success'
+
+	elif postOption == 'add-single':
+
+		if (tables + 1) >= 51:
+			msg = 'En fazla 50 tane masa ekleyebilirsiniz. Daha fazlası için bizimle iletişime geçin.'
+
+		else:
 			# First Create Unique Barcode ID
 			barcodeID = barcode_create(request)
 			barcodeID = json.loads(barcodeID.content.decode('ascii'))
@@ -390,28 +420,14 @@ def table_create(request):
 			# Second Create Table Object
 			table = Table()
 			table.barcode = barcode
-			table.name = i + 1
+			table.name = postData
 			table.active = True
 			table.enterprise = request.user.profile.enterprise
 			table.save()
 
-	elif postOption == 'add-single':
+			msg = 'success'
 
-		# First Create Unique Barcode ID
-		barcodeID = barcode_create(request)
-		barcodeID = json.loads(barcodeID.content.decode('ascii'))
-		barcodeID = barcodeID['barcode']
-		barcode = Barcode.objects.get(id=barcodeID)
-
-		# Second Create Table Object
-		table = Table()
-		table.barcode = barcode
-		table.name = postData
-		table.active = True
-		table.enterprise = request.user.profile.enterprise
-		table.save()
-
-	data = {'OK':'OK'}
+	data = {'msg':msg}
 	return JsonResponse(data)
 
 def table_update(request):
