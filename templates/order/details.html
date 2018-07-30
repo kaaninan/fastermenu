@@ -204,7 +204,7 @@ function addBudget(id, price, count, option){
 
 function updatePrice(){
 	// Get Item Price for one
-	var price = parseFloat($("#price").html());
+	var price = parseFloat($("#price").html().replace(',','.'));
 	price = extraPrice + price;
 
 	// Add decimal numbers and convert to string
