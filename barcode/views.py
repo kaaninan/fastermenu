@@ -29,7 +29,7 @@ def single_view(request):
 def multiple_view(request):
 
 	# Get Table Name
-	table = Table.objects.filter(enterprise=request.user.profile.enterprise)
+	table = Table.objects.filter(enterprise=request.user.profile.enterprise, active=True)
 
 	context = {'barcodes': table}
 	return render(request, "barcode/qr.html", context)
