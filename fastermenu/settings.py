@@ -165,15 +165,12 @@ USE_TZ = True
 
 
 # Email
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-# EMAIL_HOST = 'smtp.yandex.com'
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'info@exammodule.net'
-# EMAIL_HOST_PASSWORD = 'exam3module'
-# EMAIL_USE_TLS = True
-# DEFAULT_FROM_EMAIL = 'ExamModule <info@exammodule.net>'
+EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
+EMAIL_HOST = 'smtp.yandex.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'support@fastermenu.com'
+EMAIL_HOST_PASSWORD = 'fastermail123'
+DEFAULT_FROM_EMAIL = 'FasterMenu Support <support@fastermenu.com>'
 
 
 

@@ -116,7 +116,7 @@
 												<div class="column width-12">
 													<div class="field-wrapper">
 														<label class="color-charcoal">Kullanıcı Adı/Email:</label>
-														<input type="text" name="username" class="form-username form-element rounded medium" required>
+														<input type="email" name="username" class="form-username form-element rounded medium" required>
 													</div>
 												</div>
 												<div class="column width-12">
@@ -136,7 +136,7 @@
 												</div>
 											</div>
 										</form>
-										<p class="text-small mt-20 mb-0"><a href="#">Şifremi unuttum</a></p>
+										<p class="text-small mt-20 mb-0"><a href="{% url 'enterprise:password_reset' %}">Şifremi unuttum</a></p>
 
 									</div>
 								</div>

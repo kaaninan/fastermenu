@@ -1,5 +1,7 @@
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.views import password_reset
 
 from account.forms import *
 from account.models import *
@@ -59,3 +61,22 @@ def signup_view(request):
 		return redirect('enterprise:index')
 
 	return render(request, 'registration/register.html', {'form': form})
+
+
+from django.core.mail import send_mail
+
+
+
+def forget_password_view(request):
+
+	if  request.user.is_authenticated:
+		return redirect('enterprise:index')
+
+
+	if request.method == 'POST':
+		form = PasswordResetForm({'email': request.POST.get('email','')})
+		if form.is_valid():
+			form.save(request=request, email_template_name='registration/password_reset_email.html', )
+			return redirect('enterprise:password_reset_done')
+	else:
+		return render(request, 'registration/password_reset_form.html', {})
