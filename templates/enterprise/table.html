@@ -154,6 +154,15 @@
 
 			<section class="content">
 
+				{% if messages %}
+					{% for message in messages %}
+						<div class="alert alert-success alert-dismissible" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							{{ message }}
+						</div>
+					{% endfor %}
+				{% endif %}
+
 				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-add">
 					<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Masa Ekle
 				</button>

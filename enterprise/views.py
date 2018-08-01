@@ -183,13 +183,13 @@ def profile_view(request):
 		paw = form.cleaned_data.get('password1')
 		if paw:
 			user.set_password(paw)
-			messages.success(request, "Successful. Your password has been changed.")
+			messages.success(request, "İşlem Başarılı!")
 			user.save()
 			user_login = authenticate(username=request.user.username, password=paw)
 			login(request, user_login)
 
 		else:
-			messages.success(request, "Successful")
+			messages.success(request, "İşlem Başarılı!")
 
 		return redirect('enterprise:profile')
 

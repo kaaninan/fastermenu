@@ -425,6 +425,7 @@ def table_create(request):
 			table.enterprise = request.user.profile.enterprise
 			table.save()
 
+			messages.success(request, "İşlem Başarılı!")
 			msg = 'success'
 
 	data = {'msg':msg}
@@ -449,6 +450,8 @@ def table_update(request):
 	item.active = postStatus
 	item.save()
 
+	messages.success(request, "İşlem Başarılı!")
+
 	data = {'OK':'OK'}
 	return JsonResponse(data)
 
@@ -460,6 +463,8 @@ def table_delete(request):
 	# Get item from database and update
 	item = Table.objects.get(id=postID)
 	item.delete()
+
+	messages.success(request, "İşlem Başarılı!")
 
 	data = {'OK':'OK'}
 	return JsonResponse(data)
@@ -530,7 +535,7 @@ def category_create(request):
 	item.enterprise = enterprise
 	item.save()
 
-	# messages.success(request, "İşlem Başarılı!")
+	messages.success(request, "İşlem Başarılı!")
 
 	data = {'OK':'OK'}
 	return JsonResponse(data)
@@ -550,7 +555,7 @@ def category_update(request):
 	item.name = postName
 	item.save()
 
-	# messages.success(request, "İşlem Başarılı!")
+	messages.success(request, "İşlem Başarılı!")
 
 	data = {'OK':'OK'}
 	return JsonResponse(data)
@@ -568,7 +573,7 @@ def category_delete(request):
 	item = Category.objects.get(id=postID, enterprise=enterprise)
 	item.delete()
 
-	# messages.success(request, "İşlem Başarılı!")
+	messages.success(request, "İşlem Başarılı!")
 
 	data = {'OK':'OK'}
 	return JsonResponse(data)
@@ -697,6 +702,8 @@ def menu_create(request):
 				subCatItem.name = fieldItem['name']
 				subCatItem.price = fieldItem['price']
 				subCatItem.save()
+
+	messages.success(request, "İşlem Başarılı!")
 
 	data = {'OK':'OK'}
 	return JsonResponse(data)
@@ -851,6 +858,9 @@ def menu_update(request):
 				subCatItem.price = fieldItem['price']
 				subCatItem.save()
 
+
+	messages.success(request, "İşlem Başarılı!")
+
 	data = {'OK':'OK'}
 	return JsonResponse(data)
 
@@ -867,7 +877,7 @@ def menu_delete(request):
 	item = Menu.objects.get(id=postID, enterprise=enterprise)
 	item.delete()
 
-	# messages.success(request, "İşlem Başarılı!")
+	messages.success(request, "İşlem Başarılı!")
 
 	data = {'OK':'OK'}
 	return JsonResponse(data)
@@ -902,7 +912,6 @@ def menu_get(request):
 		category['options'] = list(options.values())
 	data['options'] = categories
 
-	# messages.success(request, "İşlem Başarılı!")
 
 	data = {'details': data}
 	return JsonResponse(data)
