@@ -32,7 +32,32 @@ def main_view(request):
 	except Exception as e:
 		return redirect('admin:index')
 
-	context = {}
+
+	# Hesap Tamamlama Adimlari
+	is_check = {}
+	# Check Logo
+	if request.user.profile.enterprise.logo == '':
+		is_check['logo'] = False
+	else:
+		is_check['logo'] = True
+	# Check Category
+	if Category.objects.filter(enterprise=request.user.profile.enterprise).count() == 0:
+		is_check['category'] = False
+	else:
+		is_check['category'] = True	
+	# Check Menu
+	if Menu.objects.filter(enterprise=request.user.profile.enterprise).count() == 0:
+		is_check['menu'] = False
+	else:
+		is_check['menu'] = True	
+	# Check Menu
+	if Table.objects.filter(enterprise=request.user.profile.enterprise).count() == 0:
+		is_check['table'] = False
+	else:
+		is_check['table'] = True
+	
+
+	context = {'is_check':is_check}
 	return render(request, "enterprise/index.html", context)
 
 

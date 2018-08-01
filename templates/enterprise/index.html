@@ -14,7 +14,20 @@
             <section class="content">
                 <div class="row">
                     <div class="col-xs-12">
-                        <div class="box">
+                        <div class="box box-success">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">FasterMenu'yü kullanmaya başlamak için yapmanız gereken adımlar;</h3>
+                            </div>
+                            <div class="box-body">
+                                <ol style="font-size: 20px; line-height: 40px;">
+                                    <li><a href="{% url 'enterprise:profile' %}">{% if is_check.logo %}<i class="icon fa fa-check"></i>{% endif %} Hesap ayarlarına gir ve logonu yükle</a></li>
+                                    <li><a href="{% url 'enterprise:category' %}">{% if is_check.category %}<i class="icon fa fa-check"></i>{% endif %} Kategorilerini oluştur</a></li>
+                                    <li><a href="{% url 'enterprise:category' %}">{% if is_check.menu %}<i class="icon fa fa-check"></i>{% endif %} Menülerini ekle</a></li>
+                                    <li><a href="{% url 'enterprise:table' %}">{% if is_check.table %}<i class="icon fa fa-check"></i>{% endif %} Masalarını ekle</a></li>
+                                    <li><a href="{% url 'barcode:multiple' %}" target="_blank">QR kodlarını yazdır</a></li>
+                                    <li><a href="{% url 'enterprise:order' %}">Gelen siparişleri takip et</a></li>
+                                </ol>
+                            </div>
                         </div>
                     </div>
                 </div>
