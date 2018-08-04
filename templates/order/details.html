@@ -174,7 +174,7 @@ function addBudget(id, price, count, option){
 
   var serialized = $.param({id: id, price: price, option: optionParsed, count: count, displayAlert: true});
 
-  console.log(typeof(optionParsed));
+  console.log(serialized);
 
   request = $.ajax({
         url: "{% url 'api:cart_add' %}",
@@ -286,7 +286,7 @@ $(document).ready(function(){
     // Get Menu Details
 
     var productId = parseInt($('#productId').html());
-    var productPrice = parseFloat($('span#priceInner').html());
+    var productPrice = parseFloat($('span#priceInner').html().replace(',','.'));
     var productCount = parseInt($('span#count').html());
 
     
