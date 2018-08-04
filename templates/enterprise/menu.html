@@ -119,6 +119,12 @@
 							<div class="box-body table-responsive no-padding">
 
 								<table class="table table-hover">
+									{% if menus|length == 0 %}
+										<tr>
+											<th>Şu anda hiç menü oluşturmadınız!</th>
+										</tr>
+									{% endif %}
+									{% if menus|length != 0 %}
 									<tr style="font-size: 1.5rem;">
 										<th>#</th>
 										<th>Ürün Adı</th>
@@ -143,6 +149,7 @@
 										</td>
 									</tr>
 									{% endfor %}
+									{% endif %}
 
 								</table>
 							</div>

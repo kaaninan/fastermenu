@@ -31,7 +31,12 @@
 
 						<div class="box">
 							<div class="box-body table-responsive no-padding">
-								<table class="table table-hover">
+								<table class="table table-hover" v-show="items.length == 0">
+									<tr>
+										<th>Şu anda hiç siparişiniz yok!</th>
+									</tr>
+								</table>
+								<table class="table table-hover" v-show="items.length > 0">
 									<tr style="font-size: 1.5rem;">
 										<th>#</th>
 										<th>Masa</th>
