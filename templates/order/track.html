@@ -12,24 +12,26 @@
 
 		<hr>
 
-		<h5>{{ line.enterprise }}</h5>
-		<h5>{{ line.table }}</h5>
+		<h5>{{ line.enterprise }} - Masa {{ line.table }}</h5>
 
 		<hr>
 
 		<h2>Siparis</h2>
+
+		<b>Siparis Zamani: </b> <span id="time"></span><br>
+		<b>Toplam Fiyat: </b> {{ line.totalPrice }}<br>
 		
 		{% for item in orders %}
 
 			{{ item.count }} tane {{ item.menu.name }} - {{ item.optionsReadable }} - 
-			{{ item.totalPrice }} TL
+			{{ item.totalPrice|floatformat:2 }} TL
 
 			<br>
 
 		{% endfor %}
 
-		<b>Toplam Fiyat: </b> {{ line.totalPrice }}<br>
-		<b>Siparis Zamani: </b> <span id="time"></span><br>
+		
+		
 
 	</div>
 </div>
@@ -43,14 +45,14 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
-		var time = "{{ line.orderDate|date:'Ymd His' }}";
-		var timeSpend = moment(String(time)).locale('tr').fromNow();
-		$('#time').html(timeSpend);
-
 		getLineStatus();
 	});
 
 	function getLineStatus(){
+
+		var time = "{{ line.orderDate|date:'Ymd His' }}";
+		var timeSpend = moment(String(time)).locale('tr').fromNow();
+		$('#time').html(timeSpend);
 
 		// CSRF Token for Django
 		$.ajaxSetup({
