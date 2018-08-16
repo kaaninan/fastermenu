@@ -182,17 +182,12 @@ function addBudget(id, price, count, option){
         data: serialized
     });
 
-    // Callback handler that will be called on success
     request.done(function (response, textStatus, jqXHR){
-        // Log a message to the console
-        console.log("Hooray, it worked!");
         window.location.href = "{% url 'order:index' %}";
         return false;
     });
 
-    // Callback handler that will be called on failure
     request.fail(function (jqXHR, textStatus, errorThrown){
-        // Log the error to the console
         console.error(
             "The following error occurred: "+
             textStatus, errorThrown
@@ -264,11 +259,19 @@ $(document).ready(function(){
   // ------------ DROPDOWN ------------------------------
 
   // When Clicked Dropdown Options
-  $("label.container-radio").mousedown(function (e) {
-  	var element = $(this);
-  	var d = element.children().attr('id');
-  	var extra = parseFloat(element.find("#price").html());
-  	extraPrice = extra;
+  $("label.container-radio").click(function (e) {
+    var tempPrice = 0;
+    $("label.container-radio").each(function(index, element){
+      // Get selected radio items
+      if($(element).find('input').prop('checked') == true){
+        // Get price
+        var price = parseFloat($(element).find("#price").html().replace(',','.'));
+        console.log(price);
+        tempPrice += price;
+      }
+    });
+  	
+  	extraPrice = tempPrice;
   	updatePrice();
   });
 
