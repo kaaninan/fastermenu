@@ -16,6 +16,7 @@ class TableAdmin(admin.ModelAdmin):
     list_display = ['enterprise', 'barcode', 'name']
     list_display_links = ['enterprise', 'barcode', 'name']
     search_fields = ['name']
+    list_filter = ['enterprise']
 
     class Meta:
         model = Table

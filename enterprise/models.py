@@ -38,8 +38,8 @@ class Log(models.Model):
     barcode_active = models.BooleanField(default=False)
     table_valid = models.BooleanField(default=False)
     table_active = models.BooleanField(default=False)
-    table = models.ForeignKey(Table, on_delete=models.SET_NULL, null=True)
-    enterprise = models.ForeignKey(Enterprise, on_delete=models.SET_NULL, null=True)
+    table = models.ForeignKey(Table, on_delete=models.SET_NULL, null=True, blank=True)
+    enterprise = models.ForeignKey(Enterprise, on_delete=models.SET_NULL, null=True, blank=True)
     scanned = models.DateTimeField(editable=False)
 
     def save(self, *args, **kwargs):
