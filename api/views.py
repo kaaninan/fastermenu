@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, QueryDict
 from django.core import serializers
 from django.contrib import messages
 import json, pickle, uuid, ast
@@ -914,5 +914,53 @@ def menu_get(request):
 
 
 	data = {'details': data}
+	return JsonResponse(data)
+
+
+
+# ================================= BIOT ==================================================
+
+def biot_order(request):
+
+	# Get Post Parameters
+	postEnterprise = request.GET.get('enterprise', '')
+	postSource = request.GET.get('source', '')
+
+	print(postEnterprise)
+
+	# Get Enterprise
+	enterprise = Enterprise.objects.get(id=postEnterprise)
+
+	# Get Table
+	table = Table.objects.get(id=postSource, enterprise=enterprise)
+
+	# Get Selected Menu
+	# menu = Menu.objects.get(enterprise=enterprise, id=int(postSource))
+
+	# Create Shopping List
+	productId = request.POST.get('id', '')
+	productCount = request.POST.get('count', '')
+	productPrice = request.POST.get('price', '')
+	productOptions = request.POST.get('option', '')
+
+
+	# This is example menu
+	dict = {'id': '239', 'count': '1', 'price':'10', 'option':'-1'}
+	request.session['enterprise'] = postEnterprise
+	request.session['table'] = postSource
+	qdict = QueryDict('', mutable=True)
+	qdict.update(dict)
+	request.POST = qdict
+
+	# Add Cart & Session
+	cart_add(request)
+
+	# Line Add
+	line_id = line_add(request)
+
+	# Delete Shopping List from Session
+	cart_session_delete(request)
+
+	data = {'status': 'success'}
 	return JsonResponse(data)
 
