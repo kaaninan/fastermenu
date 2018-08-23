@@ -35,11 +35,11 @@
 			En kısa zamanda müsait olan garsonlarımız siparişinizi size ulaştıracaktır.
 			<br><br>
 			Siparişinizi düzenlemek isterseniz <span>30</span> saniye içerisinde yapabilirsiniz.</div>
-		<a href="{% url 'order:track' id=line_id %}">
+		<a href="{% url 'order:track' id=line.id %}">
 			<div class="button style-gray">Siparişini Takip Et</div>
 		</a>
 		<hr>
-		<a href="{% url 'order:track' id=line_id %}">
+		<a href="{% url 'order:cart' %}?edit=true&line={{line.id}}">
 			<div class="button style-orange">Siparişini Düzenle</div>
 		</a>
 		<a href="#">
@@ -113,8 +113,7 @@
 		e.preventDefault();
 		var btn = $(e.currentTarget);
 		btn.prop('disabled', true).html("Bekleyin...");
-		id = '{{ line_id }}';
-		console.log(id);
+		id = '{{ line.id }}';
 		deleteLine(id);
 	});
 
@@ -126,9 +125,10 @@
 		    
 		    $('.desc_sub span').html(counter);
 
-		    if (counter == 5) {
-		        // Display a login box
+		    if (counter == 0) {
 		        clearInterval(interval);
+		        window.location.href = "{% url 'order:track' id=line.id %}";
+				return false;
 		    }
 		}, 1000);
 	});

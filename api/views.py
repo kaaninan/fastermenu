@@ -51,6 +51,7 @@ def cart_add(request):
 		for product in productList:
 			# product = json.loads(product)
 			if product['id'] == menu['id'] and product['options'] == menu['options']:
+
 				# Edit Already Saved Product Count
 				product['count'] = product['count'] + menu['count']
 				product['totalPrice'] = float(product['price']) * product['count']
@@ -138,7 +139,6 @@ def cart_count(request):
 	if "cart" in request.session:
 		result = request.session["cart"]
 		for item in result:
-			print(item)
 			count += item['count']
 
 	else:
@@ -195,16 +195,23 @@ def cart_update_count(request):
 		request.session['cart'] = newList
 
 
-	data = {'OK':'OK'}
+	data = {'status':'success'}
 	return JsonResponse(data)
 
 def cart_session_delete(request):
 	# Delete Shopping Cart on session
 	if "cart" in request.session:
 		del request.session['cart']
-		data = {'result':'success'}
-	else:
-		data = {'result':'nothing'}
+	
+	data = {'result':'success'}
+	return JsonResponse(data)
+
+
+def cart_line_delete(request):
+	if "line" in request.session:
+		del request.session['line']
+	
+	data = {'result':'success'}
 	return JsonResponse(data)
 
 
@@ -252,10 +259,8 @@ def line_add(request):
 				op_object = MenuSubCategoryOption.objects.get(id=op)
 				op_type = op_object.subMenu.type
 				if op_type == 'option':
-					print(op_object)
 					orderListOption.append(op_object)
 				elif op_type == 'dropadd':
-					print(op_object)
 					orderListDropadd.append(op_object)
 
 			if len(orderListOption) != 0:
@@ -293,9 +298,11 @@ def line_add(request):
 
 def line_delete(request):
 	item = request.POST.get('id','')
+	edit = request.POST.get('edit','')
 	data = get_object_or_404(Line, id=item)
 	data.delete()
-	request.session['deleteLine'] = 'success'
+	if(edit == ''):
+		request.session['deleteLine'] = 'success'
 	return JsonResponse({'status':'success'})
 
 def line_get(request):
@@ -339,7 +346,6 @@ def line_get_cash(request):
 				menu = Menu.objects.get(id=orderItem['menu_id'])
 				orderItem['name'] = menu.name
 			except Exception as e:
-				# print('ERROR')
 				orderItem['name'] = ''
 
 			item['order'].append(orderItem)
@@ -703,7 +709,6 @@ def menu_create(request):
 			subCat.save()
 
 			for fieldItem in optionItem['fields']:
-				print(fieldItem['name'])
 				subCatItem = MenuSubCategoryOption()
 				subCatItem.subMenu = subCat
 				subCatItem.name = fieldItem['name']
@@ -933,8 +938,6 @@ def biot_order(request):
 	postEnterprise = request.GET.get('enterprise', '')
 	postSource = request.GET.get('source', '')
 
-	print(postEnterprise)
-
 	# Get Enterprise
 	enterprise = Enterprise.objects.get(id=postEnterprise)
 
@@ -970,4 +973,3 @@ def biot_order(request):
 
 	data = {'status': 'success'}
 	return JsonResponse(data)
-

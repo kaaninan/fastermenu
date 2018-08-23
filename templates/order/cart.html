@@ -198,25 +198,18 @@
 
 	  var serialized = $.param({id: id, price: price, option: option, count: count});
 
-	  console.log(serialized);
-
 	  request = $.ajax({
 			url: "{% url 'api:cart_delete' %}",
 			type: "post",
 			data: serialized
 		});
 
-		// Callback handler that will be called on success
 		request.done(function (response, textStatus, jqXHR){
-			// Log a message to the console
-			console.log("Hooray, it worked!");
 			window.location.href = "{% url 'order:cart' %}";
 			return false;
 		});
 
-		// Callback handler that will be called on failure
 		request.fail(function (jqXHR, textStatus, errorThrown){
-			// Log the error to the console
 			console.error(
 				"The following error occurred: "+
 				textStatus, errorThrown
@@ -250,7 +243,6 @@
 
 	  var serialized = $.param({id: id, price: price, option: option, count: count});
 
-	  console.log(serialized);
 
 	  request = $.ajax({
 			url: "{% url 'api:cart_update_count' %}",
@@ -258,18 +250,13 @@
 			data: serialized
 		});
 
-		// Callback handler that will be called on success
 		request.done(function (response, textStatus, jqXHR){
-			// Log a message to the console
-			console.log("Hooray, it worked!");
 			window.location.href = "{% url 'order:cart' %}";
 			return false;
 
 		});
 
-		// Callback handler that will be called on failure
 		request.fail(function (jqXHR, textStatus, errorThrown){
-			// Log the error to the console
 			console.error(
 				"The following error occurred: "+
 				textStatus, errorThrown
@@ -278,8 +265,8 @@
 	}
 
 
-	$(document).ready(function(){
 
+	$(document).ready(function(){
 
 		// Sadece modal dialoglar acilinca guncellenir
 		// Sadece modal dialoglardan basilan butonlarin calistirdigi funclarda kullanilir

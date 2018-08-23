@@ -73,7 +73,8 @@ def redirect_view(request, id):
                        table_valid=table_valid, table_active=table_active,
                        enterprise=enterprise, table=table)
 
-    # Delete shopping cart items
+    # Delete shopping cart items, and line
     cart_session_delete(request)
+    cart_line_delete(request)
 
     return redirect('order:index')

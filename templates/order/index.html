@@ -28,7 +28,11 @@
     <div class="col-8 clear">
         <div class="titleDiv">
             <div class="name">{{enterprise.name}}</div>
-            <div class="location">{{enterprise.address}}</div>
+            <div class="location">
+            	{% if enterprise.address %}
+            		{{enterprise.address|truncatechars:20 }}
+            	{% endif %}
+            </div>
             <div class="table"><b>Masa:</b> {{table}}</div>
         </div>
     </div>
@@ -174,9 +178,7 @@ function getBudgetCount(){
 		}
     });
 
-    // Callback handler that will be called on failure
     request.fail(function (jqXHR, textStatus, errorThrown){
-        // Log the error to the console
         console.error(
             "The following error occurred: "+
             textStatus, errorThrown
@@ -217,15 +219,10 @@ function addBudget(id, price){
         data: serialized
     });
 
-    // Callback handler that will be called on success
     request.done(function (response, textStatus, jqXHR){
-        // Log a message to the console
-        console.log("Hooray, it worked!");
     });
 
-    // Callback handler that will be called on failure
     request.fail(function (jqXHR, textStatus, errorThrown){
-        // Log the error to the console
         console.error(
             "The following error occurred: "+
             textStatus, errorThrown
@@ -244,9 +241,9 @@ $(document).ready(function(){
 	getBudgetCount();
 
 
-    $(".fa-plus-circle").click(function(){
+    $(".fa-plus-circle").click(function(e){
 
-    	var element = $(this);
+    	var element = $(e.currentTarget);
 
     	// Go Up One
         var parent = element.parent().get(0);
@@ -256,9 +253,8 @@ $(document).ready(function(){
 		var subCategoryCount = parseInt(element.parent().find("#subCategory").html());
 		var link = element.parent().parent().parent().find('a').attr('href');
 
-		var price = parseFloat($('span#price').html());
+		var price = parseFloat($(element.parents()[2]).find('span#price').html().replace(',','.'));
 
-		console.log(price);
         
 		if (subCategoryCount > 0){
 			// Go Details Page
