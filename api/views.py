@@ -291,6 +291,13 @@ def line_add(request):
 	data = {'line': str(line.id)}
 	return JsonResponse(data)
 
+def line_delete(request):
+	item = request.POST.get('id','')
+	data = get_object_or_404(Line, id=item)
+	data.delete()
+	request.session['deleteLine'] = 'success'
+	return JsonResponse({'status':'success'})
+
 def line_get(request):
 
 	data = list(Line.objects.filter(enterprise=request.user.profile.enterprise).values())

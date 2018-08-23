@@ -122,7 +122,6 @@ body, html{
 	background-size: 20px;
 	-webkit-transition: all 0.4s ease-in-out;
     transition: all 0.4s ease-in-out;
-
 }
 
 .search .searchInput:focus {
@@ -759,48 +758,54 @@ body, html{
 
 
 .complated{
-	position: relative;
-	margin: 0;
-	padding: 0;
+	margin: 4rem 0;
 }
 
 .complated .pic{
-	/*width: 60%;*/
-	width: 7rem;
+	width: 6rem;
 	margin: auto;
 }
 .complated .pic img{
-	width: 7rem;
+	width: 6rem;
 }
-.complated .message{
+.complated .desc{
 	text-align: center;
-	margin-top: 2.8rem;
+	margin: 2rem 0;
 	font-size: 1.2rem;
-	font-weight: bold;
+	font-weight: 600;
 	color: #222222;
 }
-.complated .subMessage{
+.complated .desc_sub{
 	text-align: center;
-	font-size: 0.8rem;
+	margin: 2rem 0;
+	font-size: 1rem;
 	color: #9B9B9B;
-	margin-top: 1rem;
-	padding: 0 2rem;
 }
-.complated a .track{
-	background: #2D2D2D;
+.complated a .button{
+	width: 70%;
+	margin: auto;
 	color: white;
 	font-weight: bold;
 	font-size: 1rem;
 	text-align: center;
-	padding: 20px;
+	padding: 10px;
 	border-radius: 3px;
+	margin-bottom: 1rem;
+	margin-top: 1rem;
 }
+
+.complated a .style-red{ background: red; }
+.complated a .style-gray{ background: #2D2D2D; }
+.complated a .style-green{ background: green; }
+.complated a .style-orange{ background: orange; }
 
 .complated a:hover{
 	text-decoration: none;
 }
 
 
+
+/*
 @media only screen and (min-width: 401px) {
 	.complated .pic{ margin-top: 10rem; }
 	.complated .track{ margin-top: 9rem; }
@@ -819,3 +824,4 @@ body, html{
 
 
 
+*/

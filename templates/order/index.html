@@ -5,9 +5,15 @@
 
 <div class="container-index">
 
-{% if addedState %}
+{% if state.added %}
 <div class="alert alert-primary fade show alert-main" id="success-alert" style="text-align: center; padding: 15px 0;">
 	<strong>Sepete Eklendi!</strong>
+</div>
+{% endif %}
+
+{% if state.deleteLine %}
+<div class="alert alert-primary fade show alert-main" id="success-alert" style="text-align: center; padding: 15px 0;">
+	<strong>Siparişiniz Silindi!</strong>
 </div>
 {% endif %}
 

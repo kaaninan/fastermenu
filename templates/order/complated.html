@@ -3,15 +3,136 @@
 
 {% block body %}
 
-<div class="row complated">
-    <div class="col-12">
-    	<div class="pic"><img src="{% static 'img/complated.png' %}"></div>
-        <div class="message">Siparişiniz başarıyla alındı!</div>
-        <div class="subMessage">En kısa zamanda müsait olan garsonlarımız siparişinizi size ulaştıracaktır. Bizi kullandığınız için teşekkür ederiz :)</div>
-        <a href="{% url 'order:track' id=line_id %}">
-            <div class="track">SİPARİŞİNİ TAKİP ET</div>
-        </a>
-    </div>
+<!-- Delete Modal -->
+<div class="modal fade" id="modal-delete">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h4 class="modal-title">
+					<div id="modal-delete-title">Siparişi Sil</div>
+				</h4>
+			</div>
+
+			<div class="modal-body">
+				<div id="modal-delete-body">Siparişiniz sistemden silinecektir. Onaylıyor musunuz?</div>
+			</div>
+			
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger btn-block" id="button-delete">Sil</button>
+			</div>
+
+		</div>
+	</div>
 </div>
+
+
+<div class="row complated">
+	<div class="col-12 clear">
+		<div class="pic"><img src="{% static 'img/complated.png' %}"></div>
+		<div class="desc">Siparişiniz başarıyla alındı!</div>
+		<div class="desc_sub">
+			En kısa zamanda müsait olan garsonlarımız siparişinizi size ulaştıracaktır.
+			<br><br>
+			Siparişinizi düzenlemek isterseniz <span>30</span> saniye içerisinde yapabilirsiniz.</div>
+		<a href="{% url 'order:track' id=line_id %}">
+			<div class="button style-gray">Siparişini Takip Et</div>
+		</a>
+		<hr>
+		<a href="{% url 'order:track' id=line_id %}">
+			<div class="button style-orange">Siparişini Düzenle</div>
+		</a>
+		<a href="#">
+			<div id="btn-cancel" class="button style-red">İptal Et</div>
+		</a>
+		<br><br><br>
+	</div>
+</div>
+
+
+{% endblock %}
+
+
+{% block js %}
+
+<script type="text/javascript">
+
+	function deleteLine(id){
+
+	  // CSRF Token for Django
+	  $.ajaxSetup({
+		beforeSend: function(xhr, settings) {
+		  function getCookie(name) {
+			var cookieValue = null;
+			if (document.cookie && document.cookie != '') {
+			  var cookies = document.cookie.split(';');
+			  for (var i = 0; i < cookies.length; i++) {
+				var cookie = jQuery.trim(cookies[i]);
+				if (cookie.substring(0, name.length + 1) == (name + '=')) {
+				  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+				  break;
+				}
+			  }
+			}
+			return cookieValue;
+		  }if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+			xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+		  }
+		} 
+	  });
+
+	  // Option List to Json String
+	  var serialized = $.param({id: id});
+
+	  request = $.ajax({
+			url: "{% url 'api:line_delete' %}",
+			type: "post",
+			data: serialized
+		});
+
+		request.done(function (response, textStatus, jqXHR){
+			window.location.href = "{% url 'order:index' %}";
+			return false;
+		});
+
+		request.fail(function (jqXHR, textStatus, errorThrown){
+			if(errorThrown == 'Not Found'){
+				window.location.href = "{% url 'order:index' %}";
+				return false;
+			}
+		});
+	}
+
+	// BUTTON UI
+	$('#btn-cancel').click(function(e){
+		e.preventDefault();
+		$('#modal-delete').modal('show');
+	});
+
+	$('#button-delete').click(function(e){
+		e.preventDefault();
+		var btn = $(e.currentTarget);
+		btn.prop('disabled', true).html("Bekleyin...");
+		id = '{{ line_id }}';
+		console.log(id);
+		deleteLine(id);
+	});
+
+	
+	$(document).ready(function(){
+		var counter = 30;
+		var interval = setInterval(function() {
+		    counter--;
+		    
+		    $('.desc_sub span').html(counter);
+
+		    if (counter == 5) {
+		        // Display a login box
+		        clearInterval(interval);
+		    }
+		}, 1000);
+	});
+
+</script>
 
 {% endblock %}

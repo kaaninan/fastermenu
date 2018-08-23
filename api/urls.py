@@ -17,6 +17,7 @@ urlpatterns = [
 
     # LINE
     url(r'^line_add/$', line_add, name="line_add"),
+    url(r'^line_delete/$', line_delete, name="line_delete"),
     url(r'^line_get/$', line_get, name="line_get"),
     url(r'^line_get_cash/$', line_get_cash, name="line_get_cash"),
     url(r'^line_set_complated/$', line_set_complated, name="line_set_complated"),

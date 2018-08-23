@@ -20,12 +20,22 @@ def main_view(request):
     # Get Menu
     categories = Category.objects.filter(enterprise=enterprise)
 
-    addedState = False
+    state = {}
+
+    state['added'] = False
     if 'added' in request.session:
         status = request.session['added']
         if status == 'success':
-            addedState = True
+            state['added'] = True
             del request.session['added']
+
+
+    state['deleteLine'] = False
+    if 'deleteLine' in request.session:
+        status = request.session['deleteLine']
+        if status == 'success':
+            state['deleteLine'] = True
+            del request.session['deleteLine']
 
 
     for category in categories:
@@ -37,7 +47,7 @@ def main_view(request):
 
 
 
-    context = {'enterprise': enterprise, 'table': table, 'categories': categories, 'addedState': addedState}
+    context = {'enterprise': enterprise, 'table': table, 'categories': categories, 'state': state}
     return render(request, "order/index.html", context)
 
 
@@ -116,12 +126,13 @@ def complated_view(request):
     enterprise = get_object_or_404(Enterprise, id=sEnterprise)
     table = get_object_or_404(Table, id=sTable)
 
-    # Add Line and Get Line ID
+    # # Add Line and Get Line ID
     line_id = line_add(request)
     line_id = json.loads(line_id.content.decode('ascii'))
     line_id = line_id['line']
+    # line_id = 97
 
-    # Delete Shopping List from Session
+    # # Delete Shopping List from Session
     cart_session_delete(request)
 
 
