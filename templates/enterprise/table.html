@@ -13,7 +13,9 @@
 
 				<div class="modal-body" style="text-align: center">
 					
-					<img id="qrCode">
+					<a id="qrLink" target="_blank">
+						<img id="qrCode">
+					</a>
 
 				</div>
 				
@@ -441,7 +443,9 @@
 
 				selectedID = itemID;
 				
+
 				$('#print').attr('href',`{% url 'barcode:single' %}?barcode=`+itemBarcode);
+				$('#qrLink').attr('href','https://app.fastermenu.com/redirect/'+itemBarcode);
 				$('#qrCode').attr('src','https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://app.fastermenu.com/redirect/'+itemBarcode);
 
 				$('#modal-qr').modal('show');
