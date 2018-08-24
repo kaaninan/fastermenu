@@ -34,7 +34,7 @@
 		<div class="desc_sub">
 			En kısa zamanda müsait olan garsonlarımız siparişinizi size ulaştıracaktır.
 			<br><br>
-			Siparişinizi düzenlemek isterseniz <span>30</span> saniye içerisinde yapabilirsiniz.</div>
+			Siparişinizi düzenlemek isterseniz <span>-</span> saniye içerisinde yapabilirsiniz.</div>
 		<a href="{% url 'order:track' id=line.id %}">
 			<div class="button style-gray">Siparişini Takip Et</div>
 		</a>
@@ -118,18 +118,35 @@
 	});
 
 	
+	// Count down for edit & delete order
 	$(document).ready(function(){
-		var counter = 30;
-		var interval = setInterval(function() {
-		    counter--;
-		    
-		    $('.desc_sub span').html(counter);
+		// Get orderDate
+		var orderDate = `{{line.orderDate|date:'Ymd His'}}`;
+		var order = moment(orderDate, 'YYYYMMDD HHmmss');
 
-		    if (counter == 0) {
-		        clearInterval(interval);
-		        window.location.href = "{% url 'order:track' id=line.id %}";
-				return false;
-		    }
+		// 35 SECOND wait time
+		var orderLimit = order.add(35, 'seconds');
+		
+		var interval = setInterval(function() {
+			var now = moment();
+			var diff = moment.duration(orderLimit.diff(now, 'seconds'));
+
+			// Geri sayim
+			if(diff._milliseconds < 30){	
+				$('.desc_sub span').html(diff._milliseconds);
+
+			    if (diff._milliseconds <= 0) {
+			        clearInterval(interval);
+			        window.location.href = "{% url 'order:track' id=line.id %}";
+					return false;
+			    }
+			}else if(diff._milliseconds >= 30){
+				$('.desc_sub span').html('30');
+
+			}else{
+				$('.desc_sub span').html('-');
+			}
+
 		}, 1000);
 	});
 

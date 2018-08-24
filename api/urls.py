@@ -12,7 +12,6 @@ urlpatterns = [
     url(r'^cart_show/$', cart_show, name="cart_show"),
     url(r'^cart_count/$', cart_count, name="cart_count"),
     url(r'^cart_update_count/$', cart_update_count, name="cart_update_count"),
-    url(r'^cart_session_delete/$', cart_session_delete, name="cart_session_delete"),
     
 
     # LINE

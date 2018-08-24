@@ -107,8 +107,6 @@ def cart_view(request):
 
 	cartSession = request.session.get('cart', '')
 
-	cart = []
-
 	cartTotal = 0.0
 
 
@@ -147,61 +145,60 @@ def complated_view(request):
 	enterprise = get_object_or_404(Enterprise, id=sEnterprise)
 	table = get_object_or_404(Table, id=sTable)
 
+	sOrder = request.session.get('cart', '')
 
-	# Sayfa yenilenince siparis tekrar veriliyor
-	# Siparisin uzerinden 30sn gecerse bu sayfayi gosterme
+	# If there is a valid cart, Line will be updated
+	# line = None 
 
-	# Daha once siparis verdiyse bu sayfayi gosterme
-	# BUG: YENI SIPARIS VERINCE DIREK ESKI SIPARISE YONLENDIRIYOR
-	# if "line" in request.session:
-	# 	# Siparis tarihini session'dan al
-	# 	orderDate_s = request.session['line']['orderDate']
-	# 	# str to datetime
-	# 	orderDate = datetime.datetime.strptime(orderDate_s, '%Y-%m-%d %H:%M:%S')
-	# 	# Simdi
-	# 	now = datetime.datetime.now()
-	# 	# Farki hesapla
-	# 	diff = now - orderDate
-	# 	diff_seconds = int(diff.total_seconds())
-	# 	# -- BU HESAPLAMA SU AN KULLANILMAYACAK --
+	if(sOrder == ''):
+		# Refresh or Nothing
+		# Check Last Line
+		# Was it given in 30 seconds?
+		if "line" in request.session:
+			# Son siparis tarihini session'dan al
+			orderDate_s = request.session['line'][-1]['orderDate']
+			# str to datetime
+			orderDate = datetime.datetime.strptime(orderDate_s, '%Y-%m-%d %H:%M:%S')
+			# Simdi
+			now = datetime.datetime.now()
+			# Farki hesapla
+			diff = now - orderDate
+			diff_seconds = int(diff.total_seconds())
+			
+			# If just ordered, show page in 30 seconds
+			if diff_seconds <= 30:
+				line = get_object_or_404(Line, id=request.session['line'][-1]['id'])
 
-	# 	# redirect
-	# 	return redirect('order:track', id=request.session['line']['id'])
-	# else:
-	# 	pass
+			# Else redirect track
+			else:
+				# redirect track
+				return redirect('order:track', id=request.session['line'][-1]['id'])
 
+		else:
+			# There is no line & order here
+			return redirect('order:index')
 
-	# Add Line and Get Line ID
-	# line_id = line_add(request)
-	# line_id = json.loads(line_id.content.decode('ascii'))
-	# line_id = line_id['line']
-
-
-	# Get Line
-	# line = get_object_or_404(Line, id=line_id)
-
-	line = get_object_or_404(Line, id=38)
-
-	print(request.POST)
-
-
-	#  --- Set ['line'] session for see the old and current orders ---
-	line_list = list()
-
-	# Get old list
-	if 'line' in request.session:
-		line_list = request.session['line']
-
-		for item in line_list:
-			a = int(request.POST.get('line','-1'))
-			print(a)
-			print(item)
-			print(type(item))
-			# if item['id'] == a:
-				# print('ADDED BEFORE')
-
+	
+	# If coming from cart page and have orders
 	else:
+		# Add Line and Get Line ID
+		line_id = line_add(request)
+		line_id = json.loads(line_id.content.decode('ascii'))
+		line_id = line_id['line']
 
+		# Get Line
+		line = get_object_or_404(Line, id=line_id)
+
+		# Add Line to Session
+
+		# Get old list and append if exist, otherwise create new list
+		line_list = list()
+		if 'line' in request.session:
+			line_list = request.session['line']
+
+			for item in line_list:
+				print(item)
+		
 		line_serialize = {}
 		local_d = localtime(line.orderDate)
 		date_normal = local_d.strftime('%Y-%m-%d %H:%M:%S')
@@ -212,30 +209,9 @@ def complated_view(request):
 		request.session['line'] = line_list
 
 
-
-	# ADD LINE ID TO POST
-
-	
-	
-
-	mutable = request.POST._mutable
-	request.POST._mutable = True
-	
-	dict = {'line': 38}
-	qdict = QueryDict('', mutable=True)
-	qdict.update(dict)
-	request.POST = qdict
-
-	request.POST._mutable = mutable
-
-	print(request.POST)
-
-	# request.GET['line'] = 38
-
-
-	# Delete Shopping List from Session
-	# request.session['backup'] = request.session['cart']
-	# cart_session_delete(request)
+		# Delete Shopping List from Session
+		request.session['backup'] = request.session['cart']
+		session_delete(request, 'cart')
 
 
 	context = {'enterprise': enterprise, 'table': table, 'enterprise': enterprise, 'line': line}

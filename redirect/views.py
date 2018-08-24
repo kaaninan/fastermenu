@@ -32,8 +32,10 @@ def redirect_view(request, id):
     response_data = list()
 
     # Delete Old Session
-    request.session['enterprise'] = None
-    request.session['table'] = None
+    session_delete(request, 'enterprise')
+    session_delete(request, 'table')
+    session_delete(request, 'cart')
+    session_delete(request, 'line')
 
     # Get Barcode from database
     barcode = Barcode.objects.filter(barcode=id)
@@ -73,8 +75,5 @@ def redirect_view(request, id):
                        table_valid=table_valid, table_active=table_active,
                        enterprise=enterprise, table=table)
 
-    # Delete shopping cart items, and line
-    cart_session_delete(request)
-    cart_line_delete(request)
 
     return redirect('order:index')

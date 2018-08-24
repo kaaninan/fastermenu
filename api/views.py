@@ -207,9 +207,18 @@ def cart_session_delete(request):
 	return JsonResponse(data)
 
 
-def cart_line_delete(request):
-	if "line" in request.session:
+def session_delete(request, option):
+	if "line" in request.session and option == 'line':
 		del request.session['line']
+
+	if "cart" in request.session and option == 'cart':
+		del request.session['cart']
+
+	if "enterprise" in request.session and option == 'enterprise':
+		del request.session['enterprise']
+
+	if "table" in request.session and option == 'table':
+		del request.session['table']
 	
 	data = {'result':'success'}
 	return JsonResponse(data)
@@ -969,7 +978,7 @@ def biot_order(request):
 	line_id = line_add(request)
 
 	# Delete Shopping List from Session
-	cart_session_delete(request)
+	session_delete(request, 'cart')
 
 	data = {'status': 'success'}
 	return JsonResponse(data)
