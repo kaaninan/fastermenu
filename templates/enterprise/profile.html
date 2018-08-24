@@ -3,7 +3,7 @@
 {% load bootstrap3 %}
 
 {% block head %}
-<link href="{% static 'plugins/rcrop/rcrop.min.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/cropperjs/dist/cropper.css">
 {% endblock %}
 
 {% block body %}
@@ -17,18 +17,17 @@
                 <h4 class="modal-title">Logo Yükleme</h4>
             </div>
 
-            <form id="add-form" method="post" enctype="multipart/form-data">
-                <div class="modal-body">
-                    
+            <div class="modal-body">
+                <div style="position: relative">
                     <img id="logo_temp" src="" style="max-width: 100%;">
-
                 </div>
-                
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" id="btn-cancel" style="width: 49%; float: left">Vazgeç</button>
-                    <button type="button" class="btn btn-success" id="btn-save" style="width: 49%; float: left;">Tamam</button>
-                </div>
-            </form>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="btn-cancel" style="width: 49%; float: left">Vazgeç</button>
+                <button type="button" class="btn btn-success" id="btn-save" style="width: 49%; float: left;">Tamam</button>
+            </div>
+        
         </div>
     </div>
 </div>
@@ -73,6 +72,9 @@
                                 <div class="row">
                                     <div class="col-md-12">
 
+                                        {{ form_enterprise.errors }}
+                                        {{ form.errors }}
+
                                         <div class="box-body">
                                             {% csrf_token %}
                                             <h2>Firma Bilgileri</h2><br>
@@ -105,24 +107,21 @@
 {% endblock %}
 
 {% block script %}
-<script src="{% static 'plugins/rcrop/rcrop.min.js' %}"></script>
+<script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
+<script src="{% static 'plugins/jquery-cropper/jquery-cropper.min.js' %}"></script>
 
 <script type="text/javascript">
 
     $(document).ready(function(){
 
         var cropper = null;
-        
-        var result = document.querySelector("#logo-crop-content"),
-            img_result = document.querySelector(".img-result"),
-            img_w = document.querySelector(".img-w"),
-            img_h = document.querySelector(".img-h"),
-            options = document.querySelector(".options"),
-            save = document.querySelector(".save"),
-            cropped = document.querySelector(".cropped"),
-            dwn = document.querySelector(".download"),
-            upload = document.querySelector("#id_logo"),
-            cropper = "";
+
+        var x;
+        var y;
+        var width;
+        var height;
+
+        var upload = document.querySelector("#id_logo");
 
         upload.addEventListener("change", function (e) {
           if (e.target.files.length) {
@@ -134,16 +133,37 @@
 
                 document.getElementById("logo_temp").src = e.target.result;
 
-                cropper = $('#logo_temp').rcrop({
-                    grid : true,
-                    preserveAspectRatio: true,
-                    minSize: [20, 20],
+                /* SCRIPTS TO HANDLE THE CROPPER BOX */
+                var $image = $("#logo_temp");
+                var cropBoxData;
+                var canvasData;
+                $("#modal-logo").on("shown.bs.modal", function () {
+                    cropper = $image.cropper({
+                                viewMode: 3,
+                                aspectRatio: 1/1,
+                                minCropBoxWidth: 100,
+                                minCropBoxHeight: 100,
+                            ready: function () {
+                                $image.cropper("setCanvasData", canvasData);
+                                $image.cropper("setCropBoxData", cropBoxData);
+                            },
+                            crop(event) {
+                                x = event.detail.x;
+                                y = event.detail.y;
+                                width = event.detail.width;
+                                height = event.detail.height;
+                              },
+                    });
+
+                }).on("hidden.bs.modal", function () {
+                    cropBoxData = $image.cropper("getCropBoxData");
+                    canvasData = $image.cropper("getCanvasData");
+                    $image.cropper("destroy");
                 });
+
               }
             };
             reader.readAsDataURL(e.target.files[0]);
-
-            // cropper.getCroppedCanvas().toDataURL('image/jpeg')
           }
         });
 
@@ -154,30 +174,13 @@
 
         $('#btn-save').click(function(e){
             $('#modal-logo').modal('hide');
-            $('#id_logo_x').val($('#logo_temp').rcrop('getValues').x);
-            $('#id_logo_y').val($('#logo_temp').rcrop('getValues').y);
-            $('#id_logo_width').val($('#logo_temp').rcrop('getValues').width);
-            $('#id_logo_height').val($('#logo_temp').rcrop('getValues').height);
+
+            $('#id_logo_x').val(parseInt(x));
+            $('#id_logo_y').val(parseInt(y));
+            $('#id_logo_width').val(parseInt(width));
+            $('#id_logo_height').val(parseInt(height));
         });
 
-        // save on click
-        // save.addEventListener("click", function (e) {
-        //   e.preventDefault();
-        //   // get result to data uri
-        //   var imgSrc = cropper.
-        //   getCroppedCanvas({
-        //     width: img_w.value // input value
-        //   }).
-        //   toDataURL();
-        //   // remove hide class of img
-        //   cropped.classList.remove("hide");
-        //   img_result.classList.remove("hide");
-        //   // show image cropped
-        //   cropped.src = imgSrc;
-        //   dwn.classList.remove("hide");
-        //   dwn.download = "imagename.png";
-        //   dwn.setAttribute("href", imgSrc);
-        // });
 });
 
 </script>
