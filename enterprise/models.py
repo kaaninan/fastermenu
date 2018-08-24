@@ -8,7 +8,7 @@ class Enterprise(models.Model):
     name = models.CharField(max_length=120, verbose_name="Name")
     # perma = models.CharField(unique=True, max_length=50, verbose_name="Perma")
     address = models.CharField(max_length=200, verbose_name="Address", null=True, blank=True)
-    size = models.IntegerField(null=True, verbose_name="Size")
+    size = models.IntegerField(null=True, blank=True, verbose_name="Size")
     logo = models.ImageField(null=True, blank=True, upload_to='logos/')
     active = models.BooleanField(verbose_name="Active", default=True)
 

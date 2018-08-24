@@ -2,7 +2,37 @@
 {% load static %}
 {% load bootstrap3 %}
 
+{% block head %}
+<link href="{% static 'plugins/rcrop/rcrop.min.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block body %}
+
+
+<!-- Modal: Logo Crop Helper -->
+<div class="modal fade" id="modal-logo">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Logo Yükleme</h4>
+            </div>
+
+            <form id="add-form" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    
+                    <img id="logo_temp" src="" style="max-width: 100%;">
+
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="btn-cancel" style="width: 49%; float: left">Vazgeç</button>
+                    <button type="button" class="btn btn-success" id="btn-save" style="width: 49%; float: left;">Tamam</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="content-wrapper">
 
     <div class="container">
@@ -72,4 +102,84 @@
     </div>
 
 </div>    
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'plugins/rcrop/rcrop.min.js' %}"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+
+        var cropper = null;
+        
+        var result = document.querySelector("#logo-crop-content"),
+            img_result = document.querySelector(".img-result"),
+            img_w = document.querySelector(".img-w"),
+            img_h = document.querySelector(".img-h"),
+            options = document.querySelector(".options"),
+            save = document.querySelector(".save"),
+            cropped = document.querySelector(".cropped"),
+            dwn = document.querySelector(".download"),
+            upload = document.querySelector("#id_logo"),
+            cropper = "";
+
+        upload.addEventListener("change", function (e) {
+          if (e.target.files.length) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+              if (e.target.result) {
+
+                $('#modal-logo').modal('show');
+
+                document.getElementById("logo_temp").src = e.target.result;
+
+                cropper = $('#logo_temp').rcrop({
+                    grid : true,
+                    preserveAspectRatio: true,
+                    minSize: [20, 20],
+                });
+              }
+            };
+            reader.readAsDataURL(e.target.files[0]);
+
+            // cropper.getCroppedCanvas().toDataURL('image/jpeg')
+          }
+        });
+
+        $('#btn-cancel').click(function(e){
+            $('#modal-logo').modal('hide');
+            $('#id_logo').val('');
+        });
+
+        $('#btn-save').click(function(e){
+            $('#modal-logo').modal('hide');
+            $('#id_logo_x').val($('#logo_temp').rcrop('getValues').x);
+            $('#id_logo_y').val($('#logo_temp').rcrop('getValues').y);
+            $('#id_logo_width').val($('#logo_temp').rcrop('getValues').width);
+            $('#id_logo_height').val($('#logo_temp').rcrop('getValues').height);
+        });
+
+        // save on click
+        // save.addEventListener("click", function (e) {
+        //   e.preventDefault();
+        //   // get result to data uri
+        //   var imgSrc = cropper.
+        //   getCroppedCanvas({
+        //     width: img_w.value // input value
+        //   }).
+        //   toDataURL();
+        //   // remove hide class of img
+        //   cropped.classList.remove("hide");
+        //   img_result.classList.remove("hide");
+        //   // show image cropped
+        //   cropped.src = imgSrc;
+        //   dwn.classList.remove("hide");
+        //   dwn.download = "imagename.png";
+        //   dwn.setAttribute("href", imgSrc);
+        // });
+});
+
+</script>
+
 {% endblock %}
