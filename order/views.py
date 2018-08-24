@@ -23,6 +23,8 @@ def main_view(request):
 	# Get Menu
 	categories = Category.objects.filter(enterprise=enterprise)
 
+	# For notifications (method could be changed)
+
 	state = {}
 
 	state['added'] = False
@@ -49,8 +51,39 @@ def main_view(request):
 		category.menu = menus
 
 
+	# Get Last Orders in Session
+	lastOrders = list()
+	if "line" in request.session:
 
-	context = {'enterprise': enterprise, 'table': table, 'categories': categories, 'state': state}
+		# Get last 3 orders
+		for item in request.session['line'][-3:][::-1]:
+			# Son siparis tarihini session'dan al
+			orderDate_s = item['orderDate']
+			# str to datetime
+			orderDate = datetime.datetime.strptime(orderDate_s, '%Y-%m-%d %H:%M:%S')
+			# Get now
+			now = datetime.datetime.now()
+
+			item['orderDate'] = orderDate
+
+			# Get Orders
+			order = list(Order.objects.filter(line=item['id']).values())
+			item['order'] = []
+			for orderItem in order:
+				try:
+					menu = Menu.objects.get(id=orderItem['menu_id'])
+					item['order'].append(menu.name)
+				except Exception as e:
+					pass
+
+			# If ordered last 24 hours
+			diff = now - orderDate
+			if(diff.total_seconds() < 86400):
+				lastOrders.append(item)
+
+
+
+	context = {'enterprise': enterprise, 'table': table, 'categories': categories, 'state': state, 'orders': lastOrders}
 	return render(request, "order/index.html", context)
 
 
@@ -201,9 +234,10 @@ def complated_view(request):
 		
 		line_serialize = {}
 		local_d = localtime(line.orderDate)
-		date_normal = local_d.strftime('%Y-%m-%d %H:%M:%S')
+		date_string = local_d.strftime('%Y-%m-%d %H:%M:%S')
 		line_serialize['id'] = line.id
-		line_serialize['orderDate'] = date_normal
+		line_serialize['orderDate'] = date_string
+		line_serialize['table'] = table.name
 
 		line_list.append(line_serialize)
 		request.session['line'] = line_list
@@ -236,11 +270,3 @@ def track_view(request, id):
 
 	context = {'enterprise': enterprise, 'table': table, 'line': line, 'orders': orders}
 	return render(request, "order/track.html", context)
-
-
-
-
-
-
-
-

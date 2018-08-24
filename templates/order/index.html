@@ -1,126 +1,202 @@
 {% extends 'order/static/base.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block body %}
 
 <div class="container-index">
 
-{% if state.added %}
-<div class="alert alert-primary fade show alert-main" id="success-alert" style="text-align: center; padding: 15px 0;">
-	<strong>Sepete Eklendi!</strong>
-</div>
-{% endif %}
+	<!-- Notifications -->
 
-{% if state.deleteLine %}
-<div class="alert alert-primary fade show alert-main" id="success-alert" style="text-align: center; padding: 15px 0;">
-	<strong>Siparişiniz Silindi!</strong>
-</div>
-{% endif %}
-
-<div class="row enterprise">
-
-	{% if enterprise.logo %}
-    <div class="col-4 clear">
-        <img src="{{enterprise.logo.url}}">
-    </div>
-
-
-    <div class="col-8 clear">
-        <div class="titleDiv">
-            <div class="name">{{enterprise.name}}</div>
-            <div class="location">
-            	{% if enterprise.address %}
-            		{{enterprise.address|truncatechars:20 }}
-            	{% endif %}
-            </div>
-            <div class="table"><b>Masa:</b> {{table}}</div>
-        </div>
-    </div>
-    {% endif %}
-    
-
-    {% if not enterprise.logo %}
-
-    <div class="col-12">
-        <div class="titleDiv">
-            <div class="name">{{enterprise.name}}</div>
-            <div class="location">Levent</div>
-            <div class="table"><b>Masa:</b> {{table}}</div>
-        </div>
-    </div>
-
-    {% endif %}
-</div>
-
-
-<!-- 
-<div class="row search">
-	<div class="col-12 clear">
-		<input type="search" name="search" class="searchInput" placeholder="Ürün Arayın">
+	{% if state.added %}
+	<div class="alert alert-primary fade show alert-main" id="success-alert" style="text-align: center; padding: 15px 0;">
+		<strong>Sepete Eklendi!</strong>
 	</div>
-</div>
- -->
+	{% endif %}
 
-{% for category in categories %}
+	{% if state.deleteLine %}
+	<div class="alert alert-primary fade show alert-main" id="success-alert" style="text-align: center; padding: 15px 0;">
+		<strong>Siparişiniz Silindi!</strong>
+	</div>
+	{% endif %}
 
-	{% if category.menu.count != 0 %}
+	<!-- END Notifications -->
 
+
+
+	<!-- Enterprise -->
+
+	<div class="row enterprise">
+
+		{% if enterprise.logo %}
+	    <div class="col-4 clear">
+	        <img src="{{enterprise.logo.url}}">
+	    </div>
+
+
+	    <div class="col-8 clear">
+	        <div class="titleDiv">
+	            <div class="name">{{enterprise.name}}</div>
+	            <div class="location">
+	            	{% if enterprise.address %}
+	            		{{enterprise.address|truncatechars:20 }}
+	            	{% endif %}
+	            </div>
+	            <div class="table"><b>Masa:</b> {{table}}</div>
+	        </div>
+	    </div>
+	    {% endif %}
+	    
+
+	    {% if not enterprise.logo %}
+
+	    <div class="col-12">
+	        <div class="titleDiv">
+	            <div class="name">{{enterprise.name}}</div>
+	            <div class="location">Levent</div>
+	            <div class="table"><b>Masa:</b> {{table}}</div>
+	        </div>
+	    </div>
+
+	    {% endif %}
+	</div>
+
+	<!-- END Enterprise -->
+
+
+	<!-- 
+	<div class="row search">
+		<div class="col-12 clear">
+			<input type="search" name="search" class="searchInput" placeholder="Ürün Arayın">
+		</div>
+	</div>
+	 -->
+
+
+	<!-- Last Orders -->
+
+
+	{% if orders %}
+		
 		<div class="row menu-title">
 			<div class="col-12 clear">
 				<div class="head">
-					<div class="name">{{ category.name }}</div>
+					<div class="name" style="color: #2F89F0">Önceki Siparişlerim</div>
 				</div>
 			</div>
 		</div>
 
-		{% for menu in category.menu %}
-		<div class="row menu-item">
-				<div class="col-2 col-sm-1 clear">
-					<div class="add" id="{{ menu.id }}">
-						<!-- For jQuery -->
-						<div id="subCategory" style="display: none;">{{ menu.subcategory.count }}</div>
-						<!-- End -->
-						<i style="display: block" id="plus" class="fas fa-plus-circle"></i>
-						<div style="display: none" id="loader" class="loader"></div>
-						<i id="check" style="display: none" class="fas fa-check"></i>
-					</div>
-				</div>
+		{% for order in orders %}
+
+			<div class="row menu-item">
 
 			
-				<div class="col-7 col-sm-8 clear">
+				<div class="col-9">
 					<div class="record">
-						<a href="{% url 'order:detail' id=menu.id %}">
+						<a href="{% url 'order:track' id=order.id %}">
 							<div class="title">
-								<div class="main">{{ menu.name }}</div>
-								<div class="sub">Seçeceğiniz malzemeler ile</div>
+								<div class="main">
+									{% for item in order.order %}
+										{{ item }}{% if forloop.counter != order.order|length %},
+										{% endif %}
+									{% endfor %}
+								</div>
+								<div class="sub">{{ order.orderDate|naturaltime }} - Masa: {{ order.table }}</div>
 							</div>
 						</a>
 					</div>
 				</div>
 
 				<div class="col-3 clear">
-					<div class="price"><span id="price">{{ menu.price|floatformat:2 }}</span> TL</div>
+					<a href="{% url 'order:track' id=order.id %}">
+						<div class="price">Detay</div>
+					</a>
 				</div>
 
-		</div>
+			</div>
 
 		{% endfor %}
 
 	{% endif %}
 
-{% endfor %}
+	 
+		
+
+
+	<!-- END Last Orders -->
 
 
 
 
-<div class="row no-gutter sepetim">
-	<a href="{% url 'order:cart' %}">
-		<div class="col sepetim-content">
-			<span id="sepetim"></span>
-			<i id="basket" class="fas fa-shopping-basket"></i>
-		</div>
-	</a>
-</div>
+	<!-- Menu -->
+
+
+	{% for category in categories %}
+
+		{% if category.menu.count != 0 %}
+
+			<div class="row menu-title">
+				<div class="col-12 clear">
+					<div class="head">
+						<div class="name">{{ category.name }}</div>
+					</div>
+				</div>
+			</div>
+
+			{% for menu in category.menu %}
+			<div class="row menu-item">
+					<div class="col-2 col-sm-1 clear">
+						<div class="add" id="{{ menu.id }}">
+							<!-- For jQuery -->
+							<div id="subCategory" style="display: none;">{{ menu.subcategory.count }}</div>
+							<!-- End -->
+							<i style="display: block" id="plus" class="fas fa-plus-circle"></i>
+							<div style="display: none" id="loader" class="loader"></div>
+							<i id="check" style="display: none" class="fas fa-check"></i>
+						</div>
+					</div>
+
+				
+					<div class="col-7 col-sm-8 clear">
+						<div class="record">
+							<a href="{% url 'order:detail' id=menu.id %}">
+								<div class="title">
+									<div class="main">{{ menu.name }}</div>
+									<div class="sub">Seçeceğiniz malzemeler ile</div>
+								</div>
+							</a>
+						</div>
+					</div>
+
+					<div class="col-3 clear">
+						<div class="price"><span id="price">{{ menu.price|floatformat:2 }}</span> TL</div>
+					</div>
+
+			</div>
+
+			{% endfor %}
+
+		{% endif %}
+
+	{% endfor %}
+
+
+	<!-- END Menu -->
+
+
+
+	<!-- Shopping Cart -->
+
+	<div class="row no-gutter sepetim">
+		<a href="{% url 'order:cart' %}">
+			<div class="col sepetim-content">
+				<span id="sepetim"></span>
+				<i id="basket" class="fas fa-shopping-basket"></i>
+			</div>
+		</a>
+	</div>
+
+	<!-- END Shopping Cart -->
 
 </div>
 

@@ -35,7 +35,7 @@ def redirect_view(request, id):
     session_delete(request, 'enterprise')
     session_delete(request, 'table')
     session_delete(request, 'cart')
-    session_delete(request, 'line')
+    # session_delete(request, 'line')
 
     # Get Barcode from database
     barcode = Barcode.objects.filter(barcode=id)
