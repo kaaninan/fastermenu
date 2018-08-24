@@ -1,192 +1,85 @@
+{% extends 'registration/static/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
 
-<head>
-	<meta charset="UTF-8" />
-	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0" name="viewport">
+{% block body %}
 
-	<!-- Open Graph -->
-	<meta property="og:title" content="FasterMenu" />
-	<meta property="og:url" content="https://fastermenu.com" />
-	<meta property="og:type" content="website" />
-	<meta property="og:image" content="http://dev.thememountain.com/faulkner/images/portfolio/projects/project-1-1.jpg" />
-	<meta property="og:description" content="QR Kod Sipariş Sistemi FasterMenu" />
+<!-- Content -->
+<div class="content">
 
-	<!-- Twitter Theme -->
-	<meta name="twitter:widgets:theme" content="light">
-	
-	<!-- Title &amp; Favicon -->
-	<title>FasterMenu</title>
-	
-	<link rel="apple-touch-icon" sizes="57x57" href="{% static 'img/favicon/apple-icon-57x57.png' %}">
-	<link rel="apple-touch-icon" sizes="60x60" href="{% static 'img/favicon/apple-icon-60x60.png' %}">
-	<link rel="apple-touch-icon" sizes="72x72" href="{% static 'img/favicon/apple-icon-72x72.png' %}">
-	<link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/favicon/apple-icon-76x76.png' %}">
-	<link rel="apple-touch-icon" sizes="114x114" href="{% static 'img/favicon/apple-icon-114x114.png' %}">
-	<link rel="apple-touch-icon" sizes="120x120" href="{% static 'img/favicon/apple-icon-120x120.png' %}">
-	<link rel="apple-touch-icon" sizes="144x144" href="{% static 'img/favicon/apple-icon-144x144.png' %}">
-	<link rel="apple-touch-icon" sizes="152x152" href="{% static 'img/favicon/apple-icon-152x152.png' %}">
-	<link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/favicon/apple-icon-180x180.png' %}">
-	<link rel="icon" type="image/png" sizes="192x192"  href="{% static 'img/favicon/android-icon-192x192.png' %}">
-	<link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon/favicon-32x32.png' %}">
-	<link rel="icon" type="image/png" sizes="96x96" href="{% static 'img/favicon/favicon-96x96.png' %}">
-	<link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon/favicon-16x16.png' %}">
-	<link rel="manifest" href="{% static 'img/favicon/manifest.json' %}">
-	<meta name="msapplication-TileColor" content="#ffffff">
-	<meta name="msapplication-TileImage" content="{% static 'img/favicon/ms-icon-144x144.png' %}">
-	<meta name="theme-color" content="#ffffff">
+	<!-- Login Section -->
+	<div class="section-block" style="padding: 0; margin: 0; margin-top: 5rem;">
+		<div class="row flex v-align-middle">
+			<div class="column width-6 offset-3">
+				<div>
+					<div class="signup-box box rounded xlarge border-grey-light">
+						<h3>Yeni Hesap Oluştur</h3>
+						<p class="mb-20">Zaten hesabın var mı? <a href="{% url 'enterprise:login' %}" class="no-page-fade">Buraya Tıkla</a></p>
+						
+						<div class="login-form-container">
 
-	<!-- Font -->
-	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700%7CHind+Madurai:400,500&amp;subset=latin-ext" rel="stylesheet">
-		
-	<!-- Css -->
-	<link rel="stylesheet" href="{% static 'registration/css/core.min.css' %}">
-	<link rel="stylesheet" href="{% static 'registration/css/skin.css' %}">
-
-	<!--[if lt IE 9]>
-    	<script type="text/javascript" src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-</head>
-
-<body class="home-page">
-
-	<div class="wrapper">
-		<div class="wrapper-inner">
-
-			<!-- Header -->
-			<header class="header header-fixed">
-				
-				<div class="header-inner">
-					<div class="row nav-bar">
-						<div class="column width-12 nav-bar-inner">
-							
-							<div class="logo">
-								<div class="logo-inner">
-									<a class="no-page-fade" href="https://fastermenu.com"><img src="{% static 'registration/images/logo2.png' %}" alt="FasterMenu Logo" /></a>
-									<a class="no-page-fade" href="https://fastermenu.com"><img src="{% static 'registration/images/logo2.png' %}" alt="FasterMenu Logo" /></a>
-								</div>
+							<div class="form-response show">											
+								{{ form.errors }}
+								{% if form.errors %}
+						            {% for error in form.non_field_errors %}
+						                <div style="color:red; padding-bottom: 5px">
+						                    {{ error|escape }}
+						                </div><br>
+						            {% endfor %}
+						        {% endif %}
 							</div>
 
-							<nav class="navigation nav-block primary-navigation nav-right sub-menu-indicator">
-								<ul>
-									<li>
-										<!-- Button -->
-										<div class="v-align-middle">
-											<a href="contact-style-two.html" class="weight-semi-bold color-green">Yardım</a>
+							<form class="register-form" action="{% url 'enterprise:register' %}" method="post">
+								{% csrf_token %}
+								<div class="row merged-form-elements">
+									<div class="column width-6">
+										<div class="field-wrapper">
+											<label class="color-charcoal">Adınız:</label>
+											<input type="text" name="first_name" class="form-firstname form-element rounded medium" required autocomplete="given-name">
 										</div>
-									</li>
-								</ul>
-							</nav>
-						</div>
-					</div>
-				</div>
-			</header>
-			<!-- Header End -->
-
-
-			<!-- Content -->
-			<div class="content clearfix mt-50">
-
-				<!-- Login Section -->
-				<div class="section-block replicable-content window-height">
-					<div class="row flex v-align-middle">
-						<div class="column width-6 offset-3">
-							<div>
-								<div class="signup-box box rounded xlarge border-grey-light">
-									<h3>Yeni Hesap Oluştur</h3>
-									<p class="mb-20">Zaten hesabın var mı? <a href="{% url 'enterprise:login' %}" class="no-page-fade">Buraya Tıkla</a></p>
-									
-									<div class="login-form-container">
-
-										<div class="form-response show">											
-											{{ form.errors }}
-											{% if form.errors %}
-									            {% for error in form.non_field_errors %}
-									                <div style="color:red; padding-bottom: 5px">
-									                    {{ error|escape }}
-									                </div><br>
-									            {% endfor %}
-									        {% endif %}
+									</div>
+									<div class="column width-6">
+										<div class="field-wrapper">
+											<label class="color-charcoal">Soyadınız:</label>
+											<input type="text" name="last_name" class="form-lastname form-element rounded medium" required autocomplete="family-name">
 										</div>
-
-										<form class="register-form" action="{% url 'enterprise:register' %}" method="post">
-											{% csrf_token %}
-											<div class="row merged-form-elements">
-												<div class="column width-6">
-													<div class="field-wrapper">
-														<label class="color-charcoal">Adınız:</label>
-														<input type="text" name="first_name" class="form-firstname form-element rounded medium" required autocomplete="given-name">
-													</div>
-												</div>
-												<div class="column width-6">
-													<div class="field-wrapper">
-														<label class="color-charcoal">Soyadınız:</label>
-														<input type="text" name="last_name" class="form-lastname form-element rounded medium" required autocomplete="family-name">
-													</div>
-												</div>
-											</div>
-											<div class="row">
-												<div class="column width-12">
-													<div class="field-wrapper">
-														<label class="color-charcoal">Email:</label>
-														<input type="email" name="email" class="form-email form-element rounded medium"  required autocomplete="email">
-													</div>
-												</div>
-												<div class="column width-12">
-													<div class="field-wrapper">
-														<label class="color-charcoal">Şifreniz:</label>
-														<input type="password" name="password1" class="form-password form-element rounded medium" required>
-													</div>
-												</div>
-												<div class="column width-12">
-													<div class="field-wrapper">
-														<label class="color-charcoal">İşletmenizin Adı:</label>
-														<input type="text" name="enterprise" class="form-password form-element rounded medium" required>
-													</div>
-												</div>
-												<div class="column width-12 mt-10">
-													<input type="submit" value="Hesap Oluştur" class="form-submit button rounded medium bkg-green bkg-hover-theme bkg-focus-green color-white color-hover-white no-margins">
-												</div>
-											</div>
-										</form>
-										<p class="text-small mt-20">Hesap oluştururak koşulları ve şartları kabul etmiş olursunuz - <a href="#">Koşullar ve Şartlar</a></p>
-										
 									</div>
 								</div>
-							</div>
+								<div class="row">
+									<div class="column width-12">
+										<div class="field-wrapper">
+											<label class="color-charcoal">Email:</label>
+											<input type="email" name="email" class="form-email form-element rounded medium"  required autocomplete="email">
+										</div>
+									</div>
+									<div class="column width-12">
+										<div class="field-wrapper">
+											<label class="color-charcoal">Şifreniz:</label>
+											<input type="password" name="password1" class="form-password form-element rounded medium" required>
+										</div>
+									</div>
+									<div class="column width-12">
+										<div class="field-wrapper">
+											<label class="color-charcoal">İşletmenizin Adı:</label>
+											<input type="text" name="enterprise" class="form-password form-element rounded medium" required>
+										</div>
+									</div>
+									<div class="column width-12 mt-10">
+										<input type="submit" value="Hesap Oluştur" class="form-submit button rounded medium bkg-green bkg-hover-theme bkg-focus-green color-white color-hover-white no-margins">
+									</div>
+								</div>
+							</form>
+							<p class="text-small mt-20">Hesap oluştururak koşulları ve şartları kabul etmiş olursunuz - <a href="#">Koşullar ve Şartlar</a></p>
+							
 						</div>
 					</div>
 				</div>
-				<!-- Login Section End -->
-
 			</div>
-			<!-- Content End -->
-
-
-			<!-- Footer -->
-			<footer class="footer footer-light with-border">
-				
-				<div class="footer-top" style="padding-top: 0; padding-bottom: 3rem">
-
-					<div class="row">
-						<div class="column width-12 center">
-							<div class="footer-bottom-inner">
-								<p class="copyright center">&copy; FasterMenu 2018. Tüm Hakları Saklıdır.</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</footer>
-			<!-- Footer End -->
-
 		</div>
 	</div>
+	<!-- Login Section End -->
 
-	<!-- Js -->
-	<script src="{% static 'registration/js/jquery-3.2.1.min.js' %}"></script>
-	<script src="{% static 'registration/js/timber.master.min.js' %}"></script>
+</div>
+<!-- Content End -->
 
-</body>
-</html>
+
+{% endblock %}
