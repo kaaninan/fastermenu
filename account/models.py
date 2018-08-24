@@ -7,6 +7,7 @@ from enterprise.models import *
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     enterprise = models.ForeignKey(Enterprise, on_delete=models.SET_NULL, null=True)
+    pass
 
 # @receiver(post_save, sender=User)
 # def update_user_profile(sender, instance, created, **kwargs):
