@@ -90,12 +90,18 @@ def cart_view(request):
 	getEdit = request.GET.get('edit', '')
 	getLine = request.GET.get('line', '')
 
+	# If clicks Sepeti Duzenle on complated view, then this works
 	if(getEdit == 'true'):
+		# if edit == TRUE, success message wont show on order index page
+		# edit == FALSE is Sepet Silme action, message will show on order index page
 		dict = {'id': getLine, 'edit': True}
 		qdict = QueryDict('', mutable=True)
 		qdict.update(dict)
 		request.POST = qdict
 		line_delete(request)
+
+		# When runs complated view, request.session['cart'] will be deleted. So to go back old order, use ['backup'] session
+		# and delete backup
 		request.session['cart'] = request.session['backup']
 		del request.session['backup']
 
@@ -105,14 +111,11 @@ def cart_view(request):
 
 	cartTotal = 0.0
 
-	# print(cartSession)
 
 	# Ayni urunden birden fazla eklendiyse
 	# Tekrar eden urunleri bul, Menu objesinin icine count alani ekle ve orayi arttir
 	for item in cartSession:
 		dbMenu = Menu.objects.get(id=item['id'])
-		print(dbMenu.price)
-		print(item['totalPrice'])
 		item['name'] = dbMenu.name
 		item['description'] = dbMenu.description
 
@@ -150,45 +153,89 @@ def complated_view(request):
 
 	# Daha once siparis verdiyse bu sayfayi gosterme
 	# BUG: YENI SIPARIS VERINCE DIREK ESKI SIPARISE YONLENDIRIYOR
-	if "line" in request.session:
-		# Siparis tarihini session'dan al
-		orderDate_s = request.session['line']['orderDate']
-		# str to datetime
-		orderDate = datetime.datetime.strptime(orderDate_s, '%Y-%m-%d %H:%M:%S')
-		# Simdi
-		now = datetime.datetime.now()
-		# Farki hesapla
-		diff = now - orderDate
-		diff_seconds = int(diff.total_seconds())
-		# -- BU HESAPLAMA SU AN KULLANILMAYACAK --
+	# if "line" in request.session:
+	# 	# Siparis tarihini session'dan al
+	# 	orderDate_s = request.session['line']['orderDate']
+	# 	# str to datetime
+	# 	orderDate = datetime.datetime.strptime(orderDate_s, '%Y-%m-%d %H:%M:%S')
+	# 	# Simdi
+	# 	now = datetime.datetime.now()
+	# 	# Farki hesapla
+	# 	diff = now - orderDate
+	# 	diff_seconds = int(diff.total_seconds())
+	# 	# -- BU HESAPLAMA SU AN KULLANILMAYACAK --
 
-		# redirect
-		return redirect('order:track', id=request.session['line']['id'])
-	else:
-		pass
+	# 	# redirect
+	# 	return redirect('order:track', id=request.session['line']['id'])
+	# else:
+	# 	pass
 
 
 	# Add Line and Get Line ID
-	line_id = line_add(request)
-	line_id = json.loads(line_id.content.decode('ascii'))
-	line_id = line_id['line']
+	# line_id = line_add(request)
+	# line_id = json.loads(line_id.content.decode('ascii'))
+	# line_id = line_id['line']
+
 
 	# Get Line
-	line = get_object_or_404(Line, id=line_id)
+	# line = get_object_or_404(Line, id=line_id)
 
-	line_serialize = {}
-	line_serialize['id'] = line.id
+	line = get_object_or_404(Line, id=38)
 
-	local_d = localtime(line.orderDate)
+	print(request.POST)
 
-	date_normal = local_d.strftime('%Y-%m-%d %H:%M:%S')
-	# line_serialize['orderDate'] = json.dumps(date_normal, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
-	line_serialize['orderDate'] = date_normal
-	request.session['line'] = line_serialize
 
-	# # Delete Shopping List from Session
-	request.session['backup'] = request.session['cart']
-	cart_session_delete(request)
+	#  --- Set ['line'] session for see the old and current orders ---
+	line_list = list()
+
+	# Get old list
+	if 'line' in request.session:
+		line_list = request.session['line']
+
+		for item in line_list:
+			a = int(request.POST.get('line','-1'))
+			print(a)
+			print(item)
+			print(type(item))
+			# if item['id'] == a:
+				# print('ADDED BEFORE')
+
+	else:
+
+		line_serialize = {}
+		local_d = localtime(line.orderDate)
+		date_normal = local_d.strftime('%Y-%m-%d %H:%M:%S')
+		line_serialize['id'] = line.id
+		line_serialize['orderDate'] = date_normal
+
+		line_list.append(line_serialize)
+		request.session['line'] = line_list
+
+
+
+	# ADD LINE ID TO POST
+
+	
+	
+
+	mutable = request.POST._mutable
+	request.POST._mutable = True
+	
+	dict = {'line': 38}
+	qdict = QueryDict('', mutable=True)
+	qdict.update(dict)
+	request.POST = qdict
+
+	request.POST._mutable = mutable
+
+	print(request.POST)
+
+	# request.GET['line'] = 38
+
+
+	# Delete Shopping List from Session
+	# request.session['backup'] = request.session['cart']
+	# cart_session_delete(request)
 
 
 	context = {'enterprise': enterprise, 'table': table, 'enterprise': enterprise, 'line': line}
