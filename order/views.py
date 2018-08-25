@@ -172,11 +172,12 @@ def cart_view(request):
 			item['options_dropadd'] = []
 			for op in item['options']:
 				op_object = MenuSubCategoryOption.objects.get(id=op)
+
 				op_type = op_object.subMenu.type
 				if op_type == 'option':
-					item['options_option'].append(op_object)
+					item['options_option'].append(op_object.name)
 				elif op_type == 'dropadd':
-					item['options_dropadd'].append(op_object)
+					item['options_dropadd'].append(op_object.name)
 
 		cartTotal = cartTotal + item['totalPrice']
 
