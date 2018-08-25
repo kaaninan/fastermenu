@@ -27,10 +27,10 @@ INSTALLED_APPS = [
     'fastermenu',
     'enterprise',
     'barcode',
-    'order',
     'menu',
     'cart',
     'account',
+    'order',
 ]
 
 MIDDLEWARE = [
