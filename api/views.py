@@ -312,6 +312,15 @@ def line_delete(request):
 	data.delete()
 	if(edit == ''):
 		request.session['deleteLine'] = 'success'
+
+	# Delete session as well
+	new_session = list()
+	if "line" in request.session:
+		for line_item in request.session['line']:
+			if int(line_item['id']) != int(item):
+				new_session.append(line_item)
+		request.session['line'] = new_session
+
 	return JsonResponse({'status':'success'})
 
 def line_get(request):

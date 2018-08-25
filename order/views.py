@@ -141,14 +141,6 @@ def cart_view(request):
 		request.POST = qdict
 		line_delete(request)
 
-		# Delete session as well
-		new_session = list()
-		if "line" in request.session:
-			for item in request.session['line']:
-				if int(item['id']) != int(getLine):
-					new_session.append(item)
-			request.session['line'] = new_session
-
 		# When runs complated view, request.session['cart'] will be deleted. So to go back old order, use ['backup'] session
 		# and delete backup
 		request.session['cart'] = request.session['backup']
