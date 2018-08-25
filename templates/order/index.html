@@ -1,6 +1,7 @@
 {% extends 'order/static/base.html' %}
 {% load static %}
 {% load humanize %}
+{% load parse_date %}
 
 {% block body %}
 
@@ -101,7 +102,7 @@
 										{% endif %}
 									{% endfor %}
 								</div>
-								<div class="sub">{{ order.orderDate|naturaltime }} - Masa: {{ order.table }}</div>
+								<div class="sub">{{ order.orderDate|parse_date:'%Y-%m-%d %H:%M:%S'|naturaltime }} - Masa: {{ order.table }}</div>
 							</div>
 						</a>
 					</div>
