@@ -125,6 +125,12 @@ def cart_view(request):
 
 	# If clicks Sepeti Duzenle on complated view, then this works
 	if(getEdit == 'true'):
+
+		# If refresh, Line could be deleted
+		listLine = Line.objects.filter(id=getLine)
+		if listLine.count() == 0:
+			return redirect('order:index')
+
 		# if edit == TRUE, success message wont show on order index page
 		# edit == FALSE is Sepet Silme action, message will show on order index page
 		dict = {'id': getLine, 'edit': True}
@@ -132,6 +138,14 @@ def cart_view(request):
 		qdict.update(dict)
 		request.POST = qdict
 		line_delete(request)
+
+		# Delete session as well
+		new_session = list()
+		if "line" in request.session:
+			for item in request.session['line']:
+				if int(item['id']) != int(getLine):
+					new_session.append(item)
+			request.session['line'] = new_session
 
 		# When runs complated view, request.session['cart'] will be deleted. So to go back old order, use ['backup'] session
 		# and delete backup
@@ -228,9 +242,6 @@ def complated_view(request):
 		line_list = list()
 		if 'line' in request.session:
 			line_list = request.session['line']
-
-			for item in line_list:
-				print(item)
 		
 		line_serialize = {}
 		local_d = localtime(line.orderDate)
