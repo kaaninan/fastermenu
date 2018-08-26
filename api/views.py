@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse, HttpResponse, QueryDict
 from django.core import serializers
 from django.contrib import messages
+from django.db.models import Q
 import json, pickle, uuid, ast
 
 from enterprise.models import *
@@ -346,11 +347,11 @@ def line_get(request):
 def line_get_cash(request):
 
 	# For Search
-	table_id = request.GET.get('table', '')
+	query = request.GET.get('table')
 
-	if table_id != '':
-		table = Table.objects.filter(name=table_id)
-		data = list(Line.objects.filter(enterprise=request.user.profile.enterprise, isComplated=True, table=table).values())
+	if query:
+		table = Table.objects.filter(Q(name__icontains=query), enterprise=request.user.profile.enterprise).distinct()
+		data = list(Line.objects.filter(enterprise=request.user.profile.enterprise, isComplated=True).filter(table__in=table).values())
 	else:
 		data = list(Line.objects.filter(enterprise=request.user.profile.enterprise, isComplated=True).values())
 
