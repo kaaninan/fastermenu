@@ -829,4 +829,52 @@ body, html{
 
 
 
-*/
+/* ---- 404 --------------------------------------------------- */
+
+
+.not_found{
+	margin-top: 6rem;
+	text-align: center;
+	padding: 0 1.5rem;
+}
+
+.not_found img.plate{
+	width: 10rem;
+}
+
+.not_found .main{
+	margin-top: 4rem;
+	font-size: 2rem;
+}
+.not_found .sub{
+	margin-top: 1rem;
+	font-size: 1.2rem;
+	color: #9B9B9B;
+	line-height: 2rem;
+}
+.not_found .sub2{
+	margin-top: 1rem;
+	font-size: 1.2rem;
+	color: #9B9B9B;
+	line-height: 2rem;
+}
+
+.not_found .link{
+	margin-top: 3rem;
+	margin-bottom: 6rem;
+}
+
+
+.not_found .link a{
+	margin: auto;
+	color: white;
+	font-weight: bold;
+	font-size: 1rem;
+	text-align: center;
+	padding: 1.2rem;
+	border-radius: 3px;
+	margin-bottom: 1rem;
+	margin-top: 1rem;
+	background: #2D2D2D;
+}
+

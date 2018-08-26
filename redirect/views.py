@@ -70,6 +70,11 @@ def redirect_view(request, id):
     else:
         barcode = None
 
+
+    # Redirect 404
+    if not barcode or not barcode_valid or not barcode_active or not table_valid or not table_active:
+        return redirect('order:notfound')
+
     # Create Log with scanned time
     Log.objects.create(barcode=barcode, barcode_valid=barcode_valid, barcode_active=barcode_active, 
                        table_valid=table_valid, table_active=table_active,

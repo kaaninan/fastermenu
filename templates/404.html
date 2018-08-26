@@ -1,0 +1,18 @@
+{% extends 'order/static/base.html' %}
+{% load static %}
+
+{% block body %}
+
+<div class="not_found">
+    <img src="{% static 'img/empty-plate.jpg' %}" class="plate">
+    <div class="main">Oh, üzgünüz!</div>
+    <div class="sub">Aradığınız sayfayı yanlışlıkla yedik :(</div>
+    <br><hr>
+    <div class="sub2">İsterseniz sizi anasayfaya yönlendirebiliriz;</div>
+    <div class="link">
+        <a href="https://fastermenu.com">Anasayfa</a>
+    </div>
+    <br>
+</div>
+
+{% endblock %}

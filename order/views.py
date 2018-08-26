@@ -12,6 +12,8 @@ from api.views import *
 import json, datetime
 
 
+
+
 def main_view(request):
 
 	sEnterprise = request.session.get('enterprise', '')
@@ -277,4 +279,8 @@ def track_view(request, id):
 
 	context = {'enterprise': enterprise, 'table': table, 'line': line, 'orders': orders}
 	return render(request, "order/track.html", context)
+
+
+def notfound_view(request):
+	return render(request, "404.html", {})
 

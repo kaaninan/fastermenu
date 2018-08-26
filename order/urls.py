@@ -13,4 +13,6 @@ urlpatterns = [
     url(r'^complated/$', complated_view, name="complated"),
     url(r'^track/(?P<id>[\w+]+)/$', track_view, name="track"),
 
+    url(r'^404/$', notfound_view, name="notfound"),
+
 ]
