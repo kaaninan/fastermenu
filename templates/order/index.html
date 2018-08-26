@@ -170,7 +170,9 @@
 					</div>
 
 					<div class="col-3 clear">
-						<div class="price"><span id="price">{{ menu.price|floatformat:2 }}</span> TL</div>
+						<a href="{% url 'order:detail' id=menu.id %}">
+							<div class="price"><span id="price">{{ menu.price|floatformat:2 }}</span> TL</div>
+						</a>
 					</div>
 
 			</div>
