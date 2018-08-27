@@ -20,7 +20,7 @@ class Category(models.Model):
 class Menu(models.Model):
     name = models.CharField(max_length=120, verbose_name="Name")
     picture = models.ImageField(null=True, upload_to='menus/')
-    description = models.CharField(max_length=120, verbose_name="Description")
+    description = models.CharField(null=True, blank=True, max_length=120, verbose_name="Description")
     price = models.FloatField(null=False)
     stock = models.BooleanField(verbose_name="Stock", default=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)

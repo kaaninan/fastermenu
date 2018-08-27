@@ -70,7 +70,7 @@ WSGI_APPLICATION = 'fastermenu.wsgi.application'
 
 # Database
 
-if 'PRODUCTION' in os.environ:
+if not 'PRODUCTION' in os.environ:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -78,7 +78,8 @@ if 'PRODUCTION' in os.environ:
             'NAME': 'fasterdb',
             'USER': 'fasteruser',
             'PASSWORD': 'faster(MENU)',
-            'HOST': 'fastermenu-db-production.ccgtp665sryr.eu-central-1.rds.amazonaws.com',
+            # 'HOST': 'fastermenu-db-production.ccgtp665sryr.eu-central-1.rds.amazonaws.com',
+            'HOST': '35.240.13.81',
             'PORT': '5432',
 
             # 'NAME': os.environ['RDS_DB_NAME'],
