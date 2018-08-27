@@ -70,7 +70,7 @@ WSGI_APPLICATION = 'fastermenu.wsgi.application'
 
 # Database
 
-if not 'PRODUCTION' in os.environ:
+if 'PRODUCTION' in os.environ:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
