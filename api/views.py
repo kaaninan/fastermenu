@@ -28,7 +28,7 @@ def cart_add(request):
 
 	menu = {}
 	menu['id'] = int(productId)
-	menu['price'] = float(productPrice)
+	menu['price'] = float(productPrice) # TODO: Get from database
 	menu['count'] = int(productCount)
 	menu['options'] = productOptions
 	menu['totalPrice'] = float(productPrice.replace(',','.'))
@@ -973,8 +973,8 @@ def biot_order(request):
 	productOptions = request.POST.get('option', '')
 
 
-	# This is example menu
-	dict = {'id': '239', 'count': '1', 'price':'10', 'option':'-1'}
+	# This is example menu DRAFT BAR - ORDEK
+	dict = {'id': '225', 'count': '1', 'price':'30', 'option':'-1'}
 	request.session['enterprise'] = postEnterprise
 	request.session['table'] = postSource
 	qdict = QueryDict('', mutable=True)

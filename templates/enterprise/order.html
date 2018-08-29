@@ -43,9 +43,13 @@
 										<th>Toplam Ücret</th>
 										<th>İşlemler</th>
 									</tr>
-									<tr v-for="item in items" style="font-size: 1.5rem;">
-										<td>[[ item.id ]]</td>
-										<td>[[ item.table ]]</td>
+									<tr v-for="item in items" style="font-size: 2rem;">
+										<td>
+											[[ item.id ]]
+										</td>
+										<td>
+											[[ item.table ]]
+										</td>
 										<td>
 											<div v-for="(order, index) in item.order">
 												<div v-if="order.name != ''">
@@ -68,11 +72,11 @@
 										<td>[[ item.totalPrice ]] ₺</td>
 										<td>
 											<div v-show="item.isComplated == false" v-on:click="setComplated(item, $event)">
-												<button type="button" class="btn btn-block btn-success">Onayla</button>
+												<button style="height: 5rem" type="button" class="btn btn-block btn-success">Onayla</button>
 											</div>
 											
 											<div v-show="item.isPaid == false && item.isComplated == true" v-on:click="setPaid(item, $event)">
-												<button type="button" class="btn btn-block btn-warning">Ödeme Al</button>
+												<button style="height: 5rem" type="button" class="btn btn-block btn-warning">Ödeme Al</button>
 											</div>
 
 											<div v-show="item.isPaid == true && item.isComplated == true">
@@ -110,7 +114,7 @@
 			loadData: function () {
 				$.get("{% url 'api:line_get' %}", function (response) {
 					this.isLoading = false   
-					console.log('finish');
+					// console.log('finish');
 					this.items = response.data;
 				}.bind(this));
 			}
