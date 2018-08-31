@@ -12,6 +12,7 @@ class Line(models.Model):
     paidDate = models.DateTimeField(null=True)
     isComplated = models.BooleanField(default=False)
     isPaid = models.BooleanField(default=False)
+    isCommented = models.BooleanField(default=False)
     totalPrice = models.FloatField(null=True)
     table = models.ForeignKey(Table, on_delete=models.SET_NULL, null=True)
     enterprise = models.ForeignKey(Enterprise, on_delete=models.SET_NULL, null=True)
@@ -42,3 +43,16 @@ class Order(models.Model):
         ordering = ['-menu']
 
 
+
+class Comment(models.Model):
+    comment = models.CharField(max_length=300, verbose_name="Comment")
+    commentDate = models.DateTimeField(null=True)
+    line = models.ForeignKey(Line, on_delete=models.SET_NULL, null=True)
+    enterprise = models.ForeignKey(Enterprise, on_delete=models.SET_NULL, null=True)
+
+
+    def __str__(self):
+        return self.comment
+
+    class Meta:
+        ordering = ['-commentDate']

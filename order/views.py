@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.timezone import localtime
+from django.utils import timezone
+from django.contrib import messages
 
 from enterprise.models import *
 from menu.models import *
@@ -57,32 +59,37 @@ def main_view(request):
 	lastOrders = list()
 	if "line" in request.session:
 
-		for item in request.session['line'][::-1]:
+		for item in request.session['line'][::-1]: # Reverse list
 
 			# Check enterprise
 			if int(sEnterprise) == int(item['enterprise']):
 
+				# Get Line from Database
+				# TODO Session'da sadece ID tutulabilir
+				line = Line.objects.get(enterprise=sEnterprise, id=item['id'])
+
 				# Son siparis tarihini session'dan al
-				orderDate_s = item['orderDate']
+				orderDate = line.orderDate
 				# str to datetime
-				orderDate = datetime.datetime.strptime(orderDate_s, '%Y-%m-%d %H:%M:%S')
+				# orderDate = datetime.datetime.strptime(orderDate_s, '%Y-%m-%d %H:%M:%S')
 				# Get now
-				now = datetime.datetime.now()
+				now = timezone.now()
 
 				# Get Orders
 				order = list(Order.objects.filter(line=item['id']).values())
-				item['order'] = []
+				line.order = []
 				for orderItem in order:
 					try:
 						menu = Menu.objects.get(id=orderItem['menu_id'])
-						item['order'].append(menu.name)
+						line.order.append(menu.name)
 					except Exception as e:
 						pass
 
-				# If ordered last 24 hours
+				# If ordered last 1 month
 				diff = now - orderDate
-				if(diff.total_seconds() < 86400):
-					lastOrders.append(item)
+				print(diff)
+				if (diff.days < 30):
+					lastOrders.append(line)
 
 	# Limit 3 orders
 	lastOrders = lastOrders[-3:]
@@ -276,9 +283,35 @@ def track_view(request, id):
 	# Siparis icerigini bul
 	orders = Order.objects.filter(line=line)
 
+	# Yorum varsa getir
+	if line.isCommented:
+		comment = Comment.objects.get(enterprise=enterprise, line=line)
+		line.comment = comment
+		print(comment.commentDate)
+
+
+	post = request.POST
+	if post:
+		# Create Comment
+		comment = Comment()
+		comment.commentDate = datetime.datetime.now()
+		comment.comment = request.POST['comment']
+		comment.line = line
+		comment.enterprise = enterprise
+		comment.save()
+
+		# Edit Line Object
+		line.isCommented = True
+		line.save()
+
+		# Send Message
+		messages.success(request, "Yorumunuz kaydedildi!")
+
 
 	context = {'enterprise': enterprise, 'table': table, 'line': line, 'orders': orders}
 	return render(request, "order/track.html", context)
+
+
 
 
 def notfound_view(request):

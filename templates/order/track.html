@@ -30,6 +30,23 @@
 
 		{% endfor %}
 
+
+		{% if not line.isCommented and line.isPaid %}
+			<div>
+				<form method="post">
+					{% csrf_token %}
+					<textarea id="comment" name="comment" maxlength="300"></textarea>
+					<button type="submit">Gonder</button>
+					
+				</form>
+		</div>
+		{% elif line.isCommented %}
+			<hr>
+			<h2>Yorumunuz</h2>
+			{{ line.comment }}<br>
+			{{ line.comment.commentDate  }}
+		{% endif %}
+
 		
 		
 
