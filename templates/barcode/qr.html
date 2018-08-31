@@ -36,6 +36,15 @@
             margin-bottom: 5px;
         }
 
+        .card .desc{
+            text-align: center;
+            width: 200px;
+            margin: auto;
+            margin-bottom: 0.7rem;
+            font-size: 1rem;
+            color: #6D7483
+        }
+
         .card .qr{
             text-align: center;
             margin-bottom: 5px;
@@ -65,6 +74,9 @@
         <div class="card">
             <div class="logo">
                 <img src="https://app.fastermenu.com/static/registration/images/logo2.png" width="150px">
+            </div>
+            <div class="desc">
+                iPhone için kamerayı, Android için QR okuyucuyu kullanın
             </div>
             <div class="qr">
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://app.fastermenu.com/redirect/{{ item.barcode }}">
