@@ -17,7 +17,7 @@
             <li class="{% if active_tab == 'menu' %} active{% endif %}"><a href="{% url 'enterprise:category' %}">Menü</a></li>
             <li class="{% if active_tab == 'table' %} active{% endif %}"><a href="{% url 'enterprise:table' %}">Masalar</a></li>
             <li class="{% if active_tab == 'analyze' %} active{% endif %}"><a href="{% url 'enterprise:analyze' %}">Analiz</a></li>
-            <li class="{% if active_tab == 'profile' %} active{% endif %}"><a href="{% url 'enterprise:profile' %}">Hesap Ayarları</a></li>
+            <li class="{% if active_tab == 'comment' %} active{% endif %}"><a href="{% url 'enterprise:comment' %}">Yorumlar</a></li>
           </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -72,9 +72,9 @@
                 </li>
                 <!-- Menu Footer-->
                 <li class="user-footer">
-                  <!-- <div class="pull-left">
-                    <a href="#" class="btn btn-default btn-flat">Profil</a>
-                  </div> -->
+                  <div class="pull-left">
+                    <a href="{% url 'enterprise:profile' %}" class="btn btn-default btn-flat">Ayarlar</a>
+                  </div>
                   <div class="pull-right">
                     <a href="{% url 'enterprise:logout' %}" class="btn btn-default btn-flat">Çıkış Yap</a>
                   </div>

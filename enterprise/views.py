@@ -190,7 +190,21 @@ def analyze_view(request):
 	return render(request, "enterprise/analyze.html", context)
 
 
+@login_required
+def comment_view(request):
 
+	# Get Line
+	line = Line.objects.filter(enterprise=request.user.profile.enterprise)
+	for item in line:
+		item.order = Order.objects.filter(enterprise=request.user.profile.enterprise, line=item)
+		item.comment = Comment.objects.filter(enterprise=request.user.profile.enterprise, line=item)
+
+	# Get Comment Count for show empty list warning
+	comment = Comment.objects.filter(enterprise=request.user.profile.enterprise)	
+
+
+	context = {'active_tab': 'comment', 'line':line, 'comment':comment}
+	return render(request, "enterprise/comment.html", context)
 
 
 @login_required

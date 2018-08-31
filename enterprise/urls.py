@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^category/(?P<id>[\w+]+)/$', menu_view, name='menu'),
     url(r'^table/$', table_view, name='table'),
     url(r'^analyze/$', analyze_view, name='analyze'),
+    url(r'^comment/$', comment_view, name='comment'),
     url(r'^profile/$', profile_view, name='profile'),
 
 ]
