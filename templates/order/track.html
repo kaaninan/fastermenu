@@ -4,55 +4,157 @@
 {% block body %}
 
 
-<div class="row" id="app">
+{% if messages %}
+	{% for message in messages %}
+		<div class="alert alert-success alert-dismissible" role="alert" style="margin-top: 1rem;">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			{{ message }}
+		</div>
+	{% endfor %}
+{% endif %}
+
+
+<!-- TITLE -->
+<div class="row main-title">
+	<div class="col clear">
+		<div class="text"> Sipariş Durumu</div>
+	</div>
+</div>
+
+
+
+<!-- ICONS -->
+<div class="row track">
 	<div class="col-12">
-		<br>
-		<h2>Durum</h2>
+		<div class="icons">
+			<div class="row">
+				<div class="col-4 item">
+					<i id="i1" class="fas fa-shopping-cart"></i>
+				</div>
+				<div class="col-4 item">
+					<i id="i2" class="fas fa-utensils"></i>
+				</div>
+				<div class="col-4 item">
+					<i id="i3" class="far fa-check-circle"></i>
+				</div>
+
+				<div class="row arrow">
+					<div class="item-arrow">
+						<i class="fas fa-angle-right"></i>
+					</div>
+					<div class="item-arrow-2">
+						<i class="fas fa-angle-right"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- STATUS -->
+<div class="row track-status">
+	<div class="col">
 		<b id="status"></b>
+	</div>
+</div>
 
-		<hr>
+<hr>
 
-		<h5>{{ line.enterprise }} - Masa {{ line.table }}</h5>
+<!-- ENTERPRISE -->
+<div class="row track-enterprise">
+	<div class="col">
+		<b>{{ line.enterprise }}</b> - Masa {{ line.table }}
+	</div>
+</div>
 
-		<hr>
 
-		<h2>Siparis</h2>
+<!-- TITLE -->
+<div class="row main-title">
+	<div class="col clear">
+		<div class="text"> Siparişiniz</div>
+	</div>
+</div>
 
-		<b>Siparis Zamani: </b> <span id="time"></span><br>
-		<b>Toplam Fiyat: </b> {{ line.totalPrice }}<br>
-		
+
+<!-- ORDER DETAILS -->
+<div class="row track-order">
+	<div class="col">
+
 		{% for item in orders %}
-
-			{{ item.count }} tane {{ item.menu.name }} - {{ item.optionsReadable }} - 
-			{{ item.totalPrice|floatformat:2 }} TL
-
-			<br>
+		<div class="order-item">
+			<div class="o-title">
+				{% if item.count > 1 %}
+				{{ item.count }} tane 
+				{% endif %}
+				{{ item.menu.name }}
+			</div>
+			<div class="o-option">
+				{{ item.optionsReadable }}
+			</div>
+			<div class="o-price">
+				{{ item.totalPrice|floatformat:2 }} TL
+			</div>
+		</div>
 
 		{% endfor %}
 
 
-		{% if not line.isCommented and line.isPaid %}
-			<div>
-				<form method="post">
-					{% csrf_token %}
-					<textarea id="comment" name="comment" maxlength="300"></textarea>
-					<button type="submit">Gonder</button>
-					
-				</form>
+		<div class="order-detail">
+			<b>Sipariş Zamanı: </b> <span id="time"></span>
 		</div>
-		{% elif line.isCommented %}
-			<hr>
-			<h2>Yorumunuz</h2>
-			{{ line.comment }}<br>
-			{{ line.comment.commentDate  }}
-		{% endif %}
 
-		
-		
+		<div class="order-detail">
+			<b>Toplam Ücret: </b> <b class="green">{{ line.totalPrice|floatformat:2 }} TL</b>
+		</div>
 
 	</div>
 </div>
 
+
+<!-- COMMENT -->
+{% if not line.isCommented and line.isPaid %}
+
+	<!-- TITLE -->
+	<div class="row main-title">
+		<div class="col clear">
+			<div class="text"> Yorum Yap</div>
+		</div>
+	</div>
+
+	<div class="row o-comment">
+		<div class="col">
+			<form method="post">
+				{% csrf_token %}
+				<div class="form-group">
+				  	<textarea class="form-control" rows="3" id="comment" name="comment" maxlength="300"></textarea>
+				</div>
+				<button type="submit" class="btn btn-success">Gönder</button>
+			</form>
+		</div>
+	</div>
+
+{% elif line.isCommented %}
+
+	<!-- TITLE -->
+	<div class="row main-title">
+		<div class="col clear">
+			<div class="text"> Yorumunuz</div>
+		</div>
+	</div>
+
+	<div class="row o-comment">
+		<div class="col">
+			<div class="o-com">
+				{{ line.comment }}<br>
+			</div>
+			<div class="o-date">
+				{{ line.comment.commentDate }}		
+			</div>
+		</div>
+	</div>
+			
+{% endif %}
 
 
 {% endblock %}
@@ -61,9 +163,13 @@
 {% block js %}
 <script type="text/javascript">
 
-	$(document).ready(function(){
+	$(function(){
 		getLineStatus();
 	});
+
+	// Eger ajaxtan tamamlanirsa, sayfa yenilenmesi gerekiyor
+	// Django yorum kismini render etmesi icin
+	var willReload = false;
 
 	function getLineStatus(){
 
@@ -96,6 +202,7 @@
 
 		var serialized = $.param({ id: {{line.id}} });
 
+
 		request = $.ajax({
 			url: "{% url 'api:line_status' %}",
 			type: "post",
@@ -104,10 +211,31 @@
 
 		request.done(function (response, textStatus, jqXHR){
 
-			if(response.lineStatus == true){
-				$('#status').html('Siparisiniz Hazirlandi. Yakinda masanizda olacak :)');
-			}else if(response.lineStatus == false){
-				$('#status').html('Siparisiniz Hazirlaniyor');
+			var data = JSON.parse(response.line);
+
+			if(data[0].fields.isPaid == true){
+				if (willReload == true) {
+					window.location.reload();
+				}
+
+				// Check Commented
+				if(data[0].fields.isCommented == true){
+					$('#status').html('Siparişiniz tamamlandı.');
+				}else{
+					$('#status').html('Siparişiniz tamamlandı. Aşağıdan yorum yapabilirsiniz.');
+				}
+				
+				$('#i1').addClass('check');
+				$('#i2').addClass('check');
+				$('#i3').addClass('check');
+			}else if(data[0].fields.isComplated == true){
+				$('#status').html('Siparişiniz hazırlandı. Yakında masanızda olacak.');
+				$('#i1').addClass('check');
+				$('#i2').addClass('check');
+				willReload = true;
+			}else{
+				$('#status').html('Siparişiniz alındı. Onaylanması bekleniyor.');
+				$('#i1').addClass('check');
 			}
 
 			setTimeout(function(){

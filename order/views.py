@@ -58,7 +58,6 @@ def main_view(request):
 	# Get Last Orders in Session
 	lastOrders = list()
 	if "line" in request.session:
-
 		for item in request.session['line'][::-1]: # Reverse list
 
 			# Check enterprise
@@ -78,21 +77,24 @@ def main_view(request):
 				# Get Orders
 				order = list(Order.objects.filter(line=item['id']).values())
 				line.order = []
-				for orderItem in order:
+				line.orderString = ''
+				# for idx, val in enumerate(ints):
+				for idx, orderItem in enumerate(order):
 					try:
 						menu = Menu.objects.get(id=orderItem['menu_id'])
+						# Prepare string for order index, last orders
+						line.orderString += menu.name
+						if idx != (len(order) - 1):
+							line.orderString += ", "
 						line.order.append(menu.name)
 					except Exception as e:
 						pass
 
 				# If ordered last 1 month
 				diff = now - orderDate
-				print(diff)
 				if (diff.days < 30):
 					lastOrders.append(line)
 
-	# Limit 3 orders
-	lastOrders = lastOrders[-3:]
 
 	context = {'enterprise': enterprise, 'table': table, 'categories': categories, 'state': state, 'orders': lastOrders}
 	return render(request, "order/index.html", context)
@@ -280,16 +282,7 @@ def track_view(request, id):
 	# Siparisi bul
 	line = get_object_or_404(Line, id=id)
 
-	# Siparis icerigini bul
-	orders = Order.objects.filter(line=line)
-
-	# Yorum varsa getir
-	if line.isCommented:
-		comment = Comment.objects.get(enterprise=enterprise, line=line)
-		line.comment = comment
-		print(comment.commentDate)
-
-
+	# Yorumu Kaydet
 	post = request.POST
 	if post:
 		# Create Comment
@@ -306,6 +299,16 @@ def track_view(request, id):
 
 		# Send Message
 		messages.success(request, "Yorumunuz kaydedildi!")
+
+	# Siparis icerigini bul
+	orders = Order.objects.filter(line=line)
+
+	# Yorum varsa getir
+	if line.isCommented:
+		comment = Comment.objects.get(enterprise=enterprise, line=line)
+		line.comment = comment
+		print(comment.commentDate)
+
 
 
 	context = {'enterprise': enterprise, 'table': table, 'line': line, 'orders': orders}

@@ -829,6 +829,121 @@ body, html{
 
 
 
+/* ---- TRACK --------------------------------------------------- */
+
+
+/* - Title - */
+.main-title{
+	padding: 10px;
+	border-bottom: 1px solid #ECEDF2;
+	background: #F7F7F7;
+}
+.main-title .text{
+	/*text-align: center;*/
+	font-size: 1.3rem;
+	padding-left: 10px;
+	line-height: 30px;
+}
+
+
+.track{}
+
+.track .icons{
+	width: 80%;
+	max-width: 300px;
+	margin: auto;
+	margin-top: 1rem;
+	position: relative;
+}
+
+.track .icons .item{
+	text-align: center;
+}
+
+.track .icons .item i{
+	font-size: 2rem;
+	padding: 10px;
+}
+
+.track .icons .item i.check{
+	color: #309566;
+}
+
+
+
+.track .icons .arrow{
+	position: absolute;
+	top: 0;
+	left: 0.8rem;
+	right: 0.8rem;
+	bottom: 0;
+}
+
+.track .icons .arrow .item-arrow{
+	position: absolute;
+	left: 4.7rem;
+}
+.track .icons .arrow .item-arrow-2{
+	right: 4.7rem;
+	position: absolute;
+}
+
+.track .icons .arrow i{
+	font-size: 2rem;
+	padding: 10px;
+	color: #E5E5E5;
+}
+
+.track-status{
+	margin-top: 1rem;
+	/*text-align: center;*/
+}
+
+.track-enterprise{
+	margin-bottom: 1rem;
+}
+
+
+.track-order{
+	margin-top: 0.5rem;
+	margin-bottom: 1rem;
+}
+.track-order .order-item{
+	/*margin-top: 0.2rem;*/
+	border-bottom: 1px solid #E5E5E5;
+	padding-bottom: 0.8rem;
+	padding-top: 0.8rem;
+}
+.track-order .order-item .o-title{}
+.track-order .order-item .o-option{
+	font-size: 1rem;
+	color: #9A9CAA;
+}
+.track-order .order-item .o-price{
+}
+
+.track-order .order-detail{
+	padding-top: 0.8rem;
+}
+
+.track-order .order-detail .green{
+	color: #3A9368;
+}
+
+
+.o-comment{
+	margin-top: 1rem;
+	margin-bottom: 2rem;
+}
+
+.o-comment .o-com{
+	margin-bottom: 0.5rem
+}
+.o-comment .o-date{
+	font-size: 0.8rem;
+	color: #9A9CAA;
+}
+
 
 /* ---- 404 --------------------------------------------------- */
 

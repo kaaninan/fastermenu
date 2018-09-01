@@ -97,10 +97,7 @@
 						<a href="{% url 'order:track' id=order.id %}">
 							<div class="title">
 								<div class="main">
-									{% for item in order.order %}
-										{{ item }}{% if forloop.counter != order.order|length %},
-										{% endif %}
-									{% endfor %}
+									{{ order.orderString|truncatechars:30 }}
 								</div>
 								<!-- |parse_date:'%Y-%m-%d %H:%M:%S'| -->
 								<div class="sub">

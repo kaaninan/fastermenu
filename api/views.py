@@ -542,10 +542,11 @@ def line_status(request):
 	id = request.POST.get('id', '')
 
 	# Siparisi bul
-	line = get_object_or_404(Line, id=id)
+	line = Line.objects.filter(id=id)
+	serialize = serializers.serialize("json", line)
 
 
-	data = {'lineStatus': line.isComplated}
+	data = {'line': serialize}
 	return JsonResponse(data)
 
 
