@@ -3,6 +3,43 @@
 
 {% block body %}
 
+	<!-- Modal: Kategori Sirala -->
+	<div class="modal fade" id="modal-sort">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Kategori Sıralama</h4>
+				</div>
+
+				<div class="modal-body">
+
+					{% if categories|length == 0 %}
+						<b>Şu anda hiç kategori oluşturmadınız!</b>
+
+					{% elif categories|length != 0 %}
+					
+					<ul id="order-items" class="list-group" style="margin-bottom: 0">
+						{% for category in categories %}
+							<li class="list-group-item" id="{{category.id}}">
+								<i class="fas fa-bars"></i>
+								&nbsp;
+								{{ category.name }}
+							</li>
+						{% endfor %}
+					</ul>
+					{% endif %}
+
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left">Vazgeç</button>
+					<button type="button" class="btn btn-success btn-success pull-left" id="button-order-save" style="width: 49%; float: left;">Kaydet</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
 	<!-- Modal: Kategori Ekle -->
 	<div class="modal fade" id="modal-add">
 		<div class="modal-dialog">
@@ -125,6 +162,12 @@
 						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-add">
 							<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Kategori Ekle
 						</button>
+
+						&nbsp;&nbsp;
+
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-sort">
+							<i class="fa fa-sort" aria-hidden="true"></i>&nbsp;&nbsp;Sırala
+						</button>
 						
 						<br><br>
 
@@ -188,7 +231,13 @@
 {% endblock %}
 
 {% block script %}
+
+	<script src="{% static 'plugins/sortablejs/Sortable.min.js' %}"></script>
+
 	<script type="text/javascript">
+
+		var el = document.getElementById('order-items');
+		var sortable = Sortable.create(el);
 
 
 		// ============================= jQuery Requests ============================================
@@ -331,6 +380,53 @@
 		}
 
 
+		function orderCategory(list, enterprise){
+
+			// CSRF Token for Django
+			$.ajaxSetup({
+				beforeSend: function(xhr, settings) {
+				function getCookie(name) {
+				var cookieValue = null;
+				if (document.cookie && document.cookie != '') {
+				  var cookies = document.cookie.split(';');
+				  for (var i = 0; i < cookies.length; i++) {
+					var cookie = jQuery.trim(cookies[i]);
+					if (cookie.substring(0, name.length + 1) == (name + '=')) {
+					  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+					  break;
+					}
+				  }
+				}
+				return cookieValue;
+				}if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+				xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+				}
+				} 
+			});
+
+			console.log(JSON.stringify(list));
+
+			var serialized = $.param({list: JSON.stringify(list), enterprise: enterprise});
+
+			request = $.ajax({
+				url: "{% url 'api:category_order' %}",
+				type: "post",
+				data: serialized
+			});
+
+
+			request.done(function (response, textStatus, jqXHR){
+				console.log('Done');
+				console.log(response);
+				window.location.href = "{% url 'enterprise:category' %}";
+				return false;
+			});
+
+			request.fail(function (jqXHR, textStatus, errorThrown){
+				console.error("The following error occurred: " + textStatus, errorThrown);
+			});
+		}
+
 
 
 		$(document).ready(function(){
@@ -363,6 +459,32 @@
 
 
 			// ================================= MODAL BUTTON ============================================
+
+
+			// MODAL: ORDER
+
+			$('#button-order-save').click(function(e){
+				// var btn = $(event.target);
+				// btn.attr('disabled', 'disabled').html("Bekleyin...");
+				
+				var e = $('#order-items').children('li');
+
+				var sendList = {}
+
+				// {order: itemID, ..}
+				for(item in e){
+					if(item == 'length')
+						break;
+					var a = $(e[item]).attr('id');
+					sendList[item] = a;
+				}
+
+				console.log(sendList);
+
+				enterprise = '{{ request.user.profile.enterprise.id }}'
+
+				orderCategory(sendList, enterprise);
+			});
 
 
 			// MODAL: ADD

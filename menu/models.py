@@ -8,12 +8,13 @@ from enterprise.models import *
 class Category(models.Model):
     name = models.CharField(max_length=120, verbose_name="Name")
     enterprise = models.ForeignKey(Enterprise, on_delete=models.SET_NULL, null=True)
+    ordering = models.IntegerField(null=True)
 
     def __str__(self):
         return self.name
 
     class Meta:
-        ordering = ['-name']
+        ordering = ['ordering']
 
 
 
@@ -25,6 +26,7 @@ class Menu(models.Model):
     stock = models.BooleanField(verbose_name="Stock", default=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     enterprise = models.ForeignKey(Enterprise, on_delete=models.SET_NULL, null=True)
+    ordering = models.IntegerField(null=True)
 
     def __str__(self):
         return self.name
@@ -43,6 +45,7 @@ class MenuSubCategory(models.Model):
     type = models.CharField(verbose_name="Type", choices=TYPES, max_length=100, default='option')
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
     enterprise = models.ForeignKey(Enterprise, on_delete=models.SET_NULL, null=True)
+    ordering = models.IntegerField(null=True)
 
     def __str__(self):
         return self.name
@@ -57,6 +60,7 @@ class MenuSubCategoryOption(models.Model):
     subMenu = models.ForeignKey(MenuSubCategory, on_delete=models.CASCADE)
     name = models.CharField(max_length=120, verbose_name="Name")
     price = models.FloatField(null=False)
+    ordering = models.IntegerField(null=True)
 
     def __str__(self):
         return self.name

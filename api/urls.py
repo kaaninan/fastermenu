@@ -33,6 +33,7 @@ urlpatterns = [
 	url(r'^category_create/$', category_create, name="category_create"),
 	url(r'^category_update/$', category_update, name="category_update"),
 	url(r'^category_delete/$', category_delete, name="category_delete"),
+	url(r'^category_order/$', category_order, name="category_order"),
 
 
 	# MENU

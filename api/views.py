@@ -612,6 +612,29 @@ def category_delete(request):
 	return JsonResponse(data)
 
 
+def category_order(request):
+
+	# Get Post Parameters
+	postList = request.POST.get('list', '')
+	postEnterprise = request.POST.get('enterprise', '')
+
+	# Get Enterprise
+	enterprise = Enterprise.objects.get(id=postEnterprise)
+
+	d = json.loads(postList)
+	
+	for item in d:
+		# Get item from database and update
+		category = Category.objects.get(id=d[item], enterprise=enterprise)
+		category.ordering = int(item)
+		category.save()
+
+	messages.success(request, "İşlem Başarılı!")
+
+	data = {'status':'success'}
+	return JsonResponse(data)
+
+
 
 # ================================= MENU ==================================================
 

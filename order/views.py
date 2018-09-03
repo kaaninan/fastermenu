@@ -94,6 +94,9 @@ def main_view(request):
 				diff = now - orderDate
 				if (diff.days < 30):
 					lastOrders.append(line)
+		
+		# Limit 6 orders
+		lastOrders = lastOrders[-6:]
 
 
 	context = {'enterprise': enterprise, 'table': table, 'categories': categories, 'state': state, 'orders': lastOrders}
