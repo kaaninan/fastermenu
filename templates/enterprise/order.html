@@ -1,6 +1,10 @@
 {% extends 'enterprise/static/base.html' %}
 {% load static %}
 
+{% block head %}
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+{% endblock %}
+
 {% block body %}
 	<div class="content-wrapper" id="app">
 		<div class="container">
@@ -16,19 +20,9 @@
 				<div class="row">
 					<div class="col-xs-12">
 						<div class="box">
-							<!-- <div class="box-header">
-								<h3 class="box-title">Responsive Hover Table</h3>
-								<div class="box-tools">
-									<div class="input-group input-group-sm" style="width: 150px;">
-										<input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
-										<div class="input-group-btn">
-											<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-										</div>
-									</div>
-								</div>
-							</div> -->
-							<!-- /.box-header -->
+
 							<div class="box-body table-responsive no-padding">
+
 								<table class="table table-hover" v-show="items.length == 0">
 									<tr>
 										<th>Şu anda hiç siparişiniz yok!</th>
@@ -43,7 +37,7 @@
 										<th>Toplam Ücret</th>
 										<th>İşlemler</th>
 									</tr>
-									<tr v-for="item in items" style="font-size: 2rem;">
+									<tr v-for="item in items">
 										<td>
 											[[ item.id ]]
 										</td>
@@ -89,6 +83,7 @@
 							<div class="overlay" v-if="isLoading">
 								<i class="fa fas fa-sync-alt fa-spin"></i>
 							</div>
+
 						</div>
 					</div>
 				</div>
@@ -98,6 +93,7 @@
 {% endblock %}
 
 {% block script %}
+
 
 <script type="text/javascript">
 
@@ -110,15 +106,17 @@
 			items: [],
 			interval: null,
 		},
+		
 		methods: {
 			loadData: function () {
 				$.get("{% url 'api:line_get' %}", function (response) {
 					this.isLoading = false   
-					// console.log('finish');
 					this.items = response.data;
 				}.bind(this));
-			}
+			},
+
 		},
+
 		mounted: function () {
 			this.isLoading = true;
 			this.loadData();

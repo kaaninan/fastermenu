@@ -85,7 +85,9 @@
 							<div class="title">{{ item.name }}</div>
 							<div class="subtitle">
 								{% if item.options == "-1" %}
-									{{ item.description }}
+									{% if item.description %}
+						                {{ item.description }}
+						              {% endif %}
 								{% endif %}
 
 								{% if item.options != "-1" %}

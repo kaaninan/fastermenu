@@ -54,7 +54,11 @@
 	    <div class="col-12">
 	        <div class="titleDiv">
 	            <div class="name">{{enterprise.name}}</div>
-	            <div class="location">Levent</div>
+	            <div class="location">
+	            	{% if enterprise.address %}
+	            		{{enterprise.address|truncatechars:20 }}
+	            	{% endif %}
+	            </div>
 	            <div class="table"><b>Masa:</b> {{table}}</div>
 	        </div>
 	    </div>
@@ -174,7 +178,11 @@
 							<a href="{% url 'order:detail' id=menu.id %}">
 								<div class="title">
 									<div class="main">{{ menu.name }}</div>
-									<div class="sub">{{ menu.description }}</div>
+									<div class="sub">
+										{% if menu.description %}
+											{{ menu.description }}
+										{% endif %}
+									</div>
 								</div>
 							</a>
 						</div>
