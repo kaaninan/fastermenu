@@ -5,7 +5,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'o9undphnksx)_+_x9g9o*l)$neksr4wcibi1*&dlk+z-r0jcij'
 
 if 'PRODUCTION' in os.environ:
-	DEBUG = False
+	DEBUG = True
 else:
 	DEBUG = True
 
