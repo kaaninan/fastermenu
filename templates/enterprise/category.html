@@ -59,7 +59,7 @@
 				
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left">Vazgeç</button>
-					<button type="button" class="btn btn-success btn-success pull-left" id="button-add" style="width: 49%; float: left;">Ekle</button>
+					<button type="button" class="btn btn-success btn-success pull-left" id="button-add-category" style="width: 49%; float: left;">Ekle</button>
 				</div>
 			</div>
 		</div>
@@ -165,9 +165,9 @@
 
 						&nbsp;&nbsp;
 
-						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-sort">
+						<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-sort">
 							<i class="fa fa-sort" aria-hidden="true"></i>&nbsp;&nbsp;Sırala
-						</button>
+						</button> -->
 						
 						<br><br>
 
@@ -232,12 +232,12 @@
 
 {% block script %}
 
-	<script src="{% static 'plugins/sortablejs/Sortable.min.js' %}"></script>
+	<!-- <script src="{% static 'plugins/sortablejs/Sortable.min.js' %}"></script> -->
 
 	<script type="text/javascript">
 
 		var el = document.getElementById('order-items');
-		var sortable = Sortable.create(el);
+		// var sortable = Sortable.create(el);
 
 
 		// ============================= jQuery Requests ============================================
@@ -489,7 +489,8 @@
 
 			// MODAL: ADD
 
-			$('#button-add').click(function(e){
+			$('#button-add-category').click(function(e){
+				console.log('tiklandi');
 				var btn = $(event.target);
 				btn.attr('disabled', 'disabled').html("Bekleyin...");
 				
