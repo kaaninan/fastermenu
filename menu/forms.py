@@ -13,3 +13,16 @@ class MenuForm(forms.ModelForm):
 	class Meta:
 		model = Menu
 		fields = ('name', 'pictures', 'description', 'price')
+
+
+
+class BiotForm(forms.ModelForm):
+
+	class Meta:
+		model = Biot
+		fields = ('menu', )
+
+	def __init__(self, *args, **kwargs):
+		self.enterprise = kwargs.pop('enterprise', None)
+		super(BiotForm, self).__init__(*args, **kwargs)
+		self.fields['menu'].queryset = Menu.objects.filter(enterprise=self.enterprise)

@@ -207,6 +207,42 @@ def comment_view(request):
 	return render(request, "enterprise/comment.html", context)
 
 
+
+@login_required
+def biot_view(request):
+
+	exist = Biot.objects.filter(enterprise=request.user.profile.enterprise)
+	
+	if exist:
+		form = BiotForm(request.POST or None, enterprise=request.user.profile.enterprise, instance=exist[0])
+	else:
+		form = BiotForm(request.POST or None, enterprise=request.user.profile.enterprise)
+
+	if form.is_valid():
+		selected_menu = form.cleaned_data.get('menu')
+
+		# Sadece bir tane kayit olacak
+		selected = Biot.objects.filter(enterprise=request.user.profile.enterprise)
+		
+		if selected.count() == 0:
+			# New
+			obj = Biot()
+			obj.menu = selected_menu
+			obj.enterprise = request.user.profile.enterprise
+			obj.save()
+			messages.success(request, "İşlem Başarılı!")
+		else:
+			edit_obj = selected[0]
+			edit_obj.menu = selected_menu
+			edit_obj.save()
+			messages.success(request, "İşlem Başarılı!")
+
+
+
+	context = {'active_tab': 'biot', 'form': form}
+	return render(request, "enterprise/biot.html", context)
+
+
 @login_required
 def profile_view(request):
 

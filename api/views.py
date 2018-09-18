@@ -977,6 +977,9 @@ def menu_get(request):
 
 def biot_order(request):
 
+	# API[source] => Connect FM Database get Table object and get Menu object
+	
+
 	# Get Post Parameters
 	postEnterprise = request.GET.get('enterprise', '')
 	postSource = request.GET.get('source', '')

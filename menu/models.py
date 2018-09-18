@@ -74,6 +74,13 @@ class MenuSubCategoryOption(models.Model):
 
 
 
+class Biot(models.Model):
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, verbose_name='Menü Seçimi Yapınız')
+    enterprise = models.ForeignKey(Enterprise, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return str(self.pk)
+
 
 
 
