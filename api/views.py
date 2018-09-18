@@ -991,31 +991,29 @@ def biot_order(request):
 	table = Table.objects.get(id=postSource, enterprise=enterprise)
 
 	# Get Selected Menu
-	# menu = Menu.objects.get(enterprise=enterprise, id=int(postSource))
+	menu = Biot.objects.filter(enterprise=enterprise)
 
-	# Create Shopping List
-	productId = request.POST.get('id', '')
-	productCount = request.POST.get('count', '')
-	productPrice = request.POST.get('price', '')
-	productOptions = request.POST.get('option', '')
+	if menu.count() == 0:
+		data = {'status': 'error', 'message':'menu not found'}
+		return JsonResponse(data)
+	
+	else:
+		# This is example menu DRAFT BAR - ORDEK
+		dict = {'id': menu[0].menu.id, 'count': '1', 'price': str(menu[0].menu.price), 'option':'-1'}
+		request.session['enterprise'] = postEnterprise
+		request.session['table'] = postSource
+		qdict = QueryDict('', mutable=True)
+		qdict.update(dict)
+		request.POST = qdict
 
+		# Add Cart & Session
+		cart_add(request)
 
-	# This is example menu DRAFT BAR - ORDEK
-	dict = {'id': '225', 'count': '1', 'price':'30', 'option':'-1'}
-	request.session['enterprise'] = postEnterprise
-	request.session['table'] = postSource
-	qdict = QueryDict('', mutable=True)
-	qdict.update(dict)
-	request.POST = qdict
+		# Line Add
+		line_id = line_add(request)
 
-	# Add Cart & Session
-	cart_add(request)
+		# Delete Shopping List from Session
+		session_delete(request, 'cart')
 
-	# Line Add
-	line_id = line_add(request)
-
-	# Delete Shopping List from Session
-	session_delete(request, 'cart')
-
-	data = {'status': 'success'}
-	return JsonResponse(data)
+		data = {'status': 'success'}
+		return JsonResponse(data)
