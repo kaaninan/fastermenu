@@ -22,12 +22,18 @@ class EnterpriseForm(forms.ModelForm):
 
 	def clean_logo(self):
 		image = self.cleaned_data.get('logo', False)
-		if image:
-			if image._size > 4*1024*1024:
-				raise ValidationError("Logo dosyası 4 mb'dan büyük olamaz!")
-			return image
-		else:
-			raise ValidationError("Couldn't read uploaded image")
+		
+		# Eger yeni resim yuklenmisse
+		try:
+			if image:
+				if image._size > 4*1024*1024:
+					raise ValidationError("Logo dosyası 4 mb'dan büyük olamaz!")
+				self._isNew = True
+				return image
+			else:
+				raise ValidationError("Couldn't read uploaded image")
+		except Exception as e:
+			pass
 
 	def save(self):
 		form = super(EnterpriseForm, self).save()
@@ -39,13 +45,18 @@ class EnterpriseForm(forms.ModelForm):
 		w = self.cleaned_data.get('logo_width')
 		h = self.cleaned_data.get('logo_height')
 
-		image = Image.open(form.logo)
-		cropped_image = image.crop((x, y, w+x, h+y))
-		resized_image = cropped_image.resize((200, 200), Image.ANTIALIAS)
-		
-		tmpfile = tempfile.TemporaryFile()
-		resized_image.save(tmpfile, 'PNG', quality=100)
+		# Eger yeni resim yuklenmisse kaydet
+		try:
+			if self._isNew:
+				image = Image.open(form.logo)
+				cropped_image = image.crop((x, y, w+x, h+y))
+				resized_image = cropped_image.resize((200, 200), Image.ANTIALIAS)
+				
+				tmpfile = tempfile.TemporaryFile()
+				resized_image.save(tmpfile, 'PNG', quality=100)
 
-		form.logo.save(name + '_logo_'+uuid.uuid4().hex[:5]+'.png', tmpfile)
+				form.logo.save(name + '_logo_'+uuid.uuid4().hex[:5]+'.png', tmpfile)
+		except Exception as e:
+			pass
 
 		return form
