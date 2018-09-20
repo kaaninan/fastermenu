@@ -38,7 +38,7 @@
 										<th>İşlemler</th>
 									</tr>
 
-									<tr v-for="item in items">
+									<tr v-for="item in items" :style="[item[1][0].line__isComplated == false ? {'background-color': 'rgba(0, 150, 0, 0.5)'} : {'background': '#FFF'}]">
 										<!-- <td>
 											[[ item[0] ]]
 										</td> -->
