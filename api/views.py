@@ -3,7 +3,7 @@ from django.http import JsonResponse, HttpResponse, QueryDict
 from django.core import serializers
 from django.contrib import messages
 from django.db.models import Q
-import json, pickle, uuid, ast
+import json, pickle, uuid, ast, time
 
 from enterprise.models import *
 from barcode.models import *
@@ -326,21 +326,29 @@ def line_delete(request):
 
 def line_get(request):
 
-	data = list(Line.objects.filter(enterprise=request.user.profile.enterprise).values())
+	start_time = time.time()
+
+	data = list()
+
+	# Birden fazla order ayni line'da bulunuyor
+	new_data = Order.objects.filter(enterprise=request.user.profile.enterprise).select_related('line', 'menu', 'line__table').values(
+		'id', 'menu__name', 'count', 'optionsReadable', 'price', 'line__totalPrice', 'line__table__name', 'line__id',
+		'line__orderDate', 'line__isComplated', 'line__isPaid'
+	).order_by('-line__orderDate')
+
+	d = {}
+	for name in new_data:
+	    key = name['line__id']
+	    if key not in d:
+	        d[key] = []
+	    d[key].append(name)
 
 
-	for item in data:
-		item['table'] = Table.objects.get(id=item['table_id']).name
-		order = list(Order.objects.filter(line=item['id']).values())
-		item['order'] = []
-		for orderItem in order:
-			try:
-				menu = Menu.objects.get(id=orderItem['menu_id'])
-				orderItem['name'] = menu.name
-			except Exception as e:
-				orderItem['name'] = ''
-			
-			item['order'].append(orderItem)
+	for key, value in d.items():
+	    temp = [key,value]
+	    data.append(temp)
+
+	print("--- %s seconds ---" % (time.time() - start_time))
 
 	return JsonResponse({'data':data})
 

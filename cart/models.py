@@ -15,7 +15,7 @@ class Line(models.Model):
     isCommented = models.BooleanField(default=False)
     totalPrice = models.FloatField(null=True)
     table = models.ForeignKey(Table, on_delete=models.SET_NULL, null=True)
-    enterprise = models.ForeignKey(Enterprise, on_delete=models.SET_NULL, null=True)
+    enterprise = models.ForeignKey(Enterprise, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return str(self.pk)
@@ -32,8 +32,8 @@ class Order(models.Model):
     optionsReadable = models.CharField(max_length=300, verbose_name="Options Readable", null=True)
     price = models.FloatField()
     totalPrice = models.FloatField()
-    line = models.ForeignKey(Line, on_delete=models.SET_NULL, null=True)
-    enterprise = models.ForeignKey(Enterprise, on_delete=models.SET_NULL, null=True)
+    line = models.ForeignKey(Line, on_delete=models.CASCADE, null=True)
+    enterprise = models.ForeignKey(Enterprise, on_delete=models.CASCADE, null=True)
 
 
     def __str__(self):
