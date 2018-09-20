@@ -59,11 +59,11 @@
 										<td>[[ item[1][0].line__totalPrice ]] ₺</td>
 										<td>
 											<div v-show="item[1][0].line__isComplated == false" v-on:click="setComplated(item, $event)">
-												<button style="height: 5rem" type="button" class="btn btn-block btn-success">Onayla</button>
+												<button :id="item[0]" style="height: 5rem; width: 12rem" type="button" class="btn btn-block btn-success">Onayla</button>
 											</div>
 											
 											<div v-show="item[1][0].line__isPaid == false && item[1][0].line__isComplated == true" v-on:click="setPaid(item, $event)">
-												<button style="height: 5rem" type="button" class="btn btn-block btn-warning">Ödeme Al</button>
+												<button style="height: 5rem; width: 12rem" type="button" class="btn btn-block btn-warning">Ödeme Al</button>
 											</div>
 
 											<div v-show="item[1][0].line__isPaid == true && item[1][0].line__isComplated == true">
@@ -138,6 +138,8 @@
 		var id = item[0];
 
 		var btn = $(event.target);
+		var ttt = $("button[id="+btn.attr('id')+"]");
+		console.log(ttt);
 		btn.attr('disabled', 'disabled').html("Onaylanıyor...");
 		// setTimeout(function () {
 			// btn.removeAttr('disabled').html('Ödeme Al');
@@ -178,6 +180,7 @@
 		request.done(function (response, textStatus, jqXHR){
 			console.log(status);
 			// app.loadData();
+			btn.removeAttr('disabled').html("Onayla");
 		});
 
 		request.fail(function (jqXHR, textStatus, errorThrown){
@@ -235,6 +238,7 @@
 		request.done(function (response, textStatus, jqXHR){
 			console.log(status);
 			// app.loadData();
+			btn.removeAttr('disabled').html('Ödeme Al');
 		});
 
 		request.fail(function (jqXHR, textStatus, errorThrown){
