@@ -12,6 +12,7 @@ from django.db.models import Q
 import json, pickle, ast
 from datetime import timedelta
 from django.utils import timezone
+from django.utils.translation import ugettext as _
 
 from enterprise.models import *
 from menu.models import *
@@ -21,6 +22,9 @@ from enterprise.forms import *
 from account.forms import *
 from menu.forms import *
 
+
+def language_view(request):
+    return render(request, 'languages/index.html')
 
 @login_required
 def main_view(request):
@@ -137,7 +141,9 @@ def table_view(request):
 	if query:
 		tables = Table.objects.filter(Q(name__icontains=query), enterprise=request.user.profile.enterprise).distinct()
 	else:
-		tables = Table.objects.filter(enterprise=request.user.profile.enterprise)
+		tables = Table.objects.filter(enterprise=request.user.profile.enterprise).extra(
+			select={'myinteger': "CAST(substring(name FROM '^[0-9]+') AS INTEGER)"}
+		).order_by('myinteger')
 
 	context = {'active_tab': 'table', 'tables': tables}
 	return render(request, "enterprise/table.html", context)
@@ -193,19 +199,29 @@ def analyze_view(request):
 @login_required
 def comment_view(request):
 
-	# Get Line
-	line = Line.objects.filter(enterprise=request.user.profile.enterprise)
-	for item in line:
-		item.order = Order.objects.filter(enterprise=request.user.profile.enterprise, line=item)
-		item.comment = Comment.objects.filter(enterprise=request.user.profile.enterprise, line=item)
-
-	# Get Comment Count for show empty list warning
-	comment = Comment.objects.filter(enterprise=request.user.profile.enterprise)	
+	comment = Comment.objects.filter(enterprise=request.user.profile.enterprise).select_related('line', 'line__table').values(
+		'id', 'comment', 'commentDate', 'line__table__name', 'line__id',
+		'line__orderDate', 'line__isComplated', 'line__isPaid'
+	).order_by('-line__orderDate')
 
 
-	context = {'active_tab': 'comment', 'line':line, 'comment':comment}
+	context = {'active_tab': 'comment', 'comment':comment}
 	return render(request, "enterprise/comment.html", context)
 
+
+@login_required
+def comment_detail_view(request, id):
+
+	# Get orders
+	data = Line.objects.filter(id=id, enterprise=request.user.profile.enterprise).prefetch_related('order_set', 'comment_set').select_related('table').values(
+    	'orderDate', 'complatedDate', 'paidDate', 'isComplated', 'isPaid', 'totalPrice', 'table__name',
+    	'order__menu__name', 'order__count', 'order__totalPrice', 'order__optionsReadable', 'comment__comment', 'comment__commentDate'
+	)
+
+	process_time = data[0]['complatedDate'] - data[0]['orderDate']
+
+	context = {'active_tab': 'comment', 'data':data, 'process_time': process_time}
+	return render(request, "enterprise/order_detail.html", context)
 
 
 @login_required
@@ -230,12 +246,12 @@ def biot_view(request):
 			obj.menu = selected_menu
 			obj.enterprise = request.user.profile.enterprise
 			obj.save()
-			messages.success(request, "İşlem Başarılı!")
+			messages.success(request, _("Successful!"))
 		else:
 			edit_obj = selected[0]
 			edit_obj.menu = selected_menu
 			edit_obj.save()
-			messages.success(request, "İşlem Başarılı!")
+			messages.success(request, _("Successful!"))
 
 
 
@@ -258,13 +274,13 @@ def profile_view(request):
 		paw = form.cleaned_data.get('password1')
 		if paw:
 			user.set_password(paw)
-			messages.success(request, "İşlem Başarılı!")
+			messages.success(request, _("Successful!"))
 			user.save()
 			user_login = authenticate(username=request.user.username, password=paw)
 			login(request, user_login)
 
 		else:
-			messages.success(request, "İşlem Başarılı!")
+			messages.success(request, _("Successful!"))
 
 		return redirect('enterprise:profile')
 

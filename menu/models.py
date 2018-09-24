@@ -2,8 +2,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.utils.translation import ugettext as _
 from enterprise.models import *
-
 
 class Category(models.Model):
     name = models.CharField(max_length=120, verbose_name="Name")
@@ -20,7 +20,7 @@ class Category(models.Model):
 
 class Menu(models.Model):
     name = models.CharField(max_length=120, verbose_name="Name")
-    picture = models.ImageField(null=True, upload_to='menus/')
+    picture = models.ImageField(null=True, blank=True, upload_to='menus/')
     description = models.CharField(null=True, blank=True, max_length=120, verbose_name="Description")
     price = models.FloatField(null=False)
     stock = models.BooleanField(verbose_name="Stock", default=True)
@@ -75,7 +75,7 @@ class MenuSubCategoryOption(models.Model):
 
 
 class Biot(models.Model):
-    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, verbose_name='Menü Seçimi Yapınız')
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, verbose_name=_('Select Menu'))
     enterprise = models.ForeignKey(Enterprise, on_delete=models.CASCADE, null=True)
 
     def __str__(self):

@@ -1,6 +1,7 @@
 {% extends 'enterprise/static/base.html' %}
 {% load static %}
 {% load bootstrap3 %}
+{% load i18n %}
 
 {% block body %}
 
@@ -12,12 +13,12 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Buton Ayarları
+                {% trans 'Biot Settings' %}
             </h1>
 
             <ol class="breadcrumb">
-                <li><a href="{% url 'enterprise:index' %}"><i class="fa fa-home"></i> Anasayfa</a></li>
-                <li class="active">Buton Ayarları</li>
+                <li><a href="{% url 'enterprise:index' %}"><i class="fa fa-home"></i> {% trans 'Dashboard' %}</a></li>
+                <li class="active">{% trans 'Biot Settings' %}</li>
             </ol>
 
         </section>
@@ -44,7 +45,7 @@
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <h3>Butona basıldığı zaman hangi menünün sipariş verileceğini seçin</h3>
+                                        <h3>{% trans 'Select which menu to place when the button is pressed' %}</h3>
                                         <br>
                                         {% csrf_token %}
                                         {% bootstrap_form form %}
@@ -54,7 +55,7 @@
                             </div>
 
                             <div class="box-footer">
-                                <button type="submit" class="btn btn btn-primary pull-right" style="margin-left:15px">Kaydet</button>
+                                <button type="submit" class="btn btn btn-primary pull-right" style="margin-left:15px">{% trans 'Save' %}</button>
                                 <!-- <a href="{% url 'enterprise:index' %}">
                                     <button type="button" class="btn btn btn-default pull-right">Cancel</button>
                                 </a> -->
@@ -63,6 +64,7 @@
                     </div>
                 </div>
             </div>
+            
         </section>
     </div>
 

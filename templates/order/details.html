@@ -1,8 +1,10 @@
 {% extends 'order/static/base.html' %}
 {% load static %}
+{% load floatdot %}
+{% load i18n %}
 
 {% block body %}
-
+{% get_current_language as LANGUAGE_CODE %}
 
 <!-- Menu Picture, Title, Description -->
 
@@ -50,17 +52,26 @@
 
         <div class="number">
         	<a href="#"><i id="minus" class="fas fa-minus-circle"></i></a>
-        	<div class="count"><span id="count">1</span> Adet</div>
+        	<div class="count"><span id="count">1</span> {% trans 'Piece' %}</div>
         	<a href="#"><i id="plus" class="fas fa-plus-circle"></i></a>
         </div>
 
         <div class="price">
-        	<span id="priceInner">{{ menu.price|floatformat:2 }}</span> TL
+            {% if LANGUAGE_CODE == 'tr' %}
+                <span id="priceInner">
+                    {{ menu.price|floatformat:2 }}
+                </span> TL
+            {% elif LANGUAGE_CODE == 'en' %}
+                $
+                <span id="priceInner">
+                    {{ menu.price|floatdot }}
+                </span>
+            {% endif %}
         </div>
 
-        <!-- For jQuery -->
-        <div id="price" style="display: none">{{menu.price}}</div>
-        <!-- End -->
+        <div id="price" style="display: none">
+            {{ menu.price|floatdot }}
+        </div>
 
         <div class="clear"></div>
     </div>
@@ -90,7 +101,15 @@
 					<div id='price' style="display: none">{{subOption.price}}</div>
 					<!-- End -->
 					{% if subOption.price != 0 %}
-					<div class="extra">[{{ subOption.price|floatformat:2 }} TL ekle]</div>
+					<div class="extra">
+            [
+              {% if LANGUAGE_CODE == 'tr' %}
+                {{ subOption.price|floatformat:2 }} TL ekle
+              {% elif LANGUAGE_CODE == 'en' %}
+                add ${{ subOption.price|floatdot }}
+              {% endif %}
+            ]
+          </div>
 					{% endif %}
 					<input type="radio" name="radio-{{ forloop.parentloop.counter }}" value="{{ subOption.id }}" {% if forloop.counter == 1 %}checked="checked"{% endif %}>
 					<span class="checkmark"></span>
@@ -104,13 +123,12 @@
 
 		{% if option.type == 'dropadd' %}
 
-			<div class="subtitle">Lutfen cikarmak istediginiz malzemeleri seciniz.</div>
+			<div class="subtitle">{% trans 'Please select the materials you want to remove.' %}</div>
 
 			<div class="content-dropadd">
 				<ul >
 					{% for subOption in option.options %}
 						<li id="options"><span id="{{subOption.id}}">{{ subOption.name }}</span></li>
-						<!-- <li class="delete">Sarimsak</li> -->
 					{% endfor %}
 					<div class="clear"></div>
 				</ul>
@@ -132,7 +150,7 @@
 <div class="row add-bucket">
 	<div class="col-12 clear">
 		<a href="#">
-			<div class="bucket-button">SEPETE EKLE</div>
+			<div class="bucket-button">{% trans 'ADD TO CART' %}</div>
 		</a>
 	</div>
 </div>
@@ -141,220 +159,220 @@
 
 
 {% block js %}
+{% get_current_language as LANGUAGE_CODE %}
 <script>
 
 
-// When clicked 'Adet' buttons, it changes
-var count = 1;
+    // When clicked 'Adet' buttons, it changes
+    var count = 1;
 
-// When clicked paid options, it changes
-var extraPrice = 0;
+    // When clicked paid options, it changes
+    var extraPrice = 0;
 
 
-function addBudget(id, price, count, option){
+    function addBudget(id, price, count, option){
 
-  // CSRF Token for Django
-  $.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-      function getCookie(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie != '') {
-          var cookies = document.cookie.split(';');
-          for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-              break;
+        // CSRF Token for Django
+        $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+            function getCookie(name) {
+              var cookieValue = null;
+              if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                  var cookie = jQuery.trim(cookies[i]);
+                  if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                  }
+                }
+              }
+              return cookieValue;
+            }if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+              xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
             }
-          }
-        }
-        return cookieValue;
-      }if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-      }
-    } 
-  });
+          } 
+        });
 
-  // Option List to Json String
-  var optionParsed = -1;
-  if(option.length != 0)
-    optionParsed = JSON.stringify(option);
+        // Option List to Json String
+        var optionParsed = -1;
+        if(option.length != 0)
+          optionParsed = JSON.stringify(option);
 
-  var serialized = $.param({id: id, price: price, option: optionParsed, count: count, displayAlert: true});
+        var serialized = $.param({id: id, option: optionParsed, count: count, displayAlert: true});
 
-  console.log(serialized);
+        console.log(serialized);
 
-  request = $.ajax({
-        url: "{% url 'api:cart_add' %}",
-        type: "post",
-        data: serialized
-    });
+        request = $.ajax({
+              url: "{% url 'api:cart_add' %}",
+              type: "post",
+              data: serialized
+        });
 
-    request.done(function (response, textStatus, jqXHR){
-        window.location.href = "{% url 'order:index' %}";
-        return false;
-    });
+        request.done(function (response, textStatus, jqXHR){
+            window.location.href = "{% url 'order:index' %}";
+            return false;
+        });
 
-    request.fail(function (jqXHR, textStatus, errorThrown){
-        console.error(
-            "The following error occurred: "+
-            textStatus, errorThrown
-        );
-    });
-}
-
-
-
-function updatePrice(){
-	// Get Item Price for one
-	var price = parseFloat($("#price").html().replace(',','.'));
-	price = extraPrice + price;
-
-	// Add decimal numbers and convert to string
-	priceTemp = parseFloat(price * count).toFixed(2).toString();
-
-	// Convert decimal point to comma
- 	var newPrice = priceTemp.replace('.',',');
-
- 	// Update new price
-	$("span#priceInner").html(newPrice);
-}
-
-
-$(document).ready(function(){
-
-
-  // ------------ ITEM COUNT ------------------------------
-
-	// When click the plus button (item count)
-  $(".fa-plus-circle").click(function(e){
-  	e.preventDefault();
-  	$('span#count').html(count+1);
-  	count = count + 1;
-  	updatePrice();
-  });
-
-  // When click the minus button (item count)
-  $(".fa-minus-circle").click(function(e){
-  	e.preventDefault();
-  	if(count > 1){
-  		$('span#count').html(count-1);
-  		count = count - 1;
-  	}
-  	updatePrice();
-  });
-
-
-  // ------------ DROPADD ------------------------------
-
-  // When click the DropAdd options
-  $("li#options").click(function(e){
-  	e.preventDefault();
-  	var element = $(this);
-  	
-  	// Mark li element as a removed class
-  	if(element.attr('class')){
-  		element.removeClass('delete');
-  	}else{
-  		element.addClass('delete');	
-  	}
-
-  	// Get subcategory id
-  	var d = element.children().attr('id');
-  });
-
-
-  // ------------ DROPDOWN ------------------------------
-
-  // When Clicked Dropdown Options
-  $("label.container-radio").click(function (e) {
-    var tempPrice = 0;
-    $("label.container-radio").each(function(index, element){
-      // Get selected radio items
-      if($(element).find('input').prop('checked') == true){
-        // Get price
-        var price = parseFloat($(element).find("#price").html().replace(',','.'));
-        tempPrice += price;
-      }
-    });
-  	
-  	extraPrice = tempPrice;
-  	updatePrice();
-  });
-
-
-  // ------------ ADD CART ------------------------------
-
-  // When Click 'Sepete Ekle'
-  $(".bucket-button").click(function(){
-
-    // Create List for Add Cart AJAX
-    var optionList = new Array();
-
-    var element = $(this);
-
-    // Get Menu Details
-
-    var productId = parseInt($('#productId').html());
-    var productPrice = parseFloat($('span#priceInner').html().replace(',','.'));
-    var productCount = parseInt($('span#count').html());
-
-    
-    // Get Option Details
-
-    var options = $('.option'); // get all option sections
-
-    for (i = 0; i < options.length; i++) {
-
-      // Define option type
-      var dropdown = $(options[i]).find('.content-dropdown');
-      var dropadd = $(options[i]).find('.content-dropadd');
-
-
-      // If Options with dropdown
-      if(dropdown.length > 0){
-        var inputs = $(dropdown).find('.container-radio');
-
-        // console.log(inputs);
-
-        for (t = 0; t < inputs.length; t++) {
-          var optionName = $(inputs[t]).html().split('\n')[0];
-          var checked = $(inputs[t]).find('input').prop('checked');
-          var value = $(inputs[t]).find('input').attr('value');
-
-          // console.log('Name: '+ optionName);
-          // console.log('Checked: '+ checked);
-          // console.log('Value: '+ value);
-          // console.log('--');
-          if(checked){
-            // console.log('Name: '+ optionName);
-            // console.log('Value: '+ value);
-            // console.log('--');
-            optionList.push(value);
-          }
-        }
-
-
-      // If Options with drop-add
-      }else if(dropadd.length > 0){
-        var inputs = $(dropadd).find('li#options');
-        for(di = 0; di < inputs.length; di++){
-          var id = $(inputs[di]).find('span').attr('id');
-          var deleted = $(inputs[di]).attr('class');
-          if(deleted){
-            // console.log('Deleted ID: ' + id);
-            optionList.push(id);
-          }
-
-        }
-      }
+        request.fail(function (jqXHR, textStatus, errorThrown){
+            console.error("The following error occurred: "+ textStatus, errorThrown);
+        });
     }
 
-    // console.log(optionList);
 
-    addBudget(productId, productPrice, productCount, optionList);
+    function updatePrice(){
+        // Get Item Price for one
+        var price = parseFloat($("#price").html().replace(',','.'));
+        price = extraPrice + price;
+
+        console.log('price', price);
+
+        // Add decimal numbers and convert to string
+        priceTemp = parseFloat(price * count).toFixed(2).toString();
+
+        // Convert decimal point to comma
+        var trans = "{% if LANGUAGE_CODE == 'tr' %},{% endif %}{% if LANGUAGE_CODE == 'en' %}.{% endif %}";
+        var newPrice = priceTemp.replace('.',trans);
+
+        // Update new price
+        $("span#priceInner").html(newPrice);
+    }
+
+
+  $(document).ready(function(){
+
+
+    // ------------ ITEM COUNT ------------------------------
+
+  	// When click the plus button (item count)
+    $(".fa-plus-circle").click(function(e){
+    	e.preventDefault();
+    	$('span#count').html(count+1);
+    	count = count + 1;
+    	updatePrice();
+    });
+
+    // When click the minus button (item count)
+    $(".fa-minus-circle").click(function(e){
+    	e.preventDefault();
+    	if(count > 1){
+    		$('span#count').html(count-1);
+    		count = count - 1;
+    	}
+    	updatePrice();
+    });
+
+
+    // ------------ DROPADD ------------------------------
+
+    // When click the DropAdd options
+    $("li#options").click(function(e){
+    	e.preventDefault();
+    	var element = $(this);
+    	
+    	// Mark li element as a removed class
+    	if(element.attr('class')){
+    		element.removeClass('delete');
+    	}else{
+    		element.addClass('delete');	
+    	}
+
+    	// Get subcategory id
+    	var d = element.children().attr('id');
+    });
+
+
+    // ------------ DROPDOWN ------------------------------
+
+    // When Clicked Dropdown Options
+    $("label.container-radio").click(function (e) {
+      var tempPrice = 0;
+      $("label.container-radio").each(function(index, element){
+        // Get selected radio items
+        if($(element).find('input').prop('checked') == true){
+          // Get price
+          var price = parseFloat($(element).find("#price").html().replace(',','.'));
+          tempPrice += price;
+        }
+      });
+    	
+    	extraPrice = tempPrice;
+    	updatePrice();
+    });
+
+
+    // ------------ ADD CART ------------------------------
+
+    // When Click 'Sepete Ekle'
+    $(".bucket-button").click(function(){
+
+      // Create List for Add Cart AJAX
+      var optionList = new Array();
+
+      var element = $(this);
+
+      // Get Menu Details
+
+      var productId = parseInt($('#productId').html());
+      var productPrice = parseFloat($('span#priceInner').html().replace(',','.'));
+      var productCount = parseInt($('span#count').html());
+
+      
+      // Get Option Details
+
+      var options = $('.option'); // get all option sections
+
+      for (i = 0; i < options.length; i++) {
+
+        // Define option type
+        var dropdown = $(options[i]).find('.content-dropdown');
+        var dropadd = $(options[i]).find('.content-dropadd');
+
+
+        // If Options with dropdown
+        if(dropdown.length > 0){
+          var inputs = $(dropdown).find('.container-radio');
+
+          // console.log(inputs);
+
+          for (t = 0; t < inputs.length; t++) {
+            var optionName = $(inputs[t]).html().split('\n')[0];
+            var checked = $(inputs[t]).find('input').prop('checked');
+            var value = $(inputs[t]).find('input').attr('value');
+
+            // console.log('Name: '+ optionName);
+            // console.log('Checked: '+ checked);
+            // console.log('Value: '+ value);
+            // console.log('--');
+            if(checked){
+              // console.log('Name: '+ optionName);
+              // console.log('Value: '+ value);
+              // console.log('--');
+              optionList.push(value);
+            }
+          }
+
+
+        // If Options with drop-add
+        }else if(dropadd.length > 0){
+          var inputs = $(dropadd).find('li#options');
+          for(di = 0; di < inputs.length; di++){
+            var id = $(inputs[di]).find('span').attr('id');
+            var deleted = $(inputs[di]).attr('class');
+            if(deleted){
+              // console.log('Deleted ID: ' + id);
+              optionList.push(id);
+            }
+
+          }
+        }
+      }
+
+      // console.log(optionList);
+
+      addBudget(productId, productPrice, productCount, optionList);
+    });
   });
-});
 </script>
 
 {% endblock %}

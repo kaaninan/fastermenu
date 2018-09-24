@@ -1,0 +1,87 @@
+{% extends 'enterprise/static/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load humanize %}
+{% load smooth_timedelta %}
+
+{% block body %}
+    <div class="content-wrapper">
+        <div class="container">
+            <section class="content-header">
+                <h1>{% trans 'Order Details' %}</h1>
+
+                <ol class="breadcrumb">
+                    <li><a href="{% url 'enterprise:index' %}"><i class="fa fa-home"></i> {% trans 'Dashboard' %}</a></li>
+                    {% if active_tab == 'comment' %}
+                        <li><a href="{% url 'enterprise:comment' %}"> {% trans 'Comments' %}</a></li>
+                    {% endif %}
+                    <li class="active">{% trans 'Order Details' %}</li>
+                </ol>
+            </section>
+
+            <section class="content">
+
+                    <div class="box box-primary">
+
+                        <div class="box-header">
+                            <h3 class="box-title">{% trans 'Order Details' %}</h3>
+                        </div>
+
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <span style="font-size: 2rem; font-weight: 600;">{% trans 'Comment' %}</span><br>
+                                    <span style="font-size: 1.5rem">{{ data.0.comment__comment }}</span><br>
+                                    <span style="font-size: 1.2rem">{{ data.0.comment__commentDate }}</span><br><br>
+                                    
+                                    <span style="font-size: 2rem; font-weight: 600;">{% trans 'Orders' %}</span><br>
+
+                                    {% for item in data %}
+                                        <span style="font-size: 1.5rem">
+                                            {{ item.order__count }}{% if LANGUAGE_CODE == 'tr' %} tane {% endif %}
+                                            {{ item.order__menu__name }}
+                                        </span>
+                                        <br>
+                                        {{ item.order__optionsReadable }}
+                                        <br><br>
+
+                                    {% endfor %}
+
+                                    <span style="font-size: 2rem; font-weight: 600">{% trans 'Total Price' %}</span><br>
+                                    <span style="font-size: 1.5rem">{{ data.0.totalPrice|floatformat:2 }} {% trans '$' %}</span>
+                                    <br><br>
+                                    <span style="font-size: 2rem; font-weight: 600">{% trans 'Order Date' %}</span><br>
+                                    <span style="font-size: 1.5rem">{{ data.0.orderDate|naturaltime }} - {{ data.0.orderDate }}</span>
+                                    <br><br>
+                                    <span style="font-size: 2rem; font-weight: 600">{% trans 'Complated Date' %}</span><br>
+                                    <span style="font-size: 1.5rem">{{ data.0.complatedDate|naturaltime }} - {{ data.0.complatedDate }}</span>
+                                    <br><br>
+                                    <span style="font-size: 2rem; font-weight: 600">{% trans 'Process Time' %}</span><br>
+                                    <span style="font-size: 1.5rem">{{ process_time|smooth_timedelta }}</span>
+                                    <br><br>
+                                    <span style="font-size: 2rem; font-weight: 600">{% trans 'Table' %}</span><br>
+                                    <span style="font-size: 1.5rem">{{ data.0.table__name }}</span>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="box-footer">
+                            <a href="{% url 'enterprise:comment' %}">
+                                <button type="submit" class="btn btn btn-default pull-left" style="margin-left:15px">< {% trans 'Back' %}</button>
+                            </a>
+                        </div>
+                    </div>
+
+            </section>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+
+
+{% endblock %}
+

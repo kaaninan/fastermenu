@@ -1,7 +1,9 @@
 {% extends 'order/static/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block body %}
+{% get_current_language as LANGUAGE_CODE %}
 
 <!-- Delete Modal -->
 <div class="modal fade" id="modal-delete">
@@ -10,16 +12,16 @@
 
 			<div class="modal-header">
 				<h4 class="modal-title">
-					<div id="modal-delete-title">Siparişi Sil</div>
+					<div id="modal-delete-title">{% trans 'Delete Order' %}</div>
 				</h4>
 			</div>
 
 			<div class="modal-body">
-				<div id="modal-delete-body">Siparişiniz sistemden silinecektir. Onaylıyor musunuz?</div>
+				<div id="modal-delete-body">{% trans 'Your order will be deleted from the system. Do you confirm?' %}</div>
 			</div>
 			
 			<div class="modal-footer">
-				<button type="button" class="btn btn-danger btn-block" id="button-delete">Sil</button>
+				<button type="button" class="btn btn-danger btn-block" id="button-delete">{% trans 'Delete' %}</button>
 			</div>
 
 		</div>
@@ -30,20 +32,20 @@
 <div class="row complated">
 	<div class="col-12 clear">
 		<div class="pic"><img src="{% static 'img/complated.png' %}"></div>
-		<div class="desc">Siparişiniz başarıyla alındı!</div>
+		<div class="desc">{% trans 'Your order has been successfully received!' %}</div>
 		<div class="desc_sub">
-			En kısa zamanda müsait olan garsonlarımız siparişinizi size ulaştıracaktır.
+			{% trans 'As soon as possible, our waiters will bring your order.' %}
 			<br><br>
-			Siparişinizi düzenlemek isterseniz <span>-</span> saniye içerisinde yapabilirsiniz.</div>
+			{% trans 'If you want to edit your order within <span>-</span> seconds you can do.' %}</div>
 		<a href="{% url 'order:track' id=line.id %}">
-			<div class="button style-gray">Siparişini Takip Et</div>
+			<div class="button style-gray">{% trans 'Track Order' %}</div>
 		</a>
 		<hr>
 		<a href="{% url 'order:cart' %}?edit=true&line={{line.id}}">
-			<div class="button style-orange">Siparişini Düzenle</div>
+			<div class="button style-orange">{% trans 'Edit Order' %}</div>
 		</a>
 		<a href="#">
-			<div id="btn-cancel" class="button style-red">İptal Et</div>
+			<div id="btn-cancel" class="button style-red">{% trans 'Cancel Order' %}</div>
 		</a>
 		<br><br><br>
 	</div>
@@ -112,7 +114,7 @@
 	$('#button-delete').click(function(e){
 		e.preventDefault();
 		var btn = $(e.currentTarget);
-		btn.prop('disabled', true).html("Bekleyin...");
+		btn.prop('disabled', true).html("{% trans 'Wait...' %}");
 		id = '{{ line.id }}';
 		deleteLine(id);
 	});
@@ -137,7 +139,7 @@
 
 			    if (diff._milliseconds <= 0) {
 			        clearInterval(interval);
-			        window.location.href = "{% url 'order:track' id=line.id %}";
+			        // window.location.href = "{% url 'order:track' id=line.id %}";
 					return false;
 			    }
 			}else if(diff._milliseconds >= 30){

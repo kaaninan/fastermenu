@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext as _
 
 
 
@@ -19,7 +20,7 @@ class LoginForm(forms.ModelForm):
 		user = authenticate(username=username, password=password)
 		
 		if user is None:
-			raise forms.ValidationError("Kullanıcı adınız veya parolanız uyuşmuyor. Lütfen kontrol ediniz!")
+			raise forms.ValidationError(_('Your username or password does not match. Please check!'))
 		else:
 			return cleaned_data
 
@@ -39,10 +40,10 @@ class SignUpForm(UserCreationForm):
 
 
 class ProfileUpdateForm(forms.ModelForm):
-	email = forms.EmailField(max_length=254, help_text='Mail adresiniz aynı zamanda kullanıcı adınızdır.')
-	first_name = forms.CharField(max_length=30, required=False, label='Adınız')
-	last_name = forms.CharField(max_length=30, required=False, label='Soyadınız')
-	password1 = forms.CharField(max_length=100, required=False, label='Yeni Şifre (İsteğe Bağlı)', help_text='Şifreniz en az 8 karakter olmalıdır.', widget=forms.PasswordInput)
+	email = forms.EmailField(max_length=254, help_text=_('Your e-mail address is also your username.'))
+	first_name = forms.CharField(max_length=30, required=False, label=_('First Name'))
+	last_name = forms.CharField(max_length=30, required=False, label=_('Last Name'))
+	password1 = forms.CharField(max_length=100, required=False, label=_('New Password (optional'), help_text=_('Your password must be at least 8 characters long.'), widget=forms.PasswordInput)
 
 	class Meta:
 		model = User
@@ -51,5 +52,5 @@ class ProfileUpdateForm(forms.ModelForm):
 	def clean_password1(self):
 		password = self.cleaned_data.get("password1")
 		if len(password) < 8 and password:
-			raise forms.ValidationError("The password can not be less than 8 characters!")
+			raise forms.ValidationError(_("The password can not be less than 8 characters!"))
 		return password

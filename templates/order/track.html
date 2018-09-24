@@ -1,8 +1,10 @@
 {% extends 'order/static/base.html' %}
 {% load static %}
+{% load i18n %}
+{% load floatdot %}
 
 {% block body %}
-
+{% get_current_language as LANGUAGE_CODE %}
 
 {% if messages %}
 	{% for message in messages %}
@@ -17,7 +19,7 @@
 <!-- TITLE -->
 <div class="row main-title">
 	<div class="col clear">
-		<div class="text"> Sipariş Durumu</div>
+		<div class="text"> {% trans 'Order Status' %}</div>
 	</div>
 </div>
 
@@ -64,7 +66,7 @@
 <!-- ENTERPRISE -->
 <div class="row track-enterprise">
 	<div class="col">
-		<b>{{ line.enterprise }}</b> - Masa {{ line.table }}
+		<b>{{ line.enterprise }}</b> - {% trans 'Table' %} {{ line.table }}
 	</div>
 </div>
 
@@ -72,7 +74,7 @@
 <!-- TITLE -->
 <div class="row main-title">
 	<div class="col clear">
-		<div class="text"> Siparişiniz</div>
+		<div class="text"> {% trans 'Your Order' %}</div>
 	</div>
 </div>
 
@@ -85,7 +87,7 @@
 		<div class="order-item">
 			<div class="o-title">
 				{% if item.count > 1 %}
-				{{ item.count }} tane 
+				{{ item.count }} {% if LANGUAGE_CODE == 'tr' %}tane {% endif %}
 				{% endif %}
 				{{ item.menu.name }}
 			</div>
@@ -95,7 +97,11 @@
 	            {% endif %}
 			</div>
 			<div class="o-price">
-				{{ item.totalPrice|floatformat:2 }} TL
+				{% if LANGUAGE_CODE == 'tr' %}
+	                {{ item.totalPrice|floatformat:2 }} TL
+	            {% elif LANGUAGE_CODE == 'en' %}
+	                $ {{ item.totalPrice|floatdot }}
+	            {% endif %}
 			</div>
 		</div>
 
@@ -103,11 +109,18 @@
 
 
 		<div class="order-detail">
-			<b>Sipariş Zamanı: </b> <span id="time"></span>
+			<b>{% trans 'Order Time' %}: </b> <span id="time"></span>
 		</div>
 
 		<div class="order-detail">
-			<b>Toplam Ücret: </b> <b class="green">{{ line.totalPrice|floatformat:2 }} TL</b>
+			<b>{% trans 'Total Price' %}: </b> 
+			<b class="green">
+				{% if LANGUAGE_CODE == 'tr' %}
+	                {{ line.totalPrice|floatformat:2 }} TL
+	            {% elif LANGUAGE_CODE == 'en' %}
+	                $ {{ line.totalPrice|floatdot }}
+	            {% endif %}
+			</b>
 		</div>
 
 	</div>
@@ -120,7 +133,7 @@
 	<!-- TITLE -->
 	<div class="row main-title">
 		<div class="col clear">
-			<div class="text"> Yorum Yap</div>
+			<div class="text"> {% trans 'Comment' %}</div>
 		</div>
 	</div>
 
@@ -131,7 +144,7 @@
 				<div class="form-group">
 				  	<textarea class="form-control" rows="3" id="comment" name="comment" maxlength="300"></textarea>
 				</div>
-				<button type="submit" class="btn btn-success">Gönder</button>
+				<button type="submit" class="btn btn-success">{% trans 'Send' %}</button>
 			</form>
 		</div>
 	</div>
@@ -141,7 +154,7 @@
 	<!-- TITLE -->
 	<div class="row main-title">
 		<div class="col clear">
-			<div class="text"> Yorumunuz</div>
+			<div class="text"> {% trans 'Your Comment' %}</div>
 		</div>
 	</div>
 
@@ -164,6 +177,8 @@
 
 
 {% block js %}
+{% get_current_language as LANGUAGE_CODE %}
+
 <script type="text/javascript">
 
 	$(function(){
@@ -177,7 +192,7 @@
 	function getLineStatus(){
 
 		var time = "{{ line.orderDate|date:'Ymd His' }}";
-		var timeSpend = moment(String(time)).locale('tr').fromNow();
+		var timeSpend = moment(String(time)).locale("{% if LANGUAGE_CODE == 'tr' %}tr{% elif LANGUAGE_CODE == 'en' %}en{% endif %}").fromNow();
 		$('#time').html(timeSpend);
 
 		// CSRF Token for Django
@@ -223,21 +238,21 @@
 
 				// Check Commented
 				if(data[0].fields.isCommented == true){
-					$('#status').html('Siparişiniz tamamlandı.');
+					$('#status').html("{% trans 'Your order is complete.' %}");
 				}else{
-					$('#status').html('Siparişiniz tamamlandı. Aşağıdan yorum yapabilirsiniz.');
+					$('#status').html("{% trans 'Your order is complete. You can comment below.' %}");
 				}
 				
 				$('#i1').addClass('check');
 				$('#i2').addClass('check');
 				$('#i3').addClass('check');
 			}else if(data[0].fields.isComplated == true){
-				$('#status').html('Siparişiniz hazırlandı. Yakında masanızda olacak.');
+				$('#status').html("{% trans 'Your order has been prepared.' %}");
 				$('#i1').addClass('check');
 				$('#i2').addClass('check');
 				willReload = true;
 			}else{
-				$('#status').html('Siparişiniz alındı. Onaylanması bekleniyor.');
+				$('#status').html("{% trans 'Your order has been received. Expected to be approved.' %}");
 				$('#i1').addClass('check');
 			}
 

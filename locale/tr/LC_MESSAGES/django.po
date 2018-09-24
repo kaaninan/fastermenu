@@ -1,0 +1,461 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-09-22 00:57+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: fastermenu/settings.py:52
+msgid "English"
+msgstr ""
+
+#: fastermenu/settings.py:53
+msgid "Turkish"
+msgstr ""
+
+#: templates/enterprise/analyze.html:9 templates/enterprise/analyze.html:13
+#: templates/enterprise/static/header.html:21
+msgid "Analyze"
+msgstr "Analiz"
+
+#: templates/enterprise/analyze.html:12 templates/enterprise/category.html:126
+#: templates/enterprise/comment.html:35 templates/enterprise/index.html:13
+#: templates/enterprise/menu.html:80 templates/enterprise/order.html:17
+#: templates/enterprise/table.html:154
+msgid "Dashboard"
+msgstr ""
+
+#: templates/enterprise/analyze.html:24
+msgid "Daily Sales"
+msgstr ""
+
+#: templates/enterprise/analyze.html:33
+msgid "Weekly Sales"
+msgstr ""
+
+#: templates/enterprise/analyze.html:42
+msgid "Monthly Sales"
+msgstr ""
+
+#: templates/enterprise/analyze.html:49
+msgid "Endorsement"
+msgstr ""
+
+#: templates/enterprise/analyze.html:56
+msgid "Daily Endorsement"
+msgstr ""
+
+#: templates/enterprise/analyze.html:65
+msgid "Weekly Endorsement"
+msgstr ""
+
+#: templates/enterprise/analyze.html:74
+msgid "Monthly Endorsement"
+msgstr ""
+
+#: templates/enterprise/category.html:12
+#, fuzzy
+#| msgid "Create categories"
+msgid "Order Categories"
+msgstr "Kategorilerini oluştur"
+
+#: templates/enterprise/category.html:18 templates/enterprise/category.html:196
+msgid "You have not created any categories at this time!"
+msgstr ""
+
+#: templates/enterprise/category.html:36 templates/enterprise/category.html:62
+#: templates/enterprise/category.html:90 templates/enterprise/category.html:110
+#: templates/enterprise/menu.html:37 templates/enterprise/menu.html:64
+#: templates/enterprise/table.html:81 templates/enterprise/table.html:119
+#: templates/enterprise/table.html:140
+msgid "Cancel"
+msgstr ""
+
+#: templates/enterprise/category.html:37 templates/enterprise/category.html:63
+#: templates/enterprise/category.html:89 templates/enterprise/menu.html:38
+#: templates/enterprise/menu.html:65 templates/enterprise/table.html:82
+#: templates/enterprise/table.html:120
+msgid "Save"
+msgstr ""
+
+#: templates/enterprise/category.html:49 templates/enterprise/category.html:164
+msgid "Add Category"
+msgstr ""
+
+#: templates/enterprise/category.html:55
+msgid "What is the name of the category you want to add?"
+msgstr ""
+
+#: templates/enterprise/category.html:75
+msgid "Edit Category"
+msgstr ""
+
+#: templates/enterprise/category.html:81 templates/enterprise/category.html:203
+msgid "Category Name"
+msgstr ""
+
+#: templates/enterprise/category.html:88 templates/enterprise/category.html:111
+#: templates/enterprise/menu.html:151 templates/enterprise/table.html:141
+#: templates/enterprise/table.html:224
+msgid "Delete"
+msgstr ""
+
+#: templates/enterprise/category.html:102 templates/enterprise/table.html:132
+msgid "Delete Table"
+msgstr ""
+
+#: templates/enterprise/category.html:106
+msgid " and its products will be deleted. Do you confirm?"
+msgstr ""
+
+#: templates/enterprise/category.html:123
+msgid "Menu and Category Settings"
+msgstr ""
+
+#: templates/enterprise/category.html:127 templates/enterprise/menu.html:81
+msgid "Category"
+msgstr ""
+
+#: templates/enterprise/category.html:147
+msgid "How to add products?"
+msgstr ""
+
+#: templates/enterprise/category.html:151
+#, fuzzy
+#| msgid "Create categories"
+msgid "Create category"
+msgstr "Kategorilerini oluştur"
+
+#: templates/enterprise/category.html:152
+msgid "Add products into categories you create"
+msgstr ""
+
+#: templates/enterprise/category.html:153
+msgid "The products on the customers screen are listed below the categories"
+msgstr ""
+
+#: templates/enterprise/category.html:178
+#, fuzzy
+#| msgid "Create categories"
+msgid "Categories"
+msgstr "Kategorilerini oluştur"
+
+#: templates/enterprise/category.html:184 templates/enterprise/menu.html:115
+#: templates/enterprise/table.html:194
+msgid "Search"
+msgstr ""
+
+#: templates/enterprise/category.html:204
+msgid "Number of Products"
+msgstr ""
+
+#: templates/enterprise/category.html:205 templates/enterprise/comment.html:73
+#: templates/enterprise/menu.html:136 templates/enterprise/order.html:42
+#: templates/enterprise/table.html:210
+msgid "Operations"
+msgstr ""
+
+#: templates/enterprise/category.html:215
+msgid "Go to Menu"
+msgstr ""
+
+#: templates/enterprise/category.html:218 templates/enterprise/menu.html:149
+#: templates/enterprise/table.html:222
+msgid "Edit"
+msgstr ""
+
+#: templates/enterprise/category.html:496
+#: templates/enterprise/category.html:513
+#: templates/enterprise/category.html:530 templates/enterprise/menu.html:149
+#: templates/enterprise/menu.html:185 templates/enterprise/menu.html:202
+#: templates/enterprise/table.html:487 templates/enterprise/table.html:499
+msgid "Wait..."
+msgstr ""
+
+#: templates/enterprise/comment.html:14 templates/enterprise/comment.html:105
+msgid "Order Detail"
+msgstr ""
+
+#: templates/enterprise/comment.html:22 templates/enterprise/table.html:25
+msgid "Done"
+msgstr ""
+
+#: templates/enterprise/comment.html:33 templates/enterprise/comment.html:36
+#: templates/enterprise/comment.html:55
+#: templates/enterprise/static/header.html:22
+msgid "Comments"
+msgstr "Yorumlar"
+
+#: templates/enterprise/comment.html:57 templates/enterprise/table.html:188
+msgid "units"
+msgstr ""
+
+#: templates/enterprise/comment.html:66
+msgid "No comments at this moment!"
+msgstr ""
+
+#: templates/enterprise/comment.html:71
+#, fuzzy
+#| msgid "Comments"
+msgid "Comment"
+msgstr "Yorumlar"
+
+#: templates/enterprise/comment.html:72
+#, fuzzy
+#| msgid "Comments"
+msgid "Comment Date"
+msgstr "Yorumlar"
+
+#: templates/enterprise/comment.html:80 templates/enterprise/order.html:39
+#, fuzzy
+#| msgid "Orders"
+msgid "Order"
+msgstr "Siparişler"
+
+#: templates/enterprise/comment.html:87 templates/enterprise/order.html:41
+msgid "Total Price"
+msgstr ""
+
+#: templates/enterprise/comment.html:88
+msgid "$"
+msgstr ""
+
+#: templates/enterprise/comment.html:90
+#, fuzzy
+#| msgid "Orders"
+msgid "Order Date"
+msgstr "Siparişler"
+
+#: templates/enterprise/comment.html:93
+msgid "Complated Date"
+msgstr ""
+
+#: templates/enterprise/comment.html:96 templates/enterprise/order.html:38
+#, fuzzy
+#| msgid "Tables"
+msgid "Table"
+msgstr "Masalar"
+
+#: templates/enterprise/index.html:22
+msgid "Steps to start using FasterMenu"
+msgstr "FasterMenu'yü kullanmaya başlamak için yapmanız gereken adımlar;"
+
+#: templates/enterprise/index.html:30
+msgid "Enter account settings and upload logo"
+msgstr "Hesap ayarlarına gir ve logonu yükle"
+
+#: templates/enterprise/index.html:37
+msgid "Create categories"
+msgstr "Kategorilerini oluştur"
+
+#: templates/enterprise/index.html:43
+msgid "Add menus"
+msgstr ""
+
+#: templates/enterprise/index.html:49
+msgid "Add your tables"
+msgstr ""
+
+#: templates/enterprise/index.html:54
+msgid "Print QR codes"
+msgstr ""
+
+#: templates/enterprise/index.html:59
+msgid "Follow incoming orders"
+msgstr ""
+
+#: templates/enterprise/menu.html:13 templates/enterprise/menu.html:101
+#: templates/enterprise/menu.html:222
+msgid "Add Product"
+msgstr ""
+
+#: templates/enterprise/menu.html:31
+msgid "Add Option"
+msgstr ""
+
+#: templates/enterprise/menu.html:54
+msgid "Delete Product"
+msgstr ""
+
+#: templates/enterprise/menu.html:58 templates/enterprise/table.html:136
+msgid "will be deleted. Do you confirm?"
+msgstr ""
+
+#: templates/enterprise/menu.html:77
+#, fuzzy
+#| msgid "Settings"
+msgid "Menu Settings"
+msgstr "Ayarlar"
+
+#: templates/enterprise/menu.html:82 templates/enterprise/static/header.html:19
+msgid "Menu"
+msgstr "Menü"
+
+#: templates/enterprise/menu.html:127
+msgid "You have not created any menus at this time!"
+msgstr ""
+
+#: templates/enterprise/menu.html:133
+msgid "Product Name"
+msgstr ""
+
+#: templates/enterprise/menu.html:134
+msgid "Price"
+msgstr ""
+
+#: templates/enterprise/menu.html:224 templates/enterprise/table.html:288
+msgid "Add"
+msgstr ""
+
+#: templates/enterprise/menu.html:229
+msgid "Edit Product"
+msgstr ""
+
+#: templates/enterprise/menu.html:231
+msgid "Update"
+msgstr ""
+
+#: templates/enterprise/order.html:14 templates/enterprise/order.html:18
+#: templates/enterprise/static/header.html:17
+msgid "Orders"
+msgstr "Siparişler"
+
+#: templates/enterprise/order.html:31
+msgid "You have no orders at the moment!"
+msgstr ""
+
+#: templates/enterprise/order.html:40
+#, fuzzy
+#| msgid "Orders"
+msgid "Order Time"
+msgstr "Siparişler"
+
+#: templates/enterprise/order.html:66 templates/enterprise/order.html:187
+msgid "Approve"
+msgstr ""
+
+#: templates/enterprise/order.html:70 templates/enterprise/order.html:245
+msgid "Receive Payment"
+msgstr ""
+
+#: templates/enterprise/order.html:74
+msgid "Complated"
+msgstr ""
+
+#: templates/enterprise/order.html:147
+msgid "Approving..."
+msgstr ""
+
+#: templates/enterprise/order.html:205
+msgid "Completing..."
+msgstr ""
+
+#: templates/enterprise/static/header.html:20
+#: templates/enterprise/table.html:155 templates/enterprise/table.html:186
+msgid "Tables"
+msgstr "Masalar"
+
+#: templates/enterprise/static/header.html:23
+msgid "Biot Settings"
+msgstr "Biot Ayarları"
+
+#: templates/enterprise/static/header.html:95
+msgid "Settings"
+msgstr "Ayarlar"
+
+#: templates/enterprise/static/header.html:98
+msgid "Sign Out"
+msgstr "Çıkış Yap"
+
+#: templates/enterprise/table.html:13
+msgid "Table QR Code"
+msgstr ""
+
+#: templates/enterprise/table.html:28
+msgid "Print"
+msgstr ""
+
+#: templates/enterprise/table.html:43 templates/enterprise/table.html:171
+#, fuzzy
+#| msgid "Tables"
+msgid "Add Table"
+msgstr "Masalar"
+
+#: templates/enterprise/table.html:48
+msgid "Add bulk table"
+msgstr ""
+
+#: templates/enterprise/table.html:51
+msgid "Add one table"
+msgstr ""
+
+#: templates/enterprise/table.html:60
+msgid "How many tables do you have?"
+msgstr ""
+
+#: templates/enterprise/table.html:62
+msgid "The number of tables you enter will be added."
+msgstr ""
+
+#: templates/enterprise/table.html:73
+msgid "What is the table name you want to add?"
+msgstr ""
+
+#: templates/enterprise/table.html:94
+#, fuzzy
+#| msgid "Tables"
+msgid "Edit Table"
+msgstr "Masalar"
+
+#: templates/enterprise/table.html:100 templates/enterprise/table.html:208
+#, fuzzy
+#| msgid "Tables"
+msgid "Table Name"
+msgstr "Masalar"
+
+#: templates/enterprise/table.html:108
+msgid "Active"
+msgstr ""
+
+#: templates/enterprise/table.html:111
+msgid "Not Active"
+msgstr ""
+
+#: templates/enterprise/table.html:113
+msgid "You can remove the tables that are not in use."
+msgstr ""
+
+#: templates/enterprise/table.html:152
+#, fuzzy
+#| msgid "Settings"
+msgid "Table Settings"
+msgstr "Ayarlar"
+
+#: templates/enterprise/table.html:176
+msgid "Print QR Codes"
+msgstr ""
+
+#: templates/enterprise/table.html:203
+msgid "You have not created any table at this time!"
+msgstr ""
+
+#: templates/enterprise/table.html:209
+msgid "Status"
+msgstr ""
+
+#: templates/enterprise/table.html:220
+msgid "QR Code"
+msgstr ""
