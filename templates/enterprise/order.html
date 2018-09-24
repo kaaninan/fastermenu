@@ -1,19 +1,21 @@
 {% extends 'enterprise/static/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block head %}
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
 {% endblock %}
 
 {% block body %}
+{% get_current_language as LANGUAGE_CODE %}
 	<div class="content-wrapper" id="app">
 		<div class="container">
 			<section class="content-header">
-				<h1>Siparişler</h1>
+				<h1>{% trans 'Orders' %}</h1>
 
 				<ol class="breadcrumb">
-					<li><a href="{% url 'enterprise:index' %}"><i class="fa fa-home"></i> Anasayfa</a></li>
-					<li class="active">Siparişler</li>
+					<li><a href="{% url 'enterprise:index' %}"><i class="fa fa-home"></i> {% trans 'Dashboard' %}</a></li>
+					<li class="active">{% trans 'Orders' %}</li>
 				</ol>
 			</section>
 			<section class="content">
@@ -25,17 +27,19 @@
 
 								<table class="table table-hover" v-show="items.length == 0">
 									<tr>
-										<th>Şu anda hiç siparişiniz yok!</th>
+										<th>
+											{% trans 'You have no orders at the moment!' %}
+										</th>
 									</tr>
 								</table>
 								<table class="table table-hover" v-show="items.length > 0">
 									<tr style="font-size: 1.5rem;">
 										<!-- <th>#</th> -->
-										<th>Masa</th>
-										<th>Sipariş</th>
-										<th>Sipariş Zamanı</th>
-										<th>Toplam Ücret</th>
-										<th>İşlemler</th>
+										<th>{% trans 'Table' %}</th>
+										<th>{% trans 'Order' %}</th>
+										<th>{% trans 'Order Time' %}</th>
+										<th>{% trans 'Total Price' %}</th>
+										<th>{% trans 'Operations' %}</th>
 									</tr>
 
 									<tr v-for="item in items" :style="[item[1][0].line__isComplated == false ? {'background-color': 'rgba(0, 150, 0, 0.5)'} : {'background': '#FFF'}]">
@@ -48,7 +52,7 @@
 										<td>
 											<p v-for="menu in item[1]">
 												<b>
-													[[ menu.count ]] tane
+													[[ menu.count ]] {% if LANGUAGE_CODE == 'tr' %}tane{% endif %}
 													[[ menu.menu__name ]]
 												</b>
 												<br>
@@ -59,15 +63,15 @@
 										<td>[[ item[1][0].line__totalPrice ]] ₺</td>
 										<td>
 											<div v-show="item[1][0].line__isComplated == false" v-on:click="setComplated(item, $event)">
-												<button :id="item[0]" style="height: 5rem; width: 12rem" type="button" class="btn btn-block btn-success">Onayla</button>
+												<button :id="item[0]" style="height: 5rem; width: 12rem" type="button" class="btn btn-block btn-success">{% trans 'Approve' %}</button>
 											</div>
 											
 											<div v-show="item[1][0].line__isPaid == false && item[1][0].line__isComplated == true" v-on:click="setPaid(item, $event)">
-												<button style="height: 5rem; width: 12rem" type="button" class="btn btn-block btn-warning">Ödeme Al</button>
+												<button style="height: 5rem; width: 12rem" type="button" class="btn btn-block btn-warning">{% trans 'Receive Payment' %}</button>
 											</div>
 
 											<div v-show="item[1][0].line__isPaid == true && item[1][0].line__isComplated == true">
-												<b style="color: green">Tamamlandı</b>
+												<b style="color: green">{% trans 'Complated' %}</b>
 											</div>
 										</td>
 									</tr>
@@ -140,7 +144,7 @@
 		var btn = $(event.target);
 		var ttt = $("button[id="+btn.attr('id')+"]");
 		console.log(ttt);
-		btn.attr('disabled', 'disabled').html("Onaylanıyor...");
+		btn.attr('disabled', 'disabled').html("{% trans 'Approving...' %}");
 		// setTimeout(function () {
 			// btn.removeAttr('disabled').html('Ödeme Al');
 			// item.isComplated = true;
@@ -180,7 +184,7 @@
 		request.done(function (response, textStatus, jqXHR){
 			console.log(status);
 			// app.loadData();
-			btn.removeAttr('disabled').html("Onayla");
+			btn.removeAttr('disabled').html("{% trans 'Approve' %}");
 		});
 
 		request.fail(function (jqXHR, textStatus, errorThrown){
@@ -198,7 +202,7 @@
 		var id = item[0];
 
 		var btn = $(event.target);
-		btn.attr('disabled', 'disabled').html("Tamamlanıyor...");
+		btn.attr('disabled', 'disabled').html("{% trans 'Completing...' %}");
 		// setTimeout(function () {
 			// btn.removeAttr('disabled').html('Ödeme Al');
 			// item.isPaid = true;
@@ -238,7 +242,7 @@
 		request.done(function (response, textStatus, jqXHR){
 			console.log(status);
 			// app.loadData();
-			btn.removeAttr('disabled').html('Ödeme Al');
+			btn.removeAttr('disabled').html("{% trans 'Receive Payment' %}");
 		});
 
 		request.fail(function (jqXHR, textStatus, errorThrown){

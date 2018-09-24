@@ -4,6 +4,7 @@ from django.core import serializers
 from django.contrib import messages
 from django.db.models import Q
 import json, pickle, uuid, ast, time
+from django.utils.translation import ugettext as _
 
 from enterprise.models import *
 from barcode.models import *
@@ -18,7 +19,7 @@ def cart_add(request):
 
 	productId = request.POST.get('id', '')
 	productCount = request.POST.get('count', '')
-	productPrice = request.POST.get('price', '')
+	# productPrice = request.POST.get('price', '')
 	productOptions = request.POST.get('option', '')
 	displayAlert = request.POST.get('displayAlert', '') # For index.html jQuery
 	# Option String List to Normal List
@@ -26,12 +27,15 @@ def cart_add(request):
 		productOptions = ast.literal_eval(productOptions)
 
 
+	# Get menu from database
+	menu_db = Menu.objects.get(id=productId)
+
 	menu = {}
 	menu['id'] = int(productId)
-	menu['price'] = float(productPrice) # TODO: Get from database
+	menu['price'] = menu_db.price
 	menu['count'] = int(productCount)
 	menu['options'] = productOptions
-	menu['totalPrice'] = float(productPrice.replace(',','.'))
+	menu['totalPrice'] = menu_db.price
 
 	newList = list()
 
@@ -226,6 +230,25 @@ def session_delete(request, option):
 
 
 
+
+# ================================= ORDER ==================================================
+
+# not used
+def order_get(request):
+
+	# Get Post Parameters
+	postID = request.POST.get('id', '')
+	postEnterprise = request.POST.get('enterprise', '')
+
+	# Get orders
+	data = Line.objects.filter(id=postID, enterprise__id=postEnterprise).prefetch_related('order_set', 'comment_set').values(
+    	'orderDate', 'complatedDate', 'paidDate', 'isComplated', 'isPaid', 'totalPrice',
+    	'order__menu__name', 'order__count', 'order__totalPrice', 'order__optionsReadable', 'comment__comment', 'comment__commentDate'
+	)
+
+	data = {'result': list(data)}
+	return JsonResponse(data)
+
 # ================================= LINE ==================================================
 
 
@@ -336,6 +359,7 @@ def line_get(request):
 		'line__orderDate', 'line__isComplated', 'line__isPaid'
 	).order_by('-line__orderDate')
 
+	# Ayni line a ait orderlari ayni yere koy
 	d = {}
 	for name in new_data:
 	    key = name['line__id']
@@ -766,7 +790,7 @@ def menu_create(request):
 				subCatItem.price = fieldItem['price']
 				subCatItem.save()
 
-	messages.success(request, "İşlem Başarılı!")
+	messages.success(request, _('Successful!'))
 
 	data = {'OK':'OK'}
 	return JsonResponse(data)
@@ -963,7 +987,7 @@ def menu_get(request):
 	data['price'] = item.price
 	data['id'] = item.id
 	data['stock'] = item.stock
-	if item.picture != '':
+	if item.picture:
 		data['picture'] = item.picture.url
 	else:
 		data['picture'] = 'none'

@@ -1,4 +1,6 @@
 {% load static %}
+{% load i18n %}
+
 <!doctype html>
 <html>
 <head>
@@ -67,7 +69,7 @@
 
 <div class="wrapper" id="wrapper">
 
-    <div class="print" onclick="window.print();">YAZDIR</div>
+    <div class="print" onclick="window.print();">{% trans 'Click to Print' %}</div>
 
     {% for item in barcodes %}
     
@@ -76,7 +78,7 @@
                 <img src="https://app.fastermenu.com/static/registration/images/logo2.png" width="150px">
             </div>
             <div class="desc">
-                iPhone için kamerayı, Android için QR okuyucuyu kullanın
+                {% trans 'Use the camera for iPhone, QR reader for Android' %}
             </div>
             <div class="qr">
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://app.fastermenu.com/redirect/{{ item.barcode }}">

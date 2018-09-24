@@ -1,14 +1,15 @@
 from django import forms
 
 from PIL import Image
+from django.utils.translation import ugettext as _
 import tempfile, uuid
 from .models import Enterprise
 
 
 class EnterpriseForm(forms.ModelForm):
-	logo = forms.ImageField(required=False, label='Firmanınızın logosu')
-	name = forms.CharField(max_length=30, required=False, label='Firmanınızın adı')
-	address = forms.CharField(max_length=200, required=False, label='Firmanınızın adresi', help_text='Bu kısım, sipariş ekranınıda firma isminizin altında görünür.')
+	logo = forms.ImageField(required=False, label=_('Your company logo'))
+	name = forms.CharField(max_length=30, required=False, label=_('Your company name'))
+	address = forms.CharField(max_length=200, required=False, label=_('Your company address'), help_text=_('This section appears under your company name on the order display.'))
 
 	logo_x = forms.IntegerField(required=False, widget = forms.HiddenInput())
 	logo_y = forms.IntegerField(required=False, widget = forms.HiddenInput())
@@ -27,7 +28,7 @@ class EnterpriseForm(forms.ModelForm):
 		try:
 			if image:
 				if image._size > 4*1024*1024:
-					raise ValidationError("Logo dosyası 4 mb'dan büyük olamaz!")
+					raise ValidationError(_("The logo file cannot be larger than 4 mb!"))
 				self._isNew = True
 				return image
 			else:

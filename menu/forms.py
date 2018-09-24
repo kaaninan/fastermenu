@@ -1,13 +1,13 @@
 from django import forms
-
+from django.utils.translation import ugettext as _
 from .models import *
 
 
 class MenuForm(forms.ModelForm):
-	name = forms.CharField(max_length=30, required=True, label='Ürün Adı*')
-	pictures = forms.ImageField(required=False, label='Ürün Resmi', help_text='Ürün resmi eklemeniz, müşterilerinizin ürünü satın alma ihtimalini arttırır. (Zorunlu değil)')
-	description = forms.CharField(max_length=200, required=False, label='Ürün Açıklaması', help_text='"Acılı sos ile servis edilir", gibi bir açıklama yazabilirsiniz.')
-	price = forms.FloatField(label='Ürün Fiyatı (TL)*', required=True)
+	name = forms.CharField(max_length=30, required=True, label=_('Product Name*'))
+	pictures = forms.ImageField(required=False, label=_('Picture'), help_text=_('Adding a product image increases the likelihood that your customers will buy the product. (Not required)'))
+	description = forms.CharField(max_length=200, required=False, label=_('Description'), help_text=_('You can write a description, such as "chili sauce is served with."'))
+	price = forms.FloatField(label=_('Price ($)'), required=True)
 	# stock = forms.BooleanField(label='Ürün stokta mı?', initial=True)
 
 	class Meta:

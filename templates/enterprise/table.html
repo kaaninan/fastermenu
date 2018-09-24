@@ -1,5 +1,7 @@
 {% extends 'enterprise/static/base.html' %}
 {% load static %}
+{% load i18n %}
+
 {% block body %}
 
 
@@ -8,7 +10,7 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Masa QR Kodu</h4>
+					<h4 class="modal-title">{% trans 'Table QR Code' %}</h4>
 				</div>
 
 				<div class="modal-body" style="text-align: center">
@@ -20,10 +22,10 @@
 				</div>
 				
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left">Tamam</button>
+					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left">{% trans 'Done' %}</button>
 					<div style="width: 49%; float: right;">
 						<a target="_blank" id="print">
-							<button type="button" class="btn btn-success btn-success pull-left btn-block" id="button-print">Yazdır</button>
+							<button type="button" class="btn btn-success btn-success pull-left btn-block" id="button-print">{% trans 'Print' %}</button>
 						</a>
 					</div>
 				</div>
@@ -38,15 +40,15 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Masa Ekleme</h4>
+					<h4 class="modal-title">{% trans 'Add Table' %}</h4>
 				</div>
 
 				<div class="modal-body">
 					<input id="add1" type="radio" name="radio-add" value="add-multiple">
-					<label for="add1">Toplu masa ekle</label><br>
+					<label for="add1">{% trans 'Add bulk table' %}</label><br>
 
 					<input id="add2" type="radio" name="radio-add" value="add-single">
-					<label for="add2">Bir tane masa ekle</label>
+					<label for="add2">{% trans 'Add one table' %}</label>
 
 					<div id="add-multiple" style="display: none">
 						<div class="form-group">
@@ -55,9 +57,9 @@
 								<span style="color: red"></span>
 								<br><br>
 							</div>
-							<label for="table-count">Toplam kaç tane masanız var?</label>
+							<label for="table-count">{% trans 'How many tables do you have?' %}</label>
 							<input type="number" min="0" max="50" class="form-control" id="table-count">
-							<span class="help-block">Girdiğiniz sayı kadar masa eklenecektir.</span>
+							<span class="help-block">{% trans 'The number of tables you enter will be added.' %}</span>
 						</div>
 					</div>
 
@@ -68,7 +70,7 @@
 								<span style="color: red"></span>
 								<br><br>
 							</div>
-							<label for="table-name">Eklemek istediğiniz masa adı nedir?</label>
+							<label for="table-name">{% trans 'What is the table name you want to add?' %}</label>
 							<input type="text" class="form-control" id="table-name">
 						</div>
 					</div>
@@ -76,8 +78,8 @@
 				</div>
 				
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left">Vazgeç</button>
-					<button type="button" class="btn btn-success btn-success pull-left" id="button-add" style="width: 49%; float: left;">Ekle</button>
+					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left">{% trans 'Cancel' %}</button>
+					<button type="button" class="btn btn-success btn-success pull-left" id="button-add" style="width: 49%; float: left;">{% trans 'Save' %}</button>
 				</div>
 			</div>
 		</div>
@@ -89,13 +91,13 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Masa Düzenle</h4>
+					<h4 class="modal-title">{% trans 'Edit Table' %}</h4>
 				</div>
 
 				<div class="modal-body">
 
 					<div class="form-group">
-						<label for="table-count">Masa Numarası</label>
+						<label for="table-count">{% trans 'Table Name' %}</label>
 						<input type="text" class="form-control" name="edit-name">
 					</div>
 
@@ -103,19 +105,19 @@
 
 					<div class="form-group">
 						<input id="edit1" type="radio" name="radio-edit" value="active">
-						<label for="edit1">Aktif</label><br>
+						<label for="edit1">{% trans 'Active' %}</label><br>
 
 						<input id="edit2" type="radio" name="radio-edit" value="deactive">
-						<label for="edit2">Kullanım Dışı</label>
+						<label for="edit2">{% trans 'Not Active' %}</label>
 
-						<span class="help-block">Kullanımda olmayan masaları burdan sistemden çıkartabilirsiniz.</span>
+						<span class="help-block">{% trans 'You can remove the tables that are not in use.' %}</span>
 					</div>
 
 				</div>
 			
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left">Vazgeç</button>
-					<button type="button" class="btn btn-success btn-success pull-left" id="button-save" style="width: 49%; float: left;">Kaydet</button>
+					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left">{% trans 'Cancel' %}</button>
+					<button type="button" class="btn btn-success btn-success pull-left" id="button-save" style="width: 49%; float: left;">{% trans 'Save' %}</button>
 				</div>
 			</div>
 		</div>
@@ -127,16 +129,16 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Masa Sil</h4>
+					<h4 class="modal-title">{% trans 'Delete Table' %}</h4>
 				</div>
 
 				<div class="modal-body">
-					<b><span id="delete-table-name"></span></b> numaralı masa silinecektir. Onaylıyor musunuz?
+					<b><span id="delete-table-name"></span></b> {% trans 'will be deleted. Do you confirm?' %}
 				</div>
 			
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left">Vazgeç</button>
-					<button type="button" class="btn btn-danger pull-left" id="button-delete" style="width: 49%; float: left;">Sil</button>
+					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left">{% trans 'Cancel' %}</button>
+					<button type="button" class="btn btn-danger pull-left" id="button-delete" style="width: 49%; float: left;">{% trans 'Delete' %}</button>
 				</div>
 			</div>
 		</div>
@@ -147,10 +149,10 @@
 		<div class="container">
 			
 			<section class="content-header">
-				<h1>Masa İşlemleri</h1>
+				<h1>{% trans 'Table Settings' %}</h1>
 				<ol class="breadcrumb">
-					<li><a href="{% url 'enterprise:index' %}"><i class="fa fa-home"></i> Anasayfa</a></li>
-					<li class="active">Masalar</li>
+					<li><a href="{% url 'enterprise:index' %}"><i class="fa fa-home"></i> {% trans 'Dashboard' %}</a></li>
+					<li class="active">{% trans 'Tables' %}</li>
 				</ol>
 			</section>
 
@@ -166,12 +168,12 @@
 				{% endif %}
 
 				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-add">
-					<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Masa Ekle
+					<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;{% trans 'Add Table' %}
 				</button>
 				&nbsp;&nbsp;
 				<a href="{% url 'barcode:multiple' %}" target="_blank">
 					<button type="button" class="btn btn-primary">
-						<i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;QR Kodları Yazdır
+						<i class="fa fa-print" aria-hidden="true"></i>&nbsp;&nbsp;{% trans 'Print QR Codes' %}
 					</button>
 				</a>
 				
@@ -181,15 +183,15 @@
 				<div class="box box-primary">
 					<div class="box-header">
 						<h3 class="box-title">
-							Masalar
+							{% trans 'Tables' %}
 							{% if tables|length != 0 %}
-								({{tables|length}} tane)
+								({{tables|length}} {% trans 'units' %})
 							{% endif %}
 						</h3>
 						<div class="box-tools">
 							<div class="input-group input-group-sm" style="width: 150px;" style="position: relative">
 								<form type="get" action="{% url 'enterprise:table' %}">
-									<input type="text" name="search" class="form-control pull-right" style="border-radius:5px; height: 30px; z-index: 1; padding-right: 30px;" placeholder="Arama" value="{{ request.GET.search }}">
+									<input type="text" name="search" class="form-control pull-right" style="border-radius:5px; height: 30px; z-index: 1; padding-right: 30px;" placeholder="{% trans 'Search' %}" value="{{ request.GET.search }}">
 								</form>
 							</div>
 						</div>
@@ -198,14 +200,14 @@
 						<table class="table table-hover">
 							{% if tables|length == 0 %}
 								<tr>
-									<th>Şu anda hiç masa oluşturmadınız!</th>
+									<th>{% trans 'You have not created any table at this time!' %}</th>
 								</tr>
 							{% endif %}
 							{% if tables|length != 0 %}
 								<tr>
-									<th>Masa Numarası</th>
-									<th>Durum</th>
-									<th>İşlemler</th>
+									<th>{% trans 'Table Name' %}</th>
+									<th>{% trans 'Status' %}</th>
+									<th>{% trans 'Operations' %}</th>
 								</tr>
 								{% for single in tables %}
 									<tr>
@@ -215,11 +217,11 @@
 											{% if single.active == False %}<i class="fa fa-times-circle" style="color: red"></i>{% endif %}
 										</td>
 										<td>
-											<button name="item_qr_code" class="btn btn-default btn-sm">QR Kod</button>
+											<button name="item_qr_code" class="btn btn-default btn-sm">{% trans 'QR Code' %}</button>
 											&nbsp;
-											<button name="item_edit" class="btn btn-default btn-sm">Düzenle</button>
+											<button name="item_edit" class="btn btn-default btn-sm">{% trans 'Edit' %}</button>
 											&nbsp;
-											<button name="item_delete" class="btn btn-danger btn-sm">Sil</button>
+											<button name="item_delete" class="btn btn-danger btn-sm">{% trans 'Delete' %}</button>
 										</td>
 
 										<!-- For jQuery -->
@@ -283,7 +285,7 @@
 
 					// Buton eski haline dondur
 					var btn = $('#button-add');
-					btn.attr('disabled', false).html("Ekle");
+					btn.attr('disabled', false).html("{% trans 'Add' %}");
 				}else{
 					window.location.href = "{% url 'enterprise:table' %}";
 					return false;
@@ -482,7 +484,7 @@
 			$('#button-delete').click(function(e){
 
 				var btn = $(event.target);
-				btn.attr('disabled', 'disabled').html("Bekleyin...");
+				btn.attr('disabled', 'disabled').html("{% trans 'Wait...' %}");
 
 				id = selectedID;
 				deleteTable(id);
@@ -494,7 +496,7 @@
 
 			$('#button-add').click(function(e){
 				var btn = $(event.target);
-				btn.attr('disabled', 'disabled').html("Bekleyin...");
+				btn.attr('disabled', 'disabled').html("{% trans 'Wait...' %}");
 
 				$('.error-add').hide();
 				

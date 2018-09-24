@@ -13,6 +13,8 @@ urlpatterns = [
     url(r'^cart_count/$', cart_count, name="cart_count"),
     url(r'^cart_update_count/$', cart_update_count, name="cart_update_count"),
     
+    # ORDER
+    url(r'^order_get/$', order_get, name="order_get"),
 
     # LINE
     url(r'^line_add/$', line_add, name="line_add"),

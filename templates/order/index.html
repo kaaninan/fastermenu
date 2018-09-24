@@ -2,8 +2,12 @@
 {% load static %}
 {% load humanize %}
 {% load parse_date %}
+{% load i18n %}
+{% load l10n %}
+{% load floatdot %}
 
 {% block body %}
+{% get_current_language as LANGUAGE_CODE %}
 
 <div class="container-index">
 
@@ -11,13 +15,13 @@
 
 	{% if state.added %}
 	<div class="alert alert-primary fade show alert-main" id="success-alert" style="text-align: center; padding: 15px 0;">
-		<strong>Sepete Eklendi!</strong>
+		<strong>{% trans 'Added to Cart!' %}</strong>
 	</div>
 	{% endif %}
 
 	{% if state.deleteLine %}
 	<div class="alert alert-primary fade show alert-main" id="success-alert" style="text-align: center; padding: 15px 0;">
-		<strong>Siparişiniz Silindi!</strong>
+		<strong>{% trans 'Your Order Deleted!' %}</strong>
 	</div>
 	{% endif %}
 
@@ -43,7 +47,7 @@
 	            		{{enterprise.address|truncatechars:20 }}
 	            	{% endif %}
 	            </div>
-	            <div class="table"><b>Masa:</b> {{table}}</div>
+	            <div class="table"><b>{% trans 'Table' %}:</b> {{table}}</div>
 	        </div>
 	    </div>
 	    {% endif %}
@@ -59,7 +63,7 @@
 	            		{{enterprise.address|truncatechars:20 }}
 	            	{% endif %}
 	            </div>
-	            <div class="table"><b>Masa:</b> {{table}}</div>
+	            <div class="table"><b>{% trans 'Table' %}:</b> {{table}}</div>
 	        </div>
 	    </div>
 
@@ -86,7 +90,7 @@
 		<div class="row menu-title">
 			<div class="col-12 clear">
 				<div class="head">
-					<div class="name" style="color: #2F89F0">Önceki Siparişlerim</div>
+					<div class="name" style="color: #2F89F0">{% trans 'Previous Orders' %}</div>
 				</div>
 			</div>
 		</div>
@@ -106,14 +110,14 @@
 								<!-- |parse_date:'%Y-%m-%d %H:%M:%S'| -->
 								<div class="sub">
 									<span style="color: #197E1C">
-										{% if order.isPaid %}<b>Tamamlandı</b>
-										{% elif not order.isComplated %}<b style="color: #F58B5B">Hazırlanıyor</b>
-										{% elif order.isComplated %}<b>Siparişin Hazır</b>{% endif %}
+										{% if order.isPaid %}<b>{% trans 'Complated' %}</b>
+										{% elif not order.isComplated %}<b style="color: #F58B5B">{% trans 'Preparing' %}</b>
+										{% elif order.isComplated %}<b>{% trans 'Prepared' %}</b>{% endif %}
 									</span>
 									- 
 									{{ order.orderDate|naturaltime }} 
 									- 
-									Masa: {{ order.table }}
+									{% trans 'Table' %}: {{ order.table }}
 								</div>
 							</div>
 						</a>
@@ -123,8 +127,8 @@
 				<div class="col-3 clear">
 					<a href="{% url 'order:track' id=order.id %}">
 						<div class="price" style="color: #197E1C">
-							{% if not order.isCommented and order.isPaid %}<b>Yorum Yap</b>
-							{% else %}Detay{% endif %}
+							{% if not order.isCommented and order.isPaid %}<b>{% trans 'Comment' %}</b>
+							{% else %}{% trans 'Detail' %}{% endif %}
 						</div>
 					</a>
 				</div>
@@ -190,7 +194,15 @@
 
 					<div class="col-3 clear">
 						<a href="{% url 'order:detail' id=menu.id %}">
-							<div class="price"><span id="price">{{ menu.price|floatformat:2 }}</span> TL</div>
+							<div class="price">
+								<span id="price">
+									{% if LANGUAGE_CODE == 'tr' %}
+										{{ menu.price|floatformat:2 }} TL
+									{% elif LANGUAGE_CODE == 'en' %}
+										${{ menu.price|floatdot }}
+									{% endif %}
+								</span>
+							</div>
 						</a>
 					</div>
 

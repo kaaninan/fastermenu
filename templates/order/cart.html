@@ -1,7 +1,10 @@
 {% extends 'order/static/base.html' %}
 {% load static %}
+{% load i18n %}
+{% load floatdot %}
 
 {% block body %}
+{% get_current_language as LANGUAGE_CODE %}
 
 <!-- Delete Modal -->
 <div class="modal fade" id="modal-delete">
@@ -19,7 +22,7 @@
 			</div>
 			
 			<div class="modal-footer">
-				<button type="button" class="btn btn-danger btn-block" id="button-delete">Sil</button>
+				<button type="button" class="btn btn-danger btn-block" id="button-delete">{% trans 'Delete' %}</button>
 			</div>
 
 		</div>
@@ -33,7 +36,7 @@
 		<div class="modal-content">
 			<!-- Modal Header -->
 			<div class="modal-header">
-				<h4 class="modal-title">Adet Sayısı</h4>
+				<h4 class="modal-title">{% trans 'Edit Piece' %}</h4>
 			</div>
 
 			<!-- Modal body -->
@@ -42,7 +45,7 @@
 					<div class="col-12 clear">
 						<div class="number">
 							<div id="right"><a href="#"><i id="plus" class="fas fa-plus-circle"></i></a></div>
-							<div class="count"><span id="count">1</span> Adet</div>
+							<div class="count"><span id="count">1</span> {% trans 'Piece' %}</div>
 							<div id="left"><a href="#"><i id="minus" class="fas fa-minus-circle"></i></a></div>
 						</div>
 					</div>
@@ -51,8 +54,8 @@
 
 			<!-- Modal footer -->
 			<div class="modal-footer">
-				<button type="button" class="btn btn-light" data-dismiss="modal" style="width: 50%">Vazgeç</button>
-				<button type="button" class="btn btn-success" style="width: 50%" id="button-update">Güncelle</button>
+				<button type="button" class="btn btn-light" data-dismiss="modal" style="width: 50%">{% trans 'Cancel' %}</button>
+				<button type="button" class="btn btn-success" style="width: 50%" id="button-update">{% trans 'Update' %}</button>
 			</div>
 
 		</div>
@@ -62,7 +65,7 @@
 
 <div class="row main-title">
 	<div class="col clear">
-		<div class="text"> Sepetim</div>
+		<div class="text"> {% trans 'Cart' %}</div>
 	</div>
 </div>
 
@@ -99,8 +102,20 @@
 
 								{% if item.options != "-1" %}
 									{% for i in item.options_dropadd %}
+										{% if forloop.first %}
+											{% if LANGUAGE_CODE == 'en' %}
+												Without 
+											{% endif %}
+										{% endif %}
+
 										{{ i }}{% if not forloop.last %}, {% endif %}
-										{% if forloop.last %} hariç.{% endif %}
+
+										{% if forloop.last %}
+											{% if LANGUAGE_CODE == 'tr' %}
+											hariç.
+											{% endif %}
+										{% endif %}
+
 									{% endfor %}
 								{% endif %}
 							</div>
@@ -109,7 +124,13 @@
 					</div>
 				</div>
 				<div class="col-3 clear">
-					<div class="price"><span id="price">{{ item.totalPrice|floatformat:2 }}</span> TL</div>
+					<div class="price">
+						{% if LANGUAGE_CODE == 'tr' %}
+			                <span id="price">{{ item.totalPrice|floatformat:2 }}</span> TL
+			            {% elif LANGUAGE_CODE == 'en' %}
+			                $ <span id="price">{{ item.totalPrice|floatdot }}</span>
+			            {% endif %}
+					</div>
 				</div>
 				<div class="clear"></div>
 				
@@ -122,8 +143,14 @@
 <div class="row total">
 	<div class="col">
 		<div class="amount">
-			<div class="title">Ödenecek Tutar:</div>
-			<div class="price">{{ total|floatformat:2 }} TL</div>
+			<div class="title">{% trans 'Total Price' %}:</div>
+			<div class="price">
+				{% if LANGUAGE_CODE == 'tr' %}
+	                {{ total|floatformat:2 }} TL
+	            {% elif LANGUAGE_CODE == 'en' %}
+	                $ {{ total|floatdot }}
+	            {% endif %}
+			</div>
 		</div>
 	</div>
 </div>
@@ -136,7 +163,7 @@
 	<div class="col-12 clear">
 		<div class="inside">
 			<a href="{% url 'order:complated' %}">
-				<div class="button">SİPARİŞ VER</div>
+				<div class="button">{% trans 'ORDER NOW' %}</div>
 			</a>
 		</div>
 	</div>

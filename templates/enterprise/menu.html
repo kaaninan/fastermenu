@@ -1,6 +1,7 @@
 {% extends 'enterprise/static/base.html' %}
 {% load static %}
 {% load bootstrap3 %}
+{% load i18n %}
 
 {% block body %}
 
@@ -9,7 +10,7 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Ürün Ekleme</h4>
+					<h4 class="modal-title">{% trans 'Add Product' %}</h4>
 				</div>
 
 				<form id="add-form" method="post" enctype="multipart/form-data">
@@ -27,14 +28,14 @@
 						</div>
 
 						<div class="form-group">
-							<button type="button" class="btn btn-primary add_field_button">Seçenek Ekle</button>
+							<button type="button" class="btn btn-primary add_field_button">{% trans 'Add Option' %}</button>
 						</div>
 
 					</div>
 					
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal" style="width: 49%; float: left">Vazgeç</button>
-						<button type="submit" class="btn btn-success" id="add-button" style="width: 49%; float: left;">Ekle</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal" style="width: 49%; float: left">{% trans 'Cancel' %}</button>
+						<button type="submit" class="btn btn-success" id="add-button" style="width: 49%; float: left;">{% trans 'Save' %}</button>
 					</div>
 				</form>
 			</div>
@@ -50,16 +51,18 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Ürün Sil</h4>
+					<h4 class="modal-title">{% trans 'Delete Product' %}</h4>
 				</div>
 
 				<div class="modal-body">
-					<b><span id="delete-name"></span></b> isimli menü silinecektir. Onaylıyor musunuz?
+					<b><span id="delete-name"></span></b> {% trans 'will be deleted. Do you confirm?' %}
 				</div>
+
+
 			
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left;">Vazgeç</button>
-					<button type="button" class="btn btn-danger pull-left" id="button-delete" style="width: 49%; float: left">Sil</button>
+					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left;">{% trans 'Cancel' %}</button>
+					<button type="button" class="btn btn-danger pull-left" id="button-delete" style="width: 49%; float: left">{% trans 'Save' %}</button>
 				</div>
 			</div>
 		</div>
@@ -71,12 +74,12 @@
 		<div class="container">
 
 			<section class="content-header">
-				<h1>Menü Ayarları</h1>
+				<h1>{% trans 'Menu Settings' %}</h1>
 				
 				<ol class="breadcrumb">
-					<li><a href="{% url 'enterprise:index' %}"><i class="fa fa-home"></i> Anasayfa</a></li>
-					<li><a href="{% url 'enterprise:category' %}">Kategori</a></li>
-					<li class="active">Menü</li>
+					<li><a href="{% url 'enterprise:index' %}"><i class="fa fa-home"></i> {% trans 'Dashboard' %}</a></li>
+					<li><a href="{% url 'enterprise:category' %}">{% trans 'Category' %}</a></li>
+					<li class="active">{% trans 'Menu' %}</li>
 				</ol>
 			</section>
 
@@ -95,7 +98,7 @@
 					<div class="col-xs-12">
 
 						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-menu" onclick="changeModalType('add');">
-							<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Ürün Ekle
+							<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;{% trans 'Add Product' %}
 						</button>
 						
 						<br><br>
@@ -109,7 +112,7 @@
 								<div class="box-tools">
 									<div class="input-group input-group-sm" style="width: 150px;" style="position: relative">
 										<form type="get" action="{% url 'enterprise:menu' id=category.id %}">
-											<input type="text" name="search" class="form-control pull-right" style="border-radius:5px; height: 30px; z-index: 1; padding-right: 30px;" placeholder="Arama" value="{{ request.GET.search }}">
+											<input type="text" name="search" class="form-control pull-right" style="border-radius:5px; height: 30px; z-index: 1; padding-right: 30px;" placeholder="{% trans 'Search' %}" value="{{ request.GET.search }}">
 										</form>
 									</div>
 								</div>
@@ -121,16 +124,16 @@
 								<table class="table table-hover">
 									{% if menus|length == 0 %}
 										<tr>
-											<th>Şu anda hiç menü oluşturmadınız!</th>
+											<th>{% trans 'You have not created any menus at this time!' %}</th>
 										</tr>
 									{% endif %}
 									{% if menus|length != 0 %}
 									<tr style="font-size: 1.5rem;">
 										<th>#</th>
-										<th>Ürün Adı</th>
-										<th>Fiyat</th>
+										<th>{% trans 'Product Name' %}</th>
+										<th>{% trans 'Price' %}</th>
 										<!-- <th>Stok Durumu</th> -->
-										<th>İşlemler</th>
+										<th>{% trans 'Operations' %}</th>
 									</tr>
 									
 									{% for menu in menus %}
@@ -143,9 +146,9 @@
 											{% if menu.stock == False %}<i class="fa fa-times-circle" style="color: red"></i>{% endif %}
 										</td> -->
 										<td>
-											<button type="button" class="btn btn-default btn-edit" data-loading-text="Bekleyin..">Düzenle</button>
+											<button type="button" class="btn btn-default btn-edit" data-loading-text="{% trans 'Wait...' %}">{% trans 'Edit' %}</button>
 											&nbsp;&nbsp;
-											<button type="button" class="btn btn-danger btn-delete">Sil</button>
+											<button type="button" class="btn btn-danger btn-delete">{% trans 'Delete' %}</button>
 										</td>
 									</tr>
 									{% endfor %}
@@ -179,7 +182,7 @@
 			// MODAL: ADD-EDIT
 			$('#add-form').submit(function(e) {
 				var btn = $('#add-button');
-				btn.attr('disabled', 'disabled').html("Bekleyin...");
+				btn.attr('disabled', 'disabled').html("{% trans 'Wait...' %}");
 				e.preventDefault();
 
 				var options = {
@@ -196,7 +199,7 @@
 			// MODAL: DELETE
 			$('#button-delete').click(function(e){
 				var btn = $(event.target);
-				btn.attr('disabled', 'disabled').html("Bekleyin...");
+				btn.attr('disabled', 'disabled').html("{% trans 'Wait...' %}");
 				id = selectedID;
 				enterprise = '{{ request.user.profile.enterprise.id }}'
 				deleteItem(id, enterprise);
@@ -216,16 +219,16 @@
 			$('input[name=category]').val('{{ category.id }}');
 
 			if(type == 'add'){
-				$('#modal-menu .modal-title').html('Ürün Ekle');
+				$('#modal-menu .modal-title').html("{% trans 'Add Product' %}");
 				$('#modal-menu #menu_pic').hide();
-				$('#add-button').html('Ekle');
+				$('#add-button').html("{% trans 'Add' %}");
 				$('input[name="stock"]').prop('checked','checked');	
 				$('#add-form').attr('action', '{% url 'api:menu_create' %}');
 				
 			}else if(type == 'edit'){
-				$('#modal-menu .modal-title').html('Ürün Düzenle');
+				$('#modal-menu .modal-title').html("{% trans 'Edit Product' %}");
 				$('#modal-menu #menu_pic').show();
-				$('#add-button').html('Güncelle');
+				$('#add-button').html("{% trans 'Update' %}");
 				$('#add-form').attr('action', '{% url 'api:menu_update' %}');
 
 			}
@@ -250,27 +253,27 @@
 				                  	<div class='option-form'>
 				                  		<input type="text" name="optionId-`+count+`" style="display:none" />
 					                  	<div class="form-group">
-											<label class="control-label">Seçenek Başlığı</label>
+											<label class="control-label">{% trans 'Option Title' %}</label>
 											<input type="text" maxlength="30" class="form-control" name="optionName-`+count+`" required />
-											<p class="help-block">Porsiyon, Malzemeler gibi başlıklar koyabilirsiniz.</p>
+											<p class="help-block">{% trans 'You can write headings such as servings, ingredients.' %}</p>
 										</div>
 
 										<div class="form-group">
-											<label>Seçenek Türü</label>
+											<label>{% trans 'Option Type' %}</label>
 											<select class="form-control" name="optionType-`+count+`" onchange="changeSelect(this);">
-												<option value='' selected disabled hidden>Seçiniz</option>
-												<option value='dropadd'>Ücretsiz Seçimler</option>
-												<option value='option'>Ücretli Seçimler</option>
+												<option value='' selected disabled hidden>{% trans 'Select' %}</option>
+												<option value='dropadd'>{% trans 'Free Options' %}</option>
+												<option value='option'>{% trans 'Paid Options' %}</option>
 											</select>
 										</div>
 
 										<!-- Inputs: Displays when click 'Ucretsiz Secimler' -->
 										<div class="form-group dropadd-div" style="display: none">
-											<label>Seçim Listesi</label>
+											<label>{% trans 'Option List' %}</label>
 											<div class="controls">
 												<div class="entry input-group col-xs-12" style="margin-bottom: 10px">
 													<input type="text" name="optionFieldsId-`+count+`[]" style="display:none" />
-													<input class="form-control" name="optionFields-`+count+`[]" type="text" placeholder="Seçeneği Giriniz" />
+													<input class="form-control" name="optionFields-`+count+`[]" type="text" placeholder="{% trans 'Option' %}" />
 													<span class="input-group-btn">
 														<button class="btn btn-success btn-add" type="button">
 															<span class="glyphicon glyphicon-plus"></span>
@@ -278,37 +281,38 @@
 													</span>
 												</div>
 											</div>
-											<p class="help-block">Bu listeye 'soğan', 'acı biber' gibi tercihleri ekleyebilirsiniz.</p>
+											<p class="help-block">{% trans "You can add preferences like 'onion', 'hot pepper' to this list." %}</p>
 										</div>
 
 										<!-- Inputs: Displays when click 'Ucretli Secimler' -->
 										<div class="form-group option-div" style="display: none">
-											<label>Seçim Listesi</label>
+											<label>{% trans 'Option List' %}</label>
 											<div class="input-area">
 												<div class="input-fields">
 													<div class="row entry-p">
 														<input type="text" name="optionFieldsId-`+count+`-p[]" style="display:none" />
 														<div class="col-xs-6" style="padding-right: 0">
 															<div class="form-group" style="margin-bottom: 10px">
-																<input class="form-control" name="optionFields-`+count+`-p[]" type="text" placeholder="Seçeneği Giriniz" />
+																<input class="form-control" name="optionFields-`+count+`-p[]" type="text" placeholder="{% trans 'Option' %}" />
 															</div>
 														</div>
 														<div class="col-sm-4 col-xs-3" style="padding: 0 0; margin-left: -1px">
 															<div class="form-group" style="margin-bottom: 10px">
-																<input class="form-control" name="optionFields-`+count+`-p[]" type="number" step="0.01" min="0" placeholder="Eklenecek Fiyatı Giriniz (₺)" />
+																<input class="form-control" name="optionFields-`+count+`-p[]" type="number" step="0.01" min="0" placeholder="{% trans 'Enter Price ($)' %}" />
 															</div>
 														</div>
 														<div class="col-sm-2 col-xs-3 div-del-btn-p" style="padding-left: 10px; display:none">
 															<div class="form-group">
-																<button type="button" class="btn btn-danger btn-block btn-delete-p">Sil</button>
+																<button type="button" class="btn btn-danger btn-block btn-delete-p">{% trans 'Delete' %}</button>
 															</div>
 														</div>
 													</div>
 												</div>
 											</div>
 											<div class="form-group">
-												<button type="button" class="btn btn-default btn-add-p">Ekle</button>
+												<button type="button" class="btn btn-default btn-add-p">{% trans 'Add' %}</button>
 											</div>
+											<!--
 											<p class="help-block">Bu listeye porsiyon gibi tercihleri ekleyebilirsiniz. Örnek: </p>
 											<p class="help-block">
 												<ul>
@@ -316,11 +320,12 @@
 													<li>1.5 Porsiyon - 10 TL</li>
 												</ul>
 											</p>
-											<p class="help-block" style="color: orange">Yazdığınız fiyat, ürün fiyatının üzerine eklenecektir.</p>
+											-->
+											<p class="help-block" style="color: orange">{% trans 'The price you type will be added over the product price.' %}</p>
 										</div>
 
 										<div class="form-group">
-											<button type="button" class="btn btn-danger remove_field">Seçeneği Sil</button>
+											<button type="button" class="btn btn-danger remove_field">{% trans 'Remove Option' %}</button>
 										</div>
 
 										<hr>

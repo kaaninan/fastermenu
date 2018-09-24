@@ -1,6 +1,7 @@
 {% extends 'enterprise/static/base.html' %}
 {% load static %}
 {% load bootstrap3 %}
+{% load i18n %}
 
 {% block head %}
 <link rel="stylesheet" href="https://unpkg.com/cropperjs/dist/cropper.css">
@@ -14,7 +15,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Logo Yükleme</h4>
+                <h4 class="modal-title">{% trans 'Upload Logo' %}</h4>
             </div>
 
             <div class="modal-body">
@@ -24,8 +25,8 @@
             </div>
             
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" id="btn-cancel" style="width: 49%; float: left">Vazgeç</button>
-                <button type="button" class="btn btn-success" id="btn-save" style="width: 49%; float: left;">Tamam</button>
+                <button type="button" class="btn btn-default" id="btn-cancel" style="width: 49%; float: left">{% trans 'Cancel' %}</button>
+                <button type="button" class="btn btn-success" id="btn-save" style="width: 49%; float: left;">{% trans 'Save' %}</button>
             </div>
         
         </div>
@@ -39,12 +40,12 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                İşletme Ayarları
+                {% trans 'Account Settings' %}
             </h1>
 
             <ol class="breadcrumb">
-                <li><a href="{% url 'enterprise:index' %}"><i class="fa fa-home"></i> Anasayfa</a></li>
-                <li class="active">Hesap Ayarları</li>
+                <li><a href="{% url 'enterprise:index' %}"><i class="fa fa-home"></i> {% trans 'Dashboard' %}</a></li>
+                <li class="active">{% trans 'Account Settings' %}</li>
             </ol>
 
         </section>
@@ -77,11 +78,11 @@
 
                                         <div class="box-body">
                                             {% csrf_token %}
-                                            <h2>Firma Bilgileri</h2><br>
+                                            <h2>{% trans 'Company Information' %}</h2><br>
                                             {% bootstrap_form form_enterprise %}
                                             {{ form_enterprise.media }}
                                             <hr>
-                                            <h2>Kişisel Bilgiler</h2><br>
+                                            <h2>{% trans 'Personal Information' %}</h2><br>
                                             {% bootstrap_form form %}
                                         </div>
 
@@ -91,7 +92,7 @@
                             </div>
 
                             <div class="box-footer">
-                                <button type="submit" class="btn btn btn-primary pull-right" style="margin-left:15px">Kaydet</button>
+                                <button type="submit" class="btn btn btn-primary pull-right" style="margin-left:15px">{% trans 'Save' %}</button>
                                 <!-- <a href="{% url 'enterprise:index' %}">
                                     <button type="button" class="btn btn btn-default pull-right">Cancel</button>
                                 </a> -->

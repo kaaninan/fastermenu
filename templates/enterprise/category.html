@@ -1,5 +1,6 @@
 {% extends 'enterprise/static/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block body %}
 
@@ -8,13 +9,13 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Kategori Sıralama</h4>
+					<h4 class="modal-title">{% trans 'Order Categories' %}</h4>
 				</div>
 
 				<div class="modal-body">
 
 					{% if categories|length == 0 %}
-						<b>Şu anda hiç kategori oluşturmadınız!</b>
+						<b>{% trans 'You have not created any categories at this time!' %}</b>
 
 					{% elif categories|length != 0 %}
 					
@@ -32,8 +33,8 @@
 				</div>
 				
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left">Vazgeç</button>
-					<button type="button" class="btn btn-success btn-success pull-left" id="button-order-save" style="width: 49%; float: left;">Kaydet</button>
+					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left">{% trans 'Cancel' %}</button>
+					<button type="button" class="btn btn-success btn-success pull-left" id="button-order-save" style="width: 49%; float: left;">{% trans 'Save' %}</button>
 				</div>
 			</div>
 		</div>
@@ -45,21 +46,21 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Kategori Ekleme</h4>
+					<h4 class="modal-title">{% trans 'Add Category' %}</h4>
 				</div>
 
 				<div class="modal-body">
 
 					<div class="form-group">
-						<label for="table-name">Eklemek istediğiniz kategorinin adı nedir?</label>
+						<label for="table-name">{% trans 'What is the name of the category you want to add?' %}</label>
 						<input type="text" class="form-control" name="add-category-name">
 					</div>
 
 				</div>
 				
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left">Vazgeç</button>
-					<button type="button" class="btn btn-success btn-success pull-left" id="button-add-category" style="width: 49%; float: left;">Ekle</button>
+					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left">{% trans 'Cancel' %}</button>
+					<button type="button" class="btn btn-success btn-success pull-left" id="button-add-category" style="width: 49%; float: left;">{% trans 'Save' %}</button>
 				</div>
 			</div>
 		</div>
@@ -71,22 +72,22 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Kategori Düzenle</h4>
+					<h4 class="modal-title">{% trans 'Edit Category' %}</h4>
 				</div>
 
 				<div class="modal-body">
 
 					<div class="form-group">
-						<label for="table-count">Kategori Adı</label>
+						<label for="table-count">{% trans 'Category Name' %}</label>
 						<input type="text" class="form-control" name="edit-category-name">
 					</div>
 
 				</div>
 			
 				<div class="modal-footer">
-					<button type="button" class="btn btn-success btn-danger pull-left" id="button-delete" data-dismiss="modal" data-toggle="modal" data-target="#modal-delete">Sil</button>
-					<button type="button" class="btn btn-success btn-success pull-right" id="button-save">Kaydet</button>
-					<button type="button" class="btn btn-default pull-right" data-dismiss="modal">Vazgeç</button>
+					<button type="button" class="btn btn-success btn-danger pull-left" id="button-delete" data-dismiss="modal" data-toggle="modal" data-target="#modal-delete">{% trans 'Delete' %}</button>
+					<button type="button" class="btn btn-success btn-success pull-right" id="button-save">{% trans 'Save' %}</button>
+					<button type="button" class="btn btn-default pull-right" data-dismiss="modal">{% trans 'Cancel' %}</button>
 				</div>
 			</div>
 		</div>
@@ -98,16 +99,16 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Masa Sil</h4>
+					<h4 class="modal-title">{% trans 'Delete Table' %}</h4>
 				</div>
 
 				<div class="modal-body">
-					<b><span id="delete-table-name"></span></b> isimli kategori ve <b>içerisindeki ürünler</b> silinecektir. Onaylıyor musunuz?
+					<b><span id="delete-table-name"></span></b> {% trans ' and its products will be deleted. Do you confirm?' %}
 				</div>
 			
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left">Vazgeç</button>
-					<button type="button" class="btn btn-danger pull-left" id="button-delete-2" style="width: 49%; float: left;">Sil</button>
+					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left">{% trans 'Cancel' %}</button>
+					<button type="button" class="btn btn-danger pull-left" id="button-delete-2" style="width: 49%; float: left;">{% trans 'Delete' %}</button>
 				</div>
 			</div>
 		</div>
@@ -119,11 +120,11 @@
 		<div class="container">
 
 			<section class="content-header">
-				<h1>Menü ve Kategori Ayarları</h1>
+				<h1>{% trans 'Menu and Category Settings' %}</h1>
 				
 				<ol class="breadcrumb">
-					<li><a href="{% url 'enterprise:index' %}"><i class="fa fa-home"></i> Anasayfa</a></li>
-					<li class="active">Kategori</li>
+					<li><a href="{% url 'enterprise:index' %}"><i class="fa fa-home"></i> {% trans 'Dashboard' %}</a></li>
+					<li class="active">{% trans 'Category' %}</li>
 				</ol>
 			</section>
 
@@ -143,13 +144,13 @@
 						<div class="box box-solid">
 							<div class="box-header with-border">
 								<i class="fa fa-comment-alt"></i>
-								<h3 class="box-title">Ürünler Nasıl Eklenir?</h3>
+								<h3 class="box-title">{% trans 'How to add products?' %}</h3>
 							</div>
 							<div class="box-body">
 								<ol>
-									<li>Kategori oluşturun</li>
-									<li>Oluşturduğunuz kategorilerin içerisine ürünleri ekleyin</li>
-									<li>Müşterilerin ekranında ürünler, kategorilerin altında listelenir</li>
+									<li>{% trans 'Create category' %}</li>
+									<li>{% trans 'Add products into categories you create' %}</li>
+									<li>{% trans 'The products on the customers screen are listed below the categories' %}</li>
 								</ol>
 							</div>
 						</div>
@@ -160,7 +161,7 @@
 					<div class="col-xs-12">
 
 						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-add">
-							<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Kategori Ekle
+							<i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;{% trans 'Add Category' %}
 						</button>
 
 						&nbsp;&nbsp;
@@ -174,13 +175,13 @@
 						<div class="box">
 
 							<div class="box-header">
-								<h3 class="box-title">Kategoriler</h3>
+								<h3 class="box-title">{% trans 'Categories' %}</h3>
 
 								<!-- Search -->
 								<div class="box-tools">
 									<div class="input-group input-group-sm" style="width: 150px;" style="position: relative">
 										<form type="get" action="{% url 'enterprise:category' %}">
-											<input type="text" name="search" class="form-control pull-right" style="border-radius:5px; height: 30px; z-index: 1; padding-right: 30px;" placeholder="Arama" value="{{ request.GET.search }}">
+											<input type="text" name="search" class="form-control pull-right" style="border-radius:5px; height: 30px; z-index: 1; padding-right: 30px;" placeholder="{% trans 'Search' %}" value="{{ request.GET.search }}">
 										</form>
 									</div>
 								</div>
@@ -192,16 +193,16 @@
 								<table class="table table-hover">
 									{% if categories|length == 0 %}
 										<tr>
-											<th>Şu anda hiç kategori oluşturmadınız!</th>
+											<th>{% trans 'You have not created any categories at this time!' %}</th>
 										</tr>
 									{% endif %}
 									{% if categories|length != 0 %}
 
 									<tr style="font-size: 1.5rem;">
 										<th>#</th>
-										<th>Kategori Adı</th>
-										<th>İçerdiği Ürün Sayısı</th>
-										<th>İşlemler</th>
+										<th>{% trans 'Category Name' %}</th>
+										<th>{% trans 'Number of Products' %}</th>
+										<th>{% trans 'Operations' %}</th>
 									</tr>
 									
 									{% for category in categories %}
@@ -211,10 +212,10 @@
 										<td>{{ category.menuCount }}</td>
 										<td>
 											<a href="{% url 'enterprise:menu' id=category.id %}">
-												<button type="button" class="btn btn-success">Menüye Git</button>
+												<button type="button" class="btn btn-success">{% trans 'Go to Menu' %}</button>
 											</a>
 											&nbsp;&nbsp;
-											<button type="button" class="btn btn-default btn-edit">Düzenle</button>
+											<button type="button" class="btn btn-default btn-edit">{% trans 'Edit' %}</button>
 										</td>
 									</tr>
 									{% endfor %}
@@ -492,7 +493,7 @@
 			$('#button-add-category').click(function(e){
 				console.log('tiklandi');
 				var btn = $(event.target);
-				btn.attr('disabled', 'disabled').html("Bekleyin...");
+				btn.attr('disabled', 'disabled').html("{% trans 'Wait...' %}");
 				
 				name = $('input[name="add-category-name"]').val();
 				enterprise = '{{ request.user.profile.enterprise.id }}'
@@ -509,7 +510,7 @@
 				// Get Edit Form Details
 
 				var btn = $(event.target);
-				btn.attr('disabled', 'disabled').html("Bekleyin...");
+				btn.attr('disabled', 'disabled').html("{% trans 'Wait...' %}");
 
 				id = selectedID;
 				name = $('input[name="edit-category-name"]').val();
@@ -526,7 +527,7 @@
 			$('#button-delete-2').click(function(e){
 
 				var btn = $(event.target);
-				btn.attr('disabled', 'disabled').html("Bekleyin...");
+				btn.attr('disabled', 'disabled').html("{% trans 'Wait...' %}");
 
 				id = selectedID;
 				enterprise = '{{ request.user.profile.enterprise.id }}'

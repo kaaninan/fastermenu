@@ -1,15 +1,16 @@
 {% extends 'enterprise/static/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block body %}
     <div class="content-wrapper" id="app">
         <div class="container">
             <section class="content-header">
-                <h1>Analiz</h1>
+                <h1>{% trans 'Analyze' %}</h1>
 
                 <ol class="breadcrumb">
-                    <li><a href="{% url 'enterprise:index' %}"><i class="fa fa-home"></i> Anasayfa</a></li>
-                    <li class="active">Analiz</li>
+                    <li><a href="{% url 'enterprise:index' %}"><i class="fa fa-home"></i> {% trans 'Dashboard' %}</a></li>
+                    <li class="active">{% trans 'Analyze' %}</li>
                 </ol>
             </section>
 
@@ -20,7 +21,7 @@
                         <div class="info-box">
                             <span class="info-box-icon bg-aqua"><i class="fa fa-chart-line"></i></span>
                             <div class="info-box-content">
-                                <span class="info-box-text">Günlük Satış Miktarı</span>
+                                <span class="info-box-text">{% trans 'Daily Sales' %}</span>
                                 <span class="info-box-number">{{ sales.daily }}</span>
                             </div>
                         </div>
@@ -29,7 +30,7 @@
                         <div class="info-box">
                             <span class="info-box-icon bg-green"><i class="fa fa-chart-line"></i></span>
                             <div class="info-box-content">
-                                <span class="info-box-text">Haftalık Satış Miktarı</span>
+                                <span class="info-box-text">{% trans 'Weekly Sales' %}</span>
                                 <span class="info-box-number">{{ sales.weekly }}</span>
                             </div>
                         </div>
@@ -38,21 +39,21 @@
                         <div class="info-box">
                             <span class="info-box-icon bg-yellow"><i class="fa fa-chart-line"></i></span>
                             <div class="info-box-content">
-                                <span class="info-box-text">Aylık Satış Miktarı</span>
+                                <span class="info-box-text">{% trans 'Monthly Sales' %}</span>
                                 <span class="info-box-number">{{ sales.montly }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <h3>Ciro</h3>
+                <h3>{% trans 'Endorsement' %}</h3>
 
                 <div class="row">
                     <div class="col-md-4 col-sm-6 col-xs-12">
                         <div class="info-box">
                             <span class="info-box-icon bg-aqua"><i class="fa fa-money-check"></i></span>
                             <div class="info-box-content">
-                                <span class="info-box-text">Günlük Ciro</span>
+                                <span class="info-box-text">{% trans 'Daily Endorsement' %}</span>
                                 <span class="info-box-number">{{ endorsement.daily|floatformat:2 }} ₺</span>
                             </div>
                         </div>
@@ -61,7 +62,7 @@
                         <div class="info-box">
                             <span class="info-box-icon bg-green"><i class="fa fa-money-check"></i></span>
                             <div class="info-box-content">
-                                <span class="info-box-text">Haftalık Ciro</span>
+                                <span class="info-box-text">{% trans 'Weekly Endorsement' %}</span>
                                 <span class="info-box-number">{{ endorsement.weekly|floatformat:2 }} ₺</span>
                             </div>
                         </div>
@@ -70,7 +71,7 @@
                         <div class="info-box">
                             <span class="info-box-icon bg-yellow"><i class="fa fa-money-check"></i></span>
                             <div class="info-box-content">
-                                <span class="info-box-text">Aylık Ciro</span>
+                                <span class="info-box-text">{% trans 'Monthly Endorsement' %}</span>
                                 <span class="info-box-number">{{ endorsement.montly|floatformat:2 }} ₺</span>
                             </div>
                         </div>
