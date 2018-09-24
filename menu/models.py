@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from enterprise.models import *
 
 class Category(models.Model):
@@ -75,7 +75,7 @@ class MenuSubCategoryOption(models.Model):
 
 
 class Biot(models.Model):
-    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, verbose_name=_('Select Menu'))
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, verbose_name=_('Please Select Menu'))
     enterprise = models.ForeignKey(Enterprise, on_delete=models.CASCADE, null=True)
 
     def __str__(self):

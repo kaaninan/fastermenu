@@ -43,7 +43,7 @@ class ProfileUpdateForm(forms.ModelForm):
 	email = forms.EmailField(max_length=254, help_text=_('Your e-mail address is also your username.'))
 	first_name = forms.CharField(max_length=30, required=False, label=_('First Name'))
 	last_name = forms.CharField(max_length=30, required=False, label=_('Last Name'))
-	password1 = forms.CharField(max_length=100, required=False, label=_('New Password (optional'), help_text=_('Your password must be at least 8 characters long.'), widget=forms.PasswordInput)
+	password1 = forms.CharField(max_length=100, required=False, label=_('New Password (optional)'), help_text=_('Your password must be at least 8 characters long.'), widget=forms.PasswordInput)
 
 	class Meta:
 		model = User

@@ -1,10 +1,10 @@
 from django import forms
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from .models import *
 
 
 class MenuForm(forms.ModelForm):
-	name = forms.CharField(max_length=30, required=True, label=_('Product Name*'))
+	name = forms.CharField(max_length=30, required=True, label=_("Product Name*"))
 	pictures = forms.ImageField(required=False, label=_('Picture'), help_text=_('Adding a product image increases the likelihood that your customers will buy the product. (Not required)'))
 	description = forms.CharField(max_length=200, required=False, label=_('Description'), help_text=_('You can write a description, such as "chili sauce is served with."'))
 	price = forms.FloatField(label=_('Price ($)'), required=True)

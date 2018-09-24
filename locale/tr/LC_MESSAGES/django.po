@@ -3,20 +3,73 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-22 00:57+0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2018-09-25 02:06+0300\n"
+"PO-Revision-Date: 2018-09-25 02:06+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 2.1.1\n"
+
+#: account/forms.py:23
+msgid "Your username or password does not match. Please check!"
+msgstr "Kullanıcı adınız veya şifreniz doğru değil. Lütfen kontrol edin!"
+
+#: account/forms.py:43
+msgid "Your e-mail address is also your username."
+msgstr "Email adresiniz aynı zamanda kullanıcı adınız olacaktır."
+
+#: account/forms.py:44
+msgid "First Name"
+msgstr "Adınız"
+
+#: account/forms.py:45
+msgid "Last Name"
+msgstr "Soyadınız"
+
+#: account/forms.py:46
+msgid "New Password (optional)"
+msgstr "Yeni Şifre (isteğe bağlı)"
+
+#: account/forms.py:46
+msgid "Your password must be at least 8 characters long."
+msgstr "Şifreniz en az 8 karakter olmalıdır."
+
+#: account/forms.py:55
+msgid "The password can not be less than 8 characters!"
+msgstr "Şifreniz en az 8 karakter olmalıdır!"
+
+#: api/views.py:793 enterprise/views.py:249 enterprise/views.py:254
+#: enterprise/views.py:277 enterprise/views.py:283
+msgid "Successful!"
+msgstr "Başarılı!"
+
+#: enterprise/forms.py:10
+msgid "Your company logo"
+msgstr "Şirketinizin logosu"
+
+#: enterprise/forms.py:11
+msgid "Your company name"
+msgstr "Şirketinizin ismi"
+
+#: enterprise/forms.py:12
+msgid "Your company address"
+msgstr "Şirketinizin adresi"
+
+#: enterprise/forms.py:12
+msgid "This section appears under your company name on the order display."
+msgstr "Bu kısım şirket isminizin altında görünecektir."
+
+#: enterprise/forms.py:31
+msgid "The logo file cannot be larger than 4 mb!"
+msgstr "Logo 4 mb'dan büyük olamaz!"
 
 #: fastermenu/settings.py:52
 msgid "English"
@@ -26,232 +79,245 @@ msgstr ""
 msgid "Turkish"
 msgstr ""
 
+#: menu/forms.py:7
+msgid "Product Name*"
+msgstr "Ürün İsmi*"
+
+#: menu/forms.py:8
+msgid "Picture"
+msgstr "Resim"
+
+#: menu/forms.py:8
+msgid ""
+"Adding a product image increases the likelihood that your customers will buy "
+"the product. (Not required)"
+msgstr ""
+"Ürün resmi ekleyerek, müşterilerinizin ürünü satın alma ihtimalini "
+"arttırırsınız. (isteğe bağlı)"
+
+#: menu/forms.py:9
+msgid "Description"
+msgstr "Açıklama"
+
+#: menu/forms.py:9
+msgid "You can write a description, such as \"chili sauce is served with.\""
+msgstr "Malzemeler, porsiyon gibi başlıklar ekleyebilirsiniz."
+
+#: menu/forms.py:10
+msgid "Price ($)"
+msgstr "Fiyatı Girin (TL)"
+
+#: menu/models.py:78
+msgid "Please Select Menu"
+msgstr "Lütfen Menü Seçin"
+
+#: templates/barcode/qr.html:72
+msgid "Click to Print"
+msgstr "YAZDIR"
+
+#: templates/barcode/qr.html:81
+msgid "Use the camera for iPhone, QR reader for Android"
+msgstr "iPhone için kamerayı, Android için QR okuyucuyu kullanın"
+
 #: templates/enterprise/analyze.html:9 templates/enterprise/analyze.html:13
 #: templates/enterprise/static/header.html:21
 msgid "Analyze"
 msgstr "Analiz"
 
-#: templates/enterprise/analyze.html:12 templates/enterprise/category.html:126
-#: templates/enterprise/comment.html:35 templates/enterprise/index.html:13
-#: templates/enterprise/menu.html:80 templates/enterprise/order.html:17
-#: templates/enterprise/table.html:154
+#: templates/enterprise/analyze.html:12 templates/enterprise/biot.html:20
+#: templates/enterprise/category.html:126 templates/enterprise/comment.html:14
+#: templates/enterprise/index.html:13 templates/enterprise/menu.html:80
+#: templates/enterprise/order.html:17 templates/enterprise/order_detail.html:14
+#: templates/enterprise/profile.html:47 templates/enterprise/table.html:154
 msgid "Dashboard"
-msgstr ""
+msgstr "Anasayfa"
 
 #: templates/enterprise/analyze.html:24
 msgid "Daily Sales"
-msgstr ""
+msgstr "Günlük Satış"
 
 #: templates/enterprise/analyze.html:33
 msgid "Weekly Sales"
-msgstr ""
+msgstr "Haftalık Satış"
 
 #: templates/enterprise/analyze.html:42
 msgid "Monthly Sales"
-msgstr ""
+msgstr "Aylık Satış"
 
 #: templates/enterprise/analyze.html:49
 msgid "Endorsement"
-msgstr ""
+msgstr "Ciro"
 
 #: templates/enterprise/analyze.html:56
 msgid "Daily Endorsement"
-msgstr ""
+msgstr "Günlük Ciro"
 
 #: templates/enterprise/analyze.html:65
 msgid "Weekly Endorsement"
-msgstr ""
+msgstr "Haftalık Ciro"
 
 #: templates/enterprise/analyze.html:74
 msgid "Monthly Endorsement"
-msgstr ""
+msgstr "Aylık Ciro"
+
+#: templates/enterprise/biot.html:16 templates/enterprise/biot.html:21
+#: templates/enterprise/static/header.html:23
+msgid "Biot Settings"
+msgstr "Biot Ayarları"
+
+#: templates/enterprise/biot.html:48
+msgid "Select which menu to place when the button is pressed"
+msgstr "Butona tıklandığı zaman hangi menünün sipariş verileceğini seçin"
+
+#: templates/enterprise/biot.html:58 templates/enterprise/category.html:37
+#: templates/enterprise/category.html:63 templates/enterprise/category.html:89
+#: templates/enterprise/menu.html:38 templates/enterprise/menu.html:65
+#: templates/enterprise/profile.html:29 templates/enterprise/profile.html:95
+#: templates/enterprise/table.html:82 templates/enterprise/table.html:120
+msgid "Save"
+msgstr "Kaydet"
 
 #: templates/enterprise/category.html:12
-#, fuzzy
-#| msgid "Create categories"
 msgid "Order Categories"
 msgstr "Kategorilerini oluştur"
 
 #: templates/enterprise/category.html:18 templates/enterprise/category.html:196
 msgid "You have not created any categories at this time!"
-msgstr ""
+msgstr "Şu anda hiç kategori oluşturmadınız!"
 
 #: templates/enterprise/category.html:36 templates/enterprise/category.html:62
 #: templates/enterprise/category.html:90 templates/enterprise/category.html:110
 #: templates/enterprise/menu.html:37 templates/enterprise/menu.html:64
-#: templates/enterprise/table.html:81 templates/enterprise/table.html:119
-#: templates/enterprise/table.html:140
+#: templates/enterprise/profile.html:28 templates/enterprise/table.html:81
+#: templates/enterprise/table.html:119 templates/enterprise/table.html:140
+#: templates/order/cart.html:57
 msgid "Cancel"
-msgstr ""
-
-#: templates/enterprise/category.html:37 templates/enterprise/category.html:63
-#: templates/enterprise/category.html:89 templates/enterprise/menu.html:38
-#: templates/enterprise/menu.html:65 templates/enterprise/table.html:82
-#: templates/enterprise/table.html:120
-msgid "Save"
-msgstr ""
+msgstr "İptal"
 
 #: templates/enterprise/category.html:49 templates/enterprise/category.html:164
 msgid "Add Category"
-msgstr ""
+msgstr "Kategori Ekle"
 
 #: templates/enterprise/category.html:55
 msgid "What is the name of the category you want to add?"
-msgstr ""
+msgstr "Eklemek istediğiniz kategorinin adı nedir?"
 
 #: templates/enterprise/category.html:75
 msgid "Edit Category"
-msgstr ""
+msgstr "Kategori Düzenle"
 
 #: templates/enterprise/category.html:81 templates/enterprise/category.html:203
 msgid "Category Name"
-msgstr ""
+msgstr "Kategori Adı"
 
 #: templates/enterprise/category.html:88 templates/enterprise/category.html:111
-#: templates/enterprise/menu.html:151 templates/enterprise/table.html:141
-#: templates/enterprise/table.html:224
+#: templates/enterprise/menu.html:151 templates/enterprise/menu.html:306
+#: templates/enterprise/table.html:141 templates/enterprise/table.html:224
+#: templates/order/cart.html:25 templates/order/complated.html:24
 msgid "Delete"
-msgstr ""
+msgstr "Sil"
 
 #: templates/enterprise/category.html:102 templates/enterprise/table.html:132
 msgid "Delete Table"
-msgstr ""
+msgstr "Masayı Sil"
 
 #: templates/enterprise/category.html:106
 msgid " and its products will be deleted. Do you confirm?"
-msgstr ""
+msgstr " adlı kategori ve içerisindekiler silinecektir. Onaylıyor musunuz?"
 
 #: templates/enterprise/category.html:123
 msgid "Menu and Category Settings"
-msgstr ""
+msgstr "Menü ve Kategori Ayarları"
 
 #: templates/enterprise/category.html:127 templates/enterprise/menu.html:81
 msgid "Category"
-msgstr ""
+msgstr "Kategori"
 
 #: templates/enterprise/category.html:147
 msgid "How to add products?"
-msgstr ""
+msgstr "Nasıl ürün eklerim?"
 
 #: templates/enterprise/category.html:151
-#, fuzzy
-#| msgid "Create categories"
 msgid "Create category"
 msgstr "Kategorilerini oluştur"
 
 #: templates/enterprise/category.html:152
 msgid "Add products into categories you create"
-msgstr ""
+msgstr "Oluşturduğnuz kategoriye ürünleri ekleyin"
 
 #: templates/enterprise/category.html:153
 msgid "The products on the customers screen are listed below the categories"
-msgstr ""
+msgstr "Ürünler, müşteri ekranında kategorilerin altında görünür"
 
 #: templates/enterprise/category.html:178
-#, fuzzy
-#| msgid "Create categories"
 msgid "Categories"
-msgstr "Kategorilerini oluştur"
+msgstr "Kategoriler"
 
 #: templates/enterprise/category.html:184 templates/enterprise/menu.html:115
 #: templates/enterprise/table.html:194
 msgid "Search"
-msgstr ""
+msgstr "Arama"
 
 #: templates/enterprise/category.html:204
 msgid "Number of Products"
-msgstr ""
+msgstr "Menü Sayısı"
 
-#: templates/enterprise/category.html:205 templates/enterprise/comment.html:73
+#: templates/enterprise/category.html:205 templates/enterprise/comment.html:52
 #: templates/enterprise/menu.html:136 templates/enterprise/order.html:42
 #: templates/enterprise/table.html:210
 msgid "Operations"
-msgstr ""
+msgstr "İşlemler"
 
 #: templates/enterprise/category.html:215
 msgid "Go to Menu"
-msgstr ""
+msgstr "Menüye Git"
 
 #: templates/enterprise/category.html:218 templates/enterprise/menu.html:149
 #: templates/enterprise/table.html:222
 msgid "Edit"
-msgstr ""
+msgstr "Düzenle"
 
 #: templates/enterprise/category.html:496
 #: templates/enterprise/category.html:513
 #: templates/enterprise/category.html:530 templates/enterprise/menu.html:149
 #: templates/enterprise/menu.html:185 templates/enterprise/menu.html:202
 #: templates/enterprise/table.html:487 templates/enterprise/table.html:499
+#: templates/order/complated.html:117
 msgid "Wait..."
-msgstr ""
+msgstr "Bekleyin..."
 
-#: templates/enterprise/comment.html:14 templates/enterprise/comment.html:105
-msgid "Order Detail"
-msgstr ""
-
-#: templates/enterprise/comment.html:22 templates/enterprise/table.html:25
-msgid "Done"
-msgstr ""
-
-#: templates/enterprise/comment.html:33 templates/enterprise/comment.html:36
-#: templates/enterprise/comment.html:55
+#: templates/enterprise/comment.html:12 templates/enterprise/comment.html:15
+#: templates/enterprise/comment.html:34
+#: templates/enterprise/order_detail.html:16
 #: templates/enterprise/static/header.html:22
 msgid "Comments"
 msgstr "Yorumlar"
 
-#: templates/enterprise/comment.html:57 templates/enterprise/table.html:188
+#: templates/enterprise/comment.html:36 templates/enterprise/table.html:188
 msgid "units"
-msgstr ""
+msgstr "tane"
 
-#: templates/enterprise/comment.html:66
+#: templates/enterprise/comment.html:45
 msgid "No comments at this moment!"
-msgstr ""
+msgstr "Şu anda hiç yorum yok!"
 
-#: templates/enterprise/comment.html:71
-#, fuzzy
-#| msgid "Comments"
+#: templates/enterprise/comment.html:50
+#: templates/enterprise/order_detail.html:34 templates/order/index.html:130
+#: templates/order/track.html:136
 msgid "Comment"
-msgstr "Yorumlar"
+msgstr "Yorum"
 
-#: templates/enterprise/comment.html:72
-#, fuzzy
-#| msgid "Comments"
+#: templates/enterprise/comment.html:51
 msgid "Comment Date"
-msgstr "Yorumlar"
+msgstr "Yorum Tarihi"
 
-#: templates/enterprise/comment.html:80 templates/enterprise/order.html:39
-#, fuzzy
-#| msgid "Orders"
-msgid "Order"
-msgstr "Siparişler"
-
-#: templates/enterprise/comment.html:87 templates/enterprise/order.html:41
-msgid "Total Price"
-msgstr ""
-
-#: templates/enterprise/comment.html:88
-msgid "$"
-msgstr ""
-
-#: templates/enterprise/comment.html:90
-#, fuzzy
-#| msgid "Orders"
-msgid "Order Date"
-msgstr "Siparişler"
-
-#: templates/enterprise/comment.html:93
-msgid "Complated Date"
-msgstr ""
-
-#: templates/enterprise/comment.html:96 templates/enterprise/order.html:38
-#, fuzzy
-#| msgid "Tables"
-msgid "Table"
-msgstr "Masalar"
+#: templates/enterprise/comment.html:60
+msgid "Order Detail"
+msgstr "Sipariş Detayı"
 
 #: templates/enterprise/index.html:22
 msgid "Steps to start using FasterMenu"
-msgstr "FasterMenu'yü kullanmaya başlamak için yapmanız gereken adımlar;"
+msgstr "FasterMenu'yü kullanmaya başlamak için yapmanız gereken adımlar"
 
 #: templates/enterprise/index.html:30
 msgid "Enter account settings and upload logo"
@@ -263,42 +329,40 @@ msgstr "Kategorilerini oluştur"
 
 #: templates/enterprise/index.html:43
 msgid "Add menus"
-msgstr ""
+msgstr "Menüleri ekle"
 
 #: templates/enterprise/index.html:49
 msgid "Add your tables"
-msgstr ""
+msgstr "Masaları ekle"
 
 #: templates/enterprise/index.html:54
 msgid "Print QR codes"
-msgstr ""
+msgstr "QR kodları yazdır"
 
 #: templates/enterprise/index.html:59
 msgid "Follow incoming orders"
-msgstr ""
+msgstr "Gelen siparişleri takip et"
 
 #: templates/enterprise/menu.html:13 templates/enterprise/menu.html:101
 #: templates/enterprise/menu.html:222
 msgid "Add Product"
-msgstr ""
+msgstr "Ürün Ekle"
 
 #: templates/enterprise/menu.html:31
 msgid "Add Option"
-msgstr ""
+msgstr "Seçenek Ekle"
 
 #: templates/enterprise/menu.html:54
 msgid "Delete Product"
-msgstr ""
+msgstr "Ürünü Sil"
 
 #: templates/enterprise/menu.html:58 templates/enterprise/table.html:136
 msgid "will be deleted. Do you confirm?"
-msgstr ""
+msgstr "isimli menü silinecektir. Onaylıyor musunuz?"
 
 #: templates/enterprise/menu.html:77
-#, fuzzy
-#| msgid "Settings"
 msgid "Menu Settings"
-msgstr "Ayarlar"
+msgstr "Menü Ayarları"
 
 #: templates/enterprise/menu.html:82 templates/enterprise/static/header.html:19
 msgid "Menu"
@@ -306,71 +370,172 @@ msgstr "Menü"
 
 #: templates/enterprise/menu.html:127
 msgid "You have not created any menus at this time!"
-msgstr ""
+msgstr "Şu anda hiç menü oluşturmadınız!"
 
 #: templates/enterprise/menu.html:133
 msgid "Product Name"
-msgstr ""
+msgstr "Ürün İsmi"
 
 #: templates/enterprise/menu.html:134
 msgid "Price"
-msgstr ""
+msgstr "Fiyat"
 
-#: templates/enterprise/menu.html:224 templates/enterprise/table.html:288
+#: templates/enterprise/menu.html:224 templates/enterprise/menu.html:313
+#: templates/enterprise/table.html:288
 msgid "Add"
-msgstr ""
+msgstr "Ekle"
 
 #: templates/enterprise/menu.html:229
 msgid "Edit Product"
-msgstr ""
+msgstr "Ürünü Düzenle"
 
-#: templates/enterprise/menu.html:231
+#: templates/enterprise/menu.html:231 templates/order/cart.html:58
 msgid "Update"
-msgstr ""
+msgstr "Güncelle"
+
+#: templates/enterprise/menu.html:256
+msgid "Option Title"
+msgstr "Seçenek Başlığı"
+
+#: templates/enterprise/menu.html:258
+msgid "You can write headings such as servings, ingredients."
+msgstr "Malzemeler, porsiyon gibi başlıklar ekleyebilirsiniz."
+
+#: templates/enterprise/menu.html:262
+msgid "Option Type"
+msgstr "Seçenek Türü"
+
+#: templates/enterprise/menu.html:264
+msgid "Select"
+msgstr "Seçiniz"
+
+#: templates/enterprise/menu.html:265
+msgid "Free Options"
+msgstr "Ücretsiz Seçenekler"
+
+#: templates/enterprise/menu.html:266
+msgid "Paid Options"
+msgstr "Ücretli Seçenekler"
+
+#: templates/enterprise/menu.html:272 templates/enterprise/menu.html:289
+msgid "Option List"
+msgstr "Seçenek Listesi"
+
+#: templates/enterprise/menu.html:276 templates/enterprise/menu.html:296
+msgid "Option"
+msgstr "Seçenek"
+
+#: templates/enterprise/menu.html:284
+msgid "You can add preferences like 'onion', 'hot pepper' to this list."
+msgstr "Bu listeye soğan, acı biber gibi seçenekler ekleyebilirsiniz."
+
+#: templates/enterprise/menu.html:301
+msgid "Enter Price ($)"
+msgstr "Fiyatı Girin (TL)"
+
+#: templates/enterprise/menu.html:324
+msgid "The price you type will be added over the product price."
+msgstr "Yazdığınız fiyat ürünün fiyatının üzerine eklenecektir."
+
+#: templates/enterprise/menu.html:328
+msgid "Remove Option"
+msgstr "Seçeneği Sil"
 
 #: templates/enterprise/order.html:14 templates/enterprise/order.html:18
+#: templates/enterprise/order_detail.html:38
 #: templates/enterprise/static/header.html:17
 msgid "Orders"
 msgstr "Siparişler"
 
 #: templates/enterprise/order.html:31
 msgid "You have no orders at the moment!"
-msgstr ""
+msgstr "Şu anda hiç sipariş yok!"
 
-#: templates/enterprise/order.html:40
-#, fuzzy
-#| msgid "Orders"
+#: templates/enterprise/order.html:38 templates/enterprise/order_detail.html:63
+#: templates/order/index.html:50 templates/order/index.html:66
+#: templates/order/index.html:120 templates/order/track.html:69
+msgid "Table"
+msgstr "Masa"
+
+#: templates/enterprise/order.html:39
+msgid "Order"
+msgstr "Sipariş"
+
+#: templates/enterprise/order.html:40 templates/order/track.html:112
 msgid "Order Time"
-msgstr "Siparişler"
+msgstr "Sipariş Zamanı"
+
+#: templates/enterprise/order.html:41 templates/enterprise/order_detail.html:51
+#: templates/order/cart.html:146 templates/order/track.html:116
+msgid "Total Price"
+msgstr "Toplam Ücret"
 
 #: templates/enterprise/order.html:66 templates/enterprise/order.html:187
 msgid "Approve"
-msgstr ""
+msgstr "Onayla"
 
 #: templates/enterprise/order.html:70 templates/enterprise/order.html:245
 msgid "Receive Payment"
-msgstr ""
+msgstr "Ödeme Al"
 
-#: templates/enterprise/order.html:74
+#: templates/enterprise/order.html:74 templates/order/index.html:113
 msgid "Complated"
-msgstr ""
+msgstr "Tamamalandı"
 
 #: templates/enterprise/order.html:147
 msgid "Approving..."
-msgstr ""
+msgstr "Onaylanıyor.."
 
 #: templates/enterprise/order.html:205
 msgid "Completing..."
-msgstr ""
+msgstr "Tamamlanıyor.."
+
+#: templates/enterprise/order_detail.html:11
+#: templates/enterprise/order_detail.html:18
+#: templates/enterprise/order_detail.html:27
+msgid "Order Details"
+msgstr "Sipariş Detayları"
+
+#: templates/enterprise/order_detail.html:52
+msgid "$"
+msgstr "TL"
+
+#: templates/enterprise/order_detail.html:54
+msgid "Order Date"
+msgstr "Sipariş Tarihi"
+
+#: templates/enterprise/order_detail.html:57
+msgid "Complated Date"
+msgstr "Tamamlanma Tarihi"
+
+#: templates/enterprise/order_detail.html:60
+msgid "Process Time"
+msgstr "İşlem Süresi"
+
+#: templates/enterprise/order_detail.html:73
+msgid "Back"
+msgstr "Geri"
+
+#: templates/enterprise/profile.html:18
+msgid "Upload Logo"
+msgstr "Logo Yükle"
+
+#: templates/enterprise/profile.html:43 templates/enterprise/profile.html:48
+msgid "Account Settings"
+msgstr "Hesap Ayarları"
+
+#: templates/enterprise/profile.html:81
+msgid "Company Information"
+msgstr "Şirket Bilgileri"
+
+#: templates/enterprise/profile.html:85
+msgid "Personal Information"
+msgstr "Kişiler Bilgiler"
 
 #: templates/enterprise/static/header.html:20
 #: templates/enterprise/table.html:155 templates/enterprise/table.html:186
 msgid "Tables"
 msgstr "Masalar"
-
-#: templates/enterprise/static/header.html:23
-msgid "Biot Settings"
-msgstr "Biot Ayarları"
 
 #: templates/enterprise/static/header.html:95
 msgid "Settings"
@@ -382,80 +547,191 @@ msgstr "Çıkış Yap"
 
 #: templates/enterprise/table.html:13
 msgid "Table QR Code"
-msgstr ""
+msgstr "QR Kod"
+
+#: templates/enterprise/table.html:25
+msgid "Done"
+msgstr "Tamam"
 
 #: templates/enterprise/table.html:28
 msgid "Print"
-msgstr ""
+msgstr "Yazdır"
 
 #: templates/enterprise/table.html:43 templates/enterprise/table.html:171
-#, fuzzy
-#| msgid "Tables"
 msgid "Add Table"
-msgstr "Masalar"
+msgstr "Masa Ekle"
 
 #: templates/enterprise/table.html:48
 msgid "Add bulk table"
-msgstr ""
+msgstr "Toplu masa ekle"
 
 #: templates/enterprise/table.html:51
 msgid "Add one table"
-msgstr ""
+msgstr "Bir tane masa ekle"
 
 #: templates/enterprise/table.html:60
 msgid "How many tables do you have?"
-msgstr ""
+msgstr "Kaç tane masa eklemek istiyorsunuz?"
 
 #: templates/enterprise/table.html:62
 msgid "The number of tables you enter will be added."
-msgstr ""
+msgstr "Yazdığınız sayı kadar masa eklenecektir."
 
 #: templates/enterprise/table.html:73
 msgid "What is the table name you want to add?"
-msgstr ""
+msgstr "Eklemek istediğiniz masanın adı nedir?"
 
 #: templates/enterprise/table.html:94
-#, fuzzy
-#| msgid "Tables"
 msgid "Edit Table"
-msgstr "Masalar"
+msgstr "Masa Düzenle"
 
 #: templates/enterprise/table.html:100 templates/enterprise/table.html:208
-#, fuzzy
-#| msgid "Tables"
 msgid "Table Name"
-msgstr "Masalar"
+msgstr "Masa Adı"
 
 #: templates/enterprise/table.html:108
 msgid "Active"
-msgstr ""
+msgstr "Aktif"
 
 #: templates/enterprise/table.html:111
 msgid "Not Active"
-msgstr ""
+msgstr "Aktif Değil"
 
 #: templates/enterprise/table.html:113
 msgid "You can remove the tables that are not in use."
-msgstr ""
+msgstr "Kullanmadığınız masaları buradan kaldırabilirsiniz."
 
 #: templates/enterprise/table.html:152
-#, fuzzy
-#| msgid "Settings"
 msgid "Table Settings"
-msgstr "Ayarlar"
+msgstr "Masa Ayarları"
 
 #: templates/enterprise/table.html:176
 msgid "Print QR Codes"
-msgstr ""
+msgstr "QR Kodları Yazdır"
 
 #: templates/enterprise/table.html:203
 msgid "You have not created any table at this time!"
-msgstr ""
+msgstr "Şu anda hiç masa oluşturmadınız!"
 
 #: templates/enterprise/table.html:209
 msgid "Status"
-msgstr ""
+msgstr "Durum"
 
 #: templates/enterprise/table.html:220
 msgid "QR Code"
+msgstr "QR Kod"
+
+#: templates/order/cart.html:39
+msgid "Edit Piece"
+msgstr "Adet Değiştir"
+
+#: templates/order/cart.html:48 templates/order/details.html:55
+msgid "Piece"
+msgstr "Tane"
+
+#: templates/order/cart.html:68
+msgid "Cart"
+msgstr "Sepetim"
+
+#: templates/order/cart.html:166
+msgid "ORDER NOW"
+msgstr "SİPARİŞ VER"
+
+#: templates/order/complated.html:15
+msgid "Delete Order"
+msgstr "Siparişi Sil"
+
+#: templates/order/complated.html:20
+msgid "Your order will be deleted from the system. Do you confirm?"
+msgstr "Siparişiniz sistemden silinecektir. Onaylıyor musunuz?"
+
+#: templates/order/complated.html:35
+msgid "Your order has been successfully received!"
+msgstr "Siparişiniz başarıyla alındı!"
+
+#: templates/order/complated.html:37
+msgid "As soon as possible, our waiters will bring your order."
+msgstr "En yakın zamanda garsonlarımız siparişinizi getirecektir."
+
+#: templates/order/complated.html:39
+msgid ""
+"If you want to edit your order within <span>-</span> seconds you can do."
 msgstr ""
+"Siparişini düzenlemek isterseniz <span>-</span> saniye içerisinde "
+"yapabilirsiniz."
+
+#: templates/order/complated.html:41
+msgid "Track Order"
+msgstr "Sipariş Takibi"
+
+#: templates/order/complated.html:45
+msgid "Edit Order"
+msgstr "Siparişini Düzenle"
+
+#: templates/order/complated.html:48
+msgid "Cancel Order"
+msgstr "Siparişi İptal Et"
+
+#: templates/order/details.html:126
+msgid "Please select the materials you want to remove."
+msgstr "Çıkartmak istediğiniz malzemeleri seçiniz."
+
+#: templates/order/details.html:153
+msgid "ADD TO CART"
+msgstr "SEPETE EKLE"
+
+#: templates/order/index.html:18
+msgid "Added to Cart!"
+msgstr "Sepete Eklendi!"
+
+#: templates/order/index.html:24
+msgid "Your Order Deleted!"
+msgstr "Siparişiniz Silindi!"
+
+#: templates/order/index.html:93
+msgid "Previous Orders"
+msgstr "Önceki Siparişlerim"
+
+#: templates/order/index.html:114
+msgid "Preparing"
+msgstr "Hazırlanıyor"
+
+#: templates/order/index.html:115
+msgid "Prepared"
+msgstr "Hazırlandı"
+
+#: templates/order/index.html:131
+msgid "Detail"
+msgstr "Detay"
+
+#: templates/order/track.html:22
+msgid "Order Status"
+msgstr "Sipariş Durumu"
+
+#: templates/order/track.html:77
+msgid "Your Order"
+msgstr "Siparişiniz"
+
+#: templates/order/track.html:147
+msgid "Send"
+msgstr "Gönder"
+
+#: templates/order/track.html:157
+msgid "Your Comment"
+msgstr "Yorumunuz"
+
+#: templates/order/track.html:241
+msgid "Your order is complete."
+msgstr "Siparişiniz tamamlandı."
+
+#: templates/order/track.html:243
+msgid "Your order is complete. You can comment below."
+msgstr "Siparişiniz tamamlandı. Aşağıdan yorum yapabilirsiniz."
+
+#: templates/order/track.html:250
+msgid "Your order has been prepared."
+msgstr "Siparişiniz hazırlandı."
+
+#: templates/order/track.html:255
+msgid "Your order has been received. Expected to be approved."
+msgstr "Siparişiniz alındı. Onaylanmayı bekliyor."
