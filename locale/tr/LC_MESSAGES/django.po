@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-25 02:06+0300\n"
-"PO-Revision-Date: 2018-09-25 02:06+0300\n"
+"POT-Creation-Date: 2018-09-29 03:50+0300\n"
+"PO-Revision-Date: 2018-09-29 03:55+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: tr\n"
@@ -26,11 +26,11 @@ msgstr "Kullanıcı adınız veya şifreniz doğru değil. Lütfen kontrol edin!
 msgid "Your e-mail address is also your username."
 msgstr "Email adresiniz aynı zamanda kullanıcı adınız olacaktır."
 
-#: account/forms.py:44
+#: account/forms.py:44 templates/registration/register.html:37
 msgid "First Name"
 msgstr "Adınız"
 
-#: account/forms.py:45
+#: account/forms.py:45 templates/registration/register.html:43
 msgid "Last Name"
 msgstr "Soyadınız"
 
@@ -735,3 +735,116 @@ msgstr "Siparişiniz hazırlandı."
 #: templates/order/track.html:255
 msgid "Your order has been received. Expected to be approved."
 msgstr "Siparişiniz alındı. Onaylanmayı bekliyor."
+
+#: templates/registration/login.html:16
+msgid "Please log in"
+msgstr "Giriş Yap"
+
+#: templates/registration/login.html:17
+msgid "Don't have an account?"
+msgstr "Henüz hesabınız yok mu?"
+
+#: templates/registration/login.html:17 templates/registration/register.html:68
+msgid "Create Account"
+msgstr "Hesap Oluştur"
+
+#: templates/registration/login.html:36
+#: templates/registration/password_reset_form.html:35
+#: templates/registration/register.html:51
+msgid "Email"
+msgstr "Email"
+
+#: templates/registration/login.html:42 templates/registration/register.html:57
+msgid "Password"
+msgstr "Şifre"
+
+#: templates/registration/login.html:49
+msgid "Remember Me"
+msgstr "Beni Hatırla"
+
+#: templates/registration/login.html:53
+#: templates/registration/password_reset_complete.html:17
+#: templates/registration/register.html:17
+msgid "Log In"
+msgstr "Giriş Yap"
+
+#: templates/registration/login.html:57
+msgid "Forgot your password?"
+msgstr "Şifremi unuttum"
+
+#: templates/registration/password_reset_complete.html:16
+msgid "Your Password Has Been Changed Successfully!"
+msgstr "Şifreniz başarıyla değiştirildi!"
+
+#: templates/registration/password_reset_confirm.html:19
+msgid "Change Password"
+msgstr "Şifremi Unuttum"
+
+#: templates/registration/password_reset_confirm.html:40
+msgid "New Password"
+msgstr "Yeni Şifre"
+
+#: templates/registration/password_reset_confirm.html:47
+msgid "New Password Again"
+msgstr "Yeni Şifre Tekrar"
+
+#: templates/registration/password_reset_confirm.html:53
+msgid "Reset Password"
+msgstr "Şifremi Sıfırla"
+
+#: templates/registration/password_reset_confirm.html:60
+msgid "This link is no longer valid!"
+msgstr "Bu link artık geçerli değil!"
+
+#: templates/registration/password_reset_confirm.html:61
+#: templates/registration/password_reset_form.html:44
+msgid "Return to Log In"
+msgstr "Giriş yapmak için tıklayın"
+
+#: templates/registration/password_reset_done.html:16
+msgid "Please check your inbox!"
+msgstr "Şifre Değiştirme Maili Gönderildi!"
+
+#: templates/registration/password_reset_done.html:17
+msgid ""
+"We have sent your instructions to your registered email address to change "
+"your password."
+msgstr ""
+"Şifrenizi değiştirmeniz için gerekli talimatları kayıtlı email adresinize "
+"gönderdik."
+
+#: templates/registration/password_reset_done.html:18
+msgid "Return to log in"
+msgstr "Giriş ekranına dön"
+
+#: templates/registration/password_reset_form.html:16
+msgid "Reset your password?"
+msgstr "Şifremi Unuttum"
+
+#: templates/registration/password_reset_form.html:40
+msgid "Send verification email"
+msgstr "Şifremi Sıfırla"
+
+#: templates/registration/register.html:16
+msgid "Create your free trial"
+msgstr "Ücretsiz hesap oluşturun"
+
+#: templates/registration/register.html:17
+msgid "Already have an account?"
+msgstr "Zaten hesabın var mı?"
+
+#: templates/registration/register.html:63
+msgid "Bussiness Name"
+msgstr "İşletme Adı"
+
+#: templates/registration/register.html:72
+msgid "By creating an account you agree to our terms"
+msgstr "Hesap oluştururak koşulları ve şartları kabul etmiş olursunuz"
+
+#: templates/registration/register.html:72
+msgid "Read More"
+msgstr "Daha Fazla"
+
+#: templates/registration/static/footer.html:12
+msgid "All rights reserved."
+msgstr "Tüm Hakları Saklıdır."

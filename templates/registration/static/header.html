@@ -1,4 +1,9 @@
 {% load static %}
+{% load i18n %}
+
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+
 <!-- Header -->
 <header class="header">
 	
@@ -17,9 +22,24 @@
 					<ul>
 						<li>
 							<!-- Button -->
-							<div class="v-align-middle">
+							<!-- <div class="v-align-middle">
 								<a href="contact-style-two.html" class="weight-semi-bold color-green">Yardım</a>
+							</div> -->
+
+							<div class="v-align-middle">
+								<div class="dropdown">
+									<a href="#" class="button small rounded no-label-on-mobile no-page-fade no-margin-bottom">
+										<span class="left" style="padding-right: 0.5rem"><i class="fas fa-globe-americas"></i></span>
+										<span class="hide-on-mobile" style="text-transform: uppercase">{{ LANGUAGE_CODE }}</span>
+									</a>
+									<ul class="dropdown-list">
+				                      	{% for lang in LANGUAGES %}
+										<li class="{% if lang.0 == LANGUAGE_CODE %}current{% endif %}"><a href="{% url 'change_language' lang=lang.0 %}?redirect_to={{request.path}}">{{ lang.1 }}</a></li>
+										{% endfor %}
+									</ul>
+								</div>
 							</div>
+
 						</li>
 					</ul>
 				</nav>

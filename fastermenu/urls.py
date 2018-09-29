@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^health/', health_view),
 
     url(r'^redirect/(?P<id>[\w\.-]+)/$', redirect_view, name="redirect"),
+    url(r'^lang/(?P<lang>[\w\.-]+)/$', change_language, name="change_language"),
 
     url(r'^api/', include('api.urls')),
 

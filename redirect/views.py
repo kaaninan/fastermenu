@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect, HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
 import json
+from django.utils import translation
 
 from barcode.models import *
 from enterprise.models import *
@@ -19,6 +20,15 @@ def health_view(request):
 def home_view(request):
     return redirect('enterprise:login')
 
+
+def change_language(request, lang):
+    redirect = request.GET.get('redirect_to', '')
+    user_language = lang
+    translation.activate(user_language)
+    request.session[translation.LANGUAGE_SESSION_KEY] = user_language
+    # redirect[3:] remove /en from path for redirect new selected language
+    tourl = request.scheme + '://' + request.get_host() + redirect[3:]
+    return HttpResponseRedirect(tourl)
     
 
 # /redirect/XXXXXXXX Get ID, search Database and redirect related page

@@ -1,5 +1,6 @@
 {% extends 'registration/static/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block body %}
 
@@ -12,8 +13,8 @@
 			<div class="column width-6 offset-3">
 				<div>
 					<div class="signup-box box rounded xlarge border-grey-light">
-						<h3>Yeni Hesap Oluştur</h3>
-						<p class="mb-20">Zaten hesabın var mı? <a href="{% url 'enterprise:login' %}" class="no-page-fade">Buraya Tıkla</a></p>
+						<h3>{% trans 'Create your free trial' %}</h3>
+						<p class="mb-20">{% trans 'Already have an account?' %} <a href="{% url 'enterprise:login' %}" class="no-page-fade">{% trans 'Log In' %}</a></p>
 						
 						<div class="login-form-container">
 
@@ -33,13 +34,13 @@
 								<div class="row merged-form-elements">
 									<div class="column width-6">
 										<div class="field-wrapper">
-											<label class="color-charcoal">Adınız:</label>
+											<label class="color-charcoal">{% trans 'First Name' %}:</label>
 											<input type="text" name="first_name" class="form-firstname form-element rounded medium" required autocomplete="given-name">
 										</div>
 									</div>
 									<div class="column width-6">
 										<div class="field-wrapper">
-											<label class="color-charcoal">Soyadınız:</label>
+											<label class="color-charcoal">{% trans 'Last Name' %}:</label>
 											<input type="text" name="last_name" class="form-lastname form-element rounded medium" required autocomplete="family-name">
 										</div>
 									</div>
@@ -47,28 +48,28 @@
 								<div class="row">
 									<div class="column width-12">
 										<div class="field-wrapper">
-											<label class="color-charcoal">Email:</label>
+											<label class="color-charcoal">{% trans 'Email' %}:</label>
 											<input type="email" name="email" class="form-email form-element rounded medium"  required autocomplete="email">
 										</div>
 									</div>
 									<div class="column width-12">
 										<div class="field-wrapper">
-											<label class="color-charcoal">Şifreniz:</label>
+											<label class="color-charcoal">{% trans 'Password' %}:</label>
 											<input type="password" name="password1" class="form-password form-element rounded medium" required>
 										</div>
 									</div>
 									<div class="column width-12">
 										<div class="field-wrapper">
-											<label class="color-charcoal">İşletmenizin Adı:</label>
+											<label class="color-charcoal">{% trans 'Bussiness Name' %}:</label>
 											<input type="text" name="enterprise" class="form-password form-element rounded medium" required>
 										</div>
 									</div>
 									<div class="column width-12 mt-10">
-										<input type="submit" value="Hesap Oluştur" class="form-submit button rounded medium bkg-green bkg-hover-theme bkg-focus-green color-white color-hover-white no-margins">
+										<input type="submit" value="{% trans 'Create Account' %}" class="form-submit button rounded medium bkg-green bkg-hover-theme bkg-focus-green color-white color-hover-white no-margins">
 									</div>
 								</div>
 							</form>
-							<p class="text-small mt-20">Hesap oluştururak koşulları ve şartları kabul etmiş olursunuz - <a href="#">Koşullar ve Şartlar</a></p>
+							<p class="text-small mt-20">{% trans 'By creating an account you agree to our terms' %} - <a href="#">{% trans 'Read More' %}</a></p>
 							
 						</div>
 					</div>
