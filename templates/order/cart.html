@@ -176,9 +176,9 @@
 	<div class="middle">
 		<div class="inner">
 			<i id="basket" class="fas fa-shopping-basket"></i>
-			<div class="desc">Sepetinizde ürün bulunmuyor.</div>
+			<div class="desc">{% trans 'There are no products in your cart.' %}</div>
 			<a href="{% url 'order:index' %}">
-				<div class="back">Menüye Dön</div>
+				<div class="back">{% trans 'Back to the menu' %}</div>
 			</a>
 		</div>
 	</div>

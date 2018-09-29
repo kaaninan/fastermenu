@@ -221,12 +221,13 @@
 
 	<!-- Shopping Cart -->
 
-	<div class="row no-gutter sepetim">
+	<div class="row no-gutter index-cart">
 		<a href="{% url 'order:cart' %}">
-			<div class="col sepetim-content">
-				<span id="sepetim"></span>
-				<i id="basket" class="fas fa-shopping-basket"></i>
-			</div>
+			<div class="cart-icon"><i id="basket" class="fas fa-shopping-basket"></i></div>
+			<div class="cart-count" id="sepetim"></div>
+			<div class="cart-text">{% trans 'Go to Cart' %}</div>
+			
+			<div class="clear"></div>
 		</a>
 	</div>
 
@@ -275,16 +276,19 @@ function getBudgetCount(){
     // Callback handler that will be called on success
     request.done(function (response, textStatus, jqXHR){
 
+
+
         if(response['result'] != 0){
-	        $("#basket").fadeOut('medium', function() {
-			  $("span#sepetim").html(response['result']).fadeIn(function(){
-			  	setTimeout(function(){
-			  		$("span#sepetim").fadeOut('fast', function() {
-						$("#basket").fadeIn('fast');
-					});
-			  	}, 1500);
-			  });
-			});
+        	$("#sepetim").html('('+response['result']+')')
+	  //       $("#basket").fadeOut('medium', function() {
+			//   $("span#sepetim").html(response['result']).fadeIn(function(){
+			//   	setTimeout(function(){
+			//   		$("span#sepetim").fadeOut('fast', function() {
+			// 			$("#basket").fadeIn('fast');
+			// 		});
+			//   	}, 1500);
+			//   });
+			// });
 		}
     });
 

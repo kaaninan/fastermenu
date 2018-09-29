@@ -233,41 +233,36 @@ body, html{
 
 /* ---- SEPETIM --------------------------------------------------- */
 
-/*.sepetim{
+
+.index-cart{
 	position: fixed;
-	bottom: 0;
-	right: 0;
-	left: 0;
-	height: 50px;
-	margin-right: -10px;
-	background: #2F9465;
-	text-align: center;
-}
-
-.sepetim a{
-	color: white;
-	font-size: 20px;
-	line-height: 50px;
-	font-weight: normal;
-}*/
-
-
-.sepetim{
-	position: fixed;
-	width: 70px;
 	height: 70px;
 	bottom: 20px;
 	right: 40px;
 	border-radius: 50px; 
 	background: #2F9465;
-	text-align: center;
 }
 
-.sepetim .sepetim-content{
+.index-cart .cart-text{
+	font-size: 1.2rem;
+	font-weight: 600;
+	float: right;
+	padding-left: 1.5rem;
+}
+
+.index-cart .cart-count{
+	font-size: 1.2rem;
+	font-weight: 600;
+	float: right;
+	padding-left: 0.5rem;
+}
+
+.index-cart .cart-icon{
+	float: right;
 	width: 70px;
 }
 
-.sepetim a{
+.index-cart a{
 	text-align: center;
 	color: white;
 	font-size: 25px;
@@ -275,7 +270,7 @@ body, html{
 	font-weight: normal;
 }
 
-.sepetim a:hover{ text-decoration: none; }
+.index-cart a:hover{ text-decoration: none; }
 
 
 

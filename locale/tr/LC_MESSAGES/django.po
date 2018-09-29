@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-29 03:50+0300\n"
-"PO-Revision-Date: 2018-09-29 03:55+0300\n"
+"POT-Creation-Date: 2018-09-29 04:13+0300\n"
+"PO-Revision-Date: 2018-09-29 04:13+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: tr\n"
@@ -637,6 +637,14 @@ msgstr "Sepetim"
 msgid "ORDER NOW"
 msgstr "SİPARİŞ VER"
 
+#: templates/order/cart.html:179
+msgid "There are no products in your cart."
+msgstr "Sepetinizde hiç ürün yok."
+
+#: templates/order/cart.html:181
+msgid "Back to the menu"
+msgstr "Menüye Dön"
+
 #: templates/order/complated.html:15
 msgid "Delete Order"
 msgstr "Siparişi Sil"
@@ -703,6 +711,10 @@ msgstr "Hazırlandı"
 #: templates/order/index.html:131
 msgid "Detail"
 msgstr "Detay"
+
+#: templates/order/index.html:228
+msgid "Go to Cart"
+msgstr "Sepete Git"
 
 #: templates/order/track.html:22
 msgid "Order Status"
