@@ -634,6 +634,146 @@ body, html{
 
 
 
+
+
+.total-tip-head{
+	position: fixed;
+	bottom: 171px;
+	right: 0;
+	left: 0;
+	background: #F5F5F5;
+	border-top: 1px solid #D1D1D1;
+	border-bottom: 1px solid #ECEDF2;
+	padding: 5px 15px;
+	z-index: 2;
+}
+
+.total-tip-head .amount .title{
+	float: left;
+	color: #219764;
+	font-size: 1.2rem;
+	padding: 5px 0;
+	font-weight: bold;
+}
+
+.total-tip-head .amount .price{
+	float: right;
+	padding: 5px 0;
+	font-size: 1.2rem;
+	font-weight: bold;
+	color: #219764;
+}
+.total-tip-head .amount .price span{
+	font-size: 1.2rem;
+	font-weight: bold;
+	color: #219764;
+}
+
+
+.total-tip .total-items{
+	float: left;
+	margin-right: 1rem;
+	padding-top: 5px;
+}
+
+.total-tip .total-other{
+	height: 20px;
+	float: right;
+	padding-top: 2.5px;
+}
+
+.tip-other::placeholder{
+	line-height: 1.5rem;
+	font-size: 0.8rem;
+}
+
+
+.total-tip{
+	position: fixed;
+	bottom: 124px;
+	right: 0;
+	left: 0;
+	background: #F5F5F5;
+	border-bottom: 1px solid #ECEDF2;
+	padding: 5px 15px;
+	z-index: 1;
+}
+
+.total-tip .button{
+	cursor: pointer;
+	height: 38px;
+	margin-left: 5px;
+	padding: 0 10px;
+	background: #219764;
+	color: white;
+	border-radius: 5px;
+	font-size: 0.8rem;
+	letter-spacing: 0.5px;
+	font-weight: 600;
+	text-align: center;
+	border: 0;
+}
+
+
+
+.option-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+  position: relative;
+  top: 0.3rem;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  transition: all 0.15s ease-out 0s;
+  background: #cbd1d8;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 0.5rem;
+  outline: none;
+  position: relative;
+  z-index: 1000;
+}
+.option-input:hover {
+  background: #9faab7;
+}
+.option-input:checked {
+  background: #40e0d0;
+}
+.option-input:checked::before {
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  content: '✔';
+  display: inline-block;
+  font-size: 13.66667px;
+  text-align: center;
+  line-height: 20px;
+}
+.option-input:checked::after {
+  background: #40e0d0;
+  content: '';
+  display: block;
+  position: relative;
+  z-index: 100;
+}
+.option-input.radio {
+  border-radius: 50%;
+}
+.option-input.radio::after {
+  border-radius: 50%;
+}
+
+
+
+
+
 .total{
 	position: fixed;
 	bottom: 75px;
@@ -646,8 +786,6 @@ body, html{
 }
 
 
-.total .amount{
-}
 
 .total .amount .title{
 	float: left;
@@ -659,6 +797,11 @@ body, html{
 .total .amount .price{
 	float: right;
 	padding: 5px 0;
+	font-size: 1.2rem;
+	font-weight: bold;
+	color: #219764;
+}
+.total .amount .price span{
 	font-size: 1.2rem;
 	font-weight: bold;
 	color: #219764;

@@ -140,15 +140,61 @@
 </div>
 
 
+<div class="row total-tip-head">
+	<div class="col">
+		<div class="amount">
+			<div class="title">{% trans 'Tip' %}:</div>
+			<div class="price">
+				{% if LANGUAGE_CODE == 'tr' %}
+	                <span id="tip">0</span> TL
+	            {% elif LANGUAGE_CODE == 'en' %}
+	                $ <span id="tip">0</span>
+	            {% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row total-tip">
+	<div class="col">
+
+		<div class="total-items">
+			<label>
+				<input type="radio" class="option-input radio" name="tip-val" value="10">10%
+			</label>
+		</div>
+
+		<div class="total-items">
+			<label>
+				<input type="radio" class="option-input radio" name="tip-val" value="15">15%
+			</label>
+		</div>
+
+		<div class="total-items">
+			<label>
+				<input type="radio" class="option-input radio" name="tip-val" value="20">20%
+			</label>
+		</div>
+
+		<div class="form-group total-other">
+			<button class="button" style="float: right;" id="tip-ok">Ok</button>
+			<input type="number" min="0" max="100" class="form-control tip-other" id="custom-tip" placeholder="Other" style="width: 4.5rem; float: right;">
+		</div>
+
+	</div>
+</div>
+
+
+
 <div class="row total">
 	<div class="col">
 		<div class="amount">
 			<div class="title">{% trans 'Total Price' %}:</div>
-			<div class="price">
+			<div class="price" id="total-price">
 				{% if LANGUAGE_CODE == 'tr' %}
-	                {{ total|floatformat:2 }} TL
+	                <span id="total">{{ total|floatformat:2 }}</span> TL
 	            {% elif LANGUAGE_CODE == 'en' %}
-	                $ {{ total|floatdot }}
+	                $<span id="total"> {{ total|floatdot }}</span>
 	            {% endif %}
 			</div>
 		</div>
@@ -300,6 +346,39 @@
 		var temp_price;
 
 
+		// ------------ CALCULATE TIP ------------------------------
+		$("input[name='tip-val']").change(function(e){
+		    var tip = parseFloat($("input[name='tip-val']:checked").val());
+
+		    // Clear other input
+		    $('#custom-tip').val('')
+
+		    // Get current total
+		    var current = parseFloat('{{ total|floatdot }}');
+
+		    var calc_tip = current/100*tip;
+		    $('span#tip').html(calc_tip);
+		    $('span#total').html(calc_tip + current);
+		});
+
+		$('#tip-ok').click(function(){
+			// Get Custom Tip
+			var tip = parseInt($('#custom-tip').val());
+
+			// Uncheck tip values
+			$("input[name='tip-val']").prop('checked', false);
+
+			// Get current total
+		    var current = parseFloat('{{ total|floatdot }}');
+
+		    var calc_tip = current/100*tip;
+		    $('span#tip').html(calc_tip);
+		    $('span#total').html(calc_tip + current);
+		})
+
+
+		// ------------ ITEM DELETE ------------------------------
+
 
 		$('.titles').click(function(e){
 			element = $(this).parent().parent();
@@ -331,84 +410,30 @@
 	  // ------------ ITEM COUNT ------------------------------
 
 
-	  $('.count').click(function(e){
-		element = $(this).parent().parent();
-		menuTitle = element.find('.title').html();
-		menuSubTitle = element.find('.options').html();
-		menuPrice = element.find('#price').html();
-		menuCount = element.find('.count').html();
-		menuId = element.find('#menu_id').html();
+		$('.count').click(function(e){
+			element = $(this).parent().parent();
+			menuTitle = element.find('.title').html();
+			menuSubTitle = element.find('.options').html();
+			menuPrice = element.find('#price').html();
+			menuCount = element.find('.count').html();
+			menuId = element.find('#menu_id').html();
 
-		temp_id = parseInt(menuId);
-		temp_count = parseInt(menuCount);
-		temp_options = menuSubTitle;
-		temp_price = parseFloat(menuPrice);
+			temp_id = parseInt(menuId);
+			temp_count = parseInt(menuCount);
+			temp_options = menuSubTitle;
+			temp_price = parseFloat(menuPrice);
 
-		$('span#count').html(menuCount);
+			$('span#count').html(menuCount);
 
-		$('#modal-count').modal('show');
+			$('#modal-count').modal('show');
 
-	  });
+	  	});
 
 
-	  $('#button-update').click(function(e) {
-		updateCountBudget(temp_id, temp_price, temp_count, temp_options);
+	  	$('#button-update').click(function(e) {
+			updateCountBudget(temp_id, temp_price, temp_count, temp_options);
+		});
 	});
-
-
-
-		// When click the plus button (item count)
-	  $(".fa-plus-circle").click(function(e){
-		e.preventDefault();
-		$('span#count').html(temp_count+1);
-		temp_count = temp_count + 1;
-	  });
-
-	  // When click the minus button (item count)
-	  $(".fa-minus-circle").click(function(e){
-		e.preventDefault();
-		if(temp_count > 1){
-			$('span#count').html(temp_count-1);
-			temp_count = temp_count - 1;
-		}
-	  });
-
-
-
-
-
-	  // ------------ DROPADD ------------------------------
-
-	  // When click the DropAdd options
-	  $("li#options").click(function(e){
-		e.preventDefault();
-		var element = $(this);
-		
-		// Mark li element as a removed class
-		if(element.attr('class')){
-			element.removeClass('delete');
-		}else{
-			element.addClass('delete');	
-		}
-
-		// Get subcategory id
-		var d = element.children().attr('id');
-	  });
-
-
-	  // ------------ DROPDOWN ------------------------------
-
-	  // When Clicked Dropdown Options
-	  $("label.container-radio").mousedown(function (e) {
-		var element = $(this);
-		var d = element.children().attr('id');
-		var extra = parseFloat(element.find("#price").html());
-		extraPrice = extra;
-		updatePrice();
-	  });
-
-	});
-
 
 </script>
 {% endblock %}
