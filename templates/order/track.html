@@ -113,6 +113,17 @@
 		</div>
 
 		<div class="order-detail">
+			<b>{% trans 'Tip' %}: </b>
+			<b class="green">
+				{% if LANGUAGE_CODE == 'tr' %}
+	                {{ line.tip|floatformat:2 }} TL
+	            {% elif LANGUAGE_CODE == 'en' %}
+	                $ {{ line.tip|floatdot }}
+	            {% endif %}
+			</b>
+		</div>
+
+		<div class="order-detail">
 			<b>{% trans 'Total Price' %}: </b> 
 			<b class="green">
 				{% if LANGUAGE_CODE == 'tr' %}

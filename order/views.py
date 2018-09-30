@@ -195,6 +195,19 @@ def cart_view(request):
 
 def complated_view(request):
 
+	# Get totalPrice and tip price
+	tip_custom = request.POST.get('custom-tip', '')
+	tip_val = request.POST.get('tip-val', '')
+	tip = 0 #as %
+
+	if tip_val == '':
+		tip = int(tip_custom)
+	else:
+		tip = int(tip_val[:2])
+
+
+
+
 	sEnterprise = request.session.get('enterprise', '')
 	sTable = request.session.get('table', '')
 
@@ -238,7 +251,7 @@ def complated_view(request):
 	# If coming from cart page and have orders
 	else:
 		# Add Line and Get Line ID
-		line_id = line_add(request)
+		line_id = line_add(request, tip=tip)
 		line_id = json.loads(line_id.content.decode('ascii'))
 		line_id = line_id['line']
 
