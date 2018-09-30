@@ -672,7 +672,7 @@ body, html{
 
 .total-tip .total-items{
 	float: left;
-	margin-right: 1rem;
+	margin-right: 4%;
 	padding-top: 5px;
 }
 
@@ -812,33 +812,24 @@ body, html{
 
 .order{
 	position: fixed;
-	bottom: 0;
+	bottom: -5px;
 	right: 0;
 	left: 0;
-	margin-left: 15px;
-	margin-right: 15px;
+	margin: 0 15px;
 	background: white;
 	
 }
 
 .order .inside{
-	/*margin: 15px 0;*/
 	margin-bottom: 15px;
 }
-/*.total .amount{
-	margin: 0 10px;
-	border: 1px solid #D7D7D7;
-	color: #219764;
-	border-radius: 5px;
-	line-height: 50px;
-	text-align: center;
-	font-size: 24px;
-	font-weight: 600;
-}*/
-.order a .button{
+
+.order .button{
+	cursor: pointer;
+	border: 0;
+	width: 100%;
 	margin-left: 0px;
 	margin-right: 0px;
-	margin-top: 10px;
 	background: #219764;
 	color: white;
 	border-radius: 5px;
@@ -849,9 +840,6 @@ body, html{
 	text-align: center;
 }
 
-.order a:hover{
-	text-decoration: none;
-}
 
 
 

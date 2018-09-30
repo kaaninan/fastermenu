@@ -60,7 +60,7 @@
 											</p>
 										</td>
 										<td>[[ item[1][0].line__orderDate | formatDate ]]</td>
-										<td>[[ item[1][0].line__totalPrice ]] ₺</td>
+										<td>$ [[ item[1][0].line__totalPrice ]]</td>
 										<td>
 											<div v-show="item[1][0].line__isComplated == false" v-on:click="setComplated(item, $event)">
 												<button :id="item[0]" style="height: 5rem; width: 12rem" type="button" class="btn btn-block btn-success">{% trans 'Approve' %}</button>
@@ -131,7 +131,7 @@
 	// Date Time Filter
 	Vue.filter('formatDate', function(value) {
 		if (value) {
-			return moment(String(value)).locale('tr').fromNow();
+			return moment(String(value)).locale('en').fromNow();
 		}
 	});
 

@@ -249,10 +249,12 @@ def order_get(request):
 	data = {'result': list(data)}
 	return JsonResponse(data)
 
+
+
 # ================================= LINE ==================================================
 
 
-def line_add(request):
+def line_add(request, tip=0):
 	cartSession = request.session['cart']
 
 	# Get Enterprise, Table and Shopping List from Session
@@ -320,9 +322,12 @@ def line_add(request):
 		
 		order.save();
 
+	totalPricewithTip = totalPrice + (totalPrice/100*tip)
 
 	line = Line.objects.get(id = line.id)
-	line.totalPrice = totalPrice
+	line.price = totalPrice
+	line.tip = totalPrice/100*tip
+	line.totalPrice = totalPricewithTip
 	line.save()
 	
 
@@ -376,6 +381,7 @@ def line_get(request):
 
 	return JsonResponse({'data':data})
 
+# unused
 def line_get_cash(request):
 
 	# For Search
