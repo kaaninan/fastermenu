@@ -60,6 +60,24 @@ body, html{
 	/*line-height: 2.5rem;*/
 }
 
+.header .language{
+	position: absolute;
+	right: 1rem;
+	top: 0.5rem;
+	border: 1px solid #202D37;
+	border-radius: 4px;
+	height: 2rem;
+}
+.header .language a.lang-button{
+	line-height: 1rem;
+	color: #202D37;
+	font-size: 0.7rem;
+}
+
+.header .language a.lang-option{
+	font-size: 0.8rem;
+}
+
 
 
 .alert-main{
