@@ -199,7 +199,7 @@
         if(option.length != 0)
           optionParsed = JSON.stringify(option);
 
-        var serialized = $.param({id: id, option: optionParsed, count: count, displayAlert: true});
+        var serialized = $.param({id: id, price:price, option: optionParsed, count: count, displayAlert: true});
 
         console.log(serialized);
 
@@ -303,7 +303,7 @@
 
     // ------------ ADD CART ------------------------------
 
-    // When Click 'Sepete Ekle'
+    // When Click 'Add to Cart'
     $(".bucket-button").click(function(){
 
       // Create List for Add Cart AJAX

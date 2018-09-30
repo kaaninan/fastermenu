@@ -162,6 +162,8 @@ def cart_view(request):
 
 	cartSession = request.session.get('cart', '')
 
+	print(cartSession)
+
 	cartTotal = 0.0
 
 
@@ -200,10 +202,12 @@ def complated_view(request):
 	tip_val = request.POST.get('tip-val', '')
 	tip = 0 #as %
 
-	if tip_val == '':
+	if tip_val == '' and tip_custom != '':
 		tip = int(tip_custom)
-	else:
+	elif tip_custom == '' and tip_val != '':
 		tip = int(tip_val[:2])
+	else:
+		tip = 0
 
 
 

@@ -19,7 +19,7 @@ def cart_add(request):
 
 	productId = request.POST.get('id', '')
 	productCount = request.POST.get('count', '')
-	# productPrice = request.POST.get('price', '')
+	productPrice = request.POST.get('price', '') # not only price. price with added extra options
 	productOptions = request.POST.get('option', '')
 	displayAlert = request.POST.get('displayAlert', '') # For index.html jQuery
 	# Option String List to Normal List
@@ -28,18 +28,16 @@ def cart_add(request):
 
 
 	# Get menu from database
-	menu_db = Menu.objects.get(id=productId)
+	# menu_db = Menu.objects.get(id=productId)
 
 	menu = {}
 	menu['id'] = int(productId)
-	menu['price'] = menu_db.price
+	menu['price'] = (float(productPrice)/int(productCount))
 	menu['count'] = int(productCount)
 	menu['options'] = productOptions
-	menu['totalPrice'] = menu_db.price
+	menu['totalPrice'] = float(productPrice)
 
 	newList = list()
-
-	# deneme = serializers.serialize("json", menu)
 
 	# Listeyi Cek, For'da dondur, yeni liste olustur
 	# eger ayni urunden varsa countu arttir ve liseteye ekle, yeni urunse direk yeni listeye ekle
@@ -168,7 +166,7 @@ def cart_update_count(request):
 	menu['price'] = float(productPrice)
 	menu['count'] = int(productCount)
 	menu['options'] = productOptions
-	menu['totalPrice'] = float(productPrice.replace(',','.'))
+	menu['totalPrice'] = float(productPrice)
 
 	newList = list()
 
@@ -188,9 +186,9 @@ def cart_update_count(request):
 				# Edit Already Saved Product Count
 				product['count'] = menu['count']
 
-				# print('Product Price: '+ str(product['price']))
-				# print('Product Count: '+ str(product['count']))
-				# print('Product Total Price: '+ str(float(product['price']) * product['count']))
+				print('Product Price: '+ str(product['price']))
+				print('Product Count: '+ str(product['count']))
+				print('Product Total Price: '+ str(float(product['price']) * product['count']))
 
 				product['totalPrice'] = float(product['price']) * product['count']
 				newList.append(product)
