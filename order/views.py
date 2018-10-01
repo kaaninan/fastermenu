@@ -6,6 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.timezone import localtime
 from django.utils import timezone
 from django.contrib import messages
+from django.utils.translation import ugettext as _
 
 from enterprise.models import *
 from menu.models import *
@@ -318,7 +319,7 @@ def track_view(request, id):
 		line.save()
 
 		# Send Message
-		messages.success(request, "Yorumunuz kaydedildi!")
+		messages.success(request, _("Yorumunuz kaydedildi!"))
 
 	# Siparis icerigini bul
 	orders = Order.objects.filter(line=line)

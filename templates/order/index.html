@@ -195,11 +195,10 @@
 					<div class="col-3 clear">
 						<a href="{% url 'order:detail' id=menu.id %}">
 							<div class="price">
-								<span id="price">
 									{% if LANGUAGE_CODE == 'tr' %}
-										{{ menu.price|floatformat:2 }} TL
+										<span id="price">{{ menu.price|floatformat:2 }}</span> TL
 									{% elif LANGUAGE_CODE == 'en' %}
-										${{ menu.price|floatdot }}
+										$<span id="price">{{ menu.price|floatdot }}</span>
 									{% endif %}
 								</span>
 							</div>
@@ -369,6 +368,7 @@ $(document).ready(function(){
 
 		var price = parseFloat($(element.parents()[2]).find('span#price').html().replace(',','.'));
 
+		console.log(price);
         
 		if (subCategoryCount > 0){
 			// Go Details Page
