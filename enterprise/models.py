@@ -68,7 +68,7 @@ class BiotLog(models.Model):
         return super(BiotLog, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.barcode.barcode
+        return str(self.scanned)
 
     class Meta:
         ordering = ['-scanned']

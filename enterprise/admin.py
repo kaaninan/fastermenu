@@ -28,7 +28,16 @@ class LogAdmin(admin.ModelAdmin):
     class Meta:
         model = Log
 
+class BiotLogAdmin(admin.ModelAdmin):
+    list_display = ['enterprise', 'table', 'scanned', 'line']
+    list_display_links = ['enterprise', 'scanned']
+    list_filter = ['enterprise']
+
+    class Meta:
+        model = BiotLog
+
 
 admin.site.register(Enterprise, EnterpriseAdmin)
 admin.site.register(Table, TableAdmin)
 admin.site.register(Log, LogAdmin)
+admin.site.register(BiotLog, BiotLogAdmin)
