@@ -4,6 +4,14 @@
 
 {% block head %}
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+
+<style type="text/css">
+@media screen and (max-width: 480px){
+	#orders th:nth-child(3),#orders th:nth-child(4),#orders td:nth-child(3),#orders td:nth-child(4){
+    display:none;
+  }
+}
+</style>
 {% endblock %}
 
 {% block body %}
@@ -32,7 +40,7 @@
 										</th>
 									</tr>
 								</table>
-								<table class="table table-hover" v-show="items.length > 0">
+								<table class="table table-hover" v-show="items.length > 0" id="orders">
 									<tr style="font-size: 1.5rem;">
 										<!-- <th>#</th> -->
 										<th>{% trans 'Table' %}</th>
@@ -107,8 +115,9 @@
 		methods: {
 			loadData: function () {
 				$.get("{% url 'api:line_get' %}", function (response) {
-					this.isLoading = false   
+					this.isLoading = false;
 					this.items = response.data;
+					console.log(response);
 				}.bind(this));
 			},
 
