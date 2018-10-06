@@ -1023,10 +1023,14 @@ def biot_order(request):
 	postSource = request.GET.get('source', '')
 
 	# Get Enterprise
-	enterprise = Enterprise.objects.get(id=postEnterprise)
+	# enterprise = Enterprise.objects.get(id=postEnterprise)
 
 	# Get Table
-	table = Table.objects.get(id=postSource, enterprise=enterprise)
+	table = Table.objects.get(id=postSource)
+	enterprise = table.enterprise
+
+	print(enterprise)
+	print(table)
 
 	# Get Selected Menu
 	menu = Biot.objects.filter(enterprise=enterprise)
@@ -1038,7 +1042,7 @@ def biot_order(request):
 	else:
 		# This is example menu DRAFT BAR - ORDEK
 		dict = {'id': menu[0].menu.id, 'count': '1', 'price': str(menu[0].menu.price), 'option':'-1'}
-		request.session['enterprise'] = postEnterprise
+		request.session['enterprise'] = enterprise.id
 		request.session['table'] = postSource
 		qdict = QueryDict('', mutable=True)
 		qdict.update(dict)
