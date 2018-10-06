@@ -51,3 +51,24 @@ class Log(models.Model):
 
     class Meta:
         ordering = ['-scanned']
+
+
+
+from cart.models import Line
+
+
+class BiotLog(models.Model):
+    line = models.ForeignKey(Line, on_delete=models.SET_NULL, null=True, blank=True)
+    table = models.ForeignKey(Table, on_delete=models.SET_NULL, null=True, blank=True)
+    enterprise = models.ForeignKey(Enterprise, on_delete=models.SET_NULL, null=True, blank=True)
+    scanned = models.DateTimeField(editable=False)
+
+    def save(self, *args, **kwargs):
+        self.scanned = datetime.now()
+        return super(BiotLog, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.barcode.barcode
+
+    class Meta:
+        ordering = ['-scanned']

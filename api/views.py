@@ -259,8 +259,10 @@ def line_add(request, tip=0):
 
 	# Add Line
 	line = Line()
-	line.table = Table.objects.get(id=request.session.get('table', ''))
-	line.enterprise = Enterprise.objects.get(id=request.session.get('enterprise', ''))
+	table_obj = Table.objects.get(id=request.session.get('table', ''))
+	enterprise_obj = Enterprise.objects.get(id=request.session.get('enterprise', ''))
+	line.table = table_obj
+	line.enterprise = enterprise_obj
 	line.orderDate = datetime.now();
 	line.save()
 
@@ -277,7 +279,7 @@ def line_add(request, tip=0):
 		order.price = item['price']
 		order.totalPrice = item['totalPrice']
 		order.line = line
-		order.enterprise = Enterprise.objects.get(id=request.session.get('enterprise', ''))
+		order.enterprise = enterprise_obj
 
 		totalPrice += item['totalPrice']
 
@@ -1029,9 +1031,6 @@ def biot_order(request):
 	table = Table.objects.get(id=postSource)
 	enterprise = table.enterprise
 
-	print(enterprise)
-	print(table)
-
 	# Get Selected Menu
 	menu = Biot.objects.filter(enterprise=enterprise)
 
@@ -1053,6 +1052,14 @@ def biot_order(request):
 
 		# Line Add
 		line_id = line_add(request)
+		payload = json.loads(line_id.content)
+
+		biotlog = BiotLog()
+		biotlog.enterprise = enterprise
+		biotlog.table = table
+		biotlog.line = Line.objects.get(id=payload['line'])
+		biotlog.save()
+
 
 		# Delete Shopping List from Session
 		session_delete(request, 'cart')
