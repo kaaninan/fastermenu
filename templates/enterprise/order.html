@@ -210,6 +210,7 @@
 		$('._line_id').each(function(i){
 		  var order_id = $(this).html();
 		  var single_table_id = $(this).parent().find('._table_id').html();
+		  var e = $(this).parent().attr({'class': ''});
 		  var single_table = [];
 		  single_table.push("table_"+single_table_id);
 		  single_table.push(order_id);
