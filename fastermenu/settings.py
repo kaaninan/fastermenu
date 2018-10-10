@@ -224,7 +224,7 @@ DEFAULT_FILE_STORAGE = 'fastermenu.storage_backends.MediaStorage'
 
 
 # AWS EC2 Specific Configuration
-if 'PRODUCTION' in os.environ:
+if 'PRODUCTION' in os.environ or 'STAGING' in os.environ:
 	import requests
 	EC2_PRIVATE_IP  =   None
 	try:
