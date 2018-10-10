@@ -1,5 +1,9 @@
 {% load static %}
 {% load i18n %}
+
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+
 <header class="main-header">
     <nav class="navbar navbar-static-top">
       <div class="container">
@@ -21,22 +25,6 @@
             <li class="{% if active_tab == 'analyze' %} active{% endif %}"><a href="{% url 'enterprise:analyze' %}">{% trans 'Analyze' %}</a></li>
             <li class="{% if active_tab == 'comment' %} active{% endif %}"><a href="{% url 'enterprise:comment' %}">{% trans 'Comments' %}</a></li>
             <li class="{% if active_tab == 'biot' %} active{% endif %}"><a href="{% url 'enterprise:biot' %}">{% trans 'Biot Settings' %}</a></li>
-            <li>
-              <form action="{% url 'set_language' %}" method="post">
-                  {% csrf_token %}
-                  <input name="next" type="hidden" value="{{ redirect_to }}" />
-                  <select name="language">
-                      {% get_current_language as LANGUAGE_CODE %}
-                      {% get_available_languages as LANGUAGES %}
-                      {% for lang in LANGUAGES %}
-                          <option value="{{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %} selected="selected"{% endif %}>
-                              {{ lang.1 }} ({{ lang.0 }})
-                          </option>
-                      {% endfor %}
-                  </select>
-                  <input type="submit" value="Go" />
-              </form>
-            </li>
           </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -44,6 +32,29 @@
         <div class="navbar-custom-menu">
           <ul class="nav navbar-nav">
             <!-- Messages: style can be found in dropdown.less-->
+
+            <li class="dropdown tasks-menu">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="text-transform: uppercase">
+                {{ LANGUAGE_CODE }}
+              </a>
+            
+            <ul class="dropdown-menu">
+              <li>
+                <ul class="menu">
+
+                  {% for lang in LANGUAGES %}
+                    <li>
+                      <a href="{% url 'change_language' lang=lang.0 %}?redirect_to={{request.path}}">
+                        <h3>
+                          {{ lang.1 }}
+                        </h3>
+                      </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+              </li>
+            </ul>
+          </li>
             
             <!-- User Account Menu -->
             <li class="dropdown user user-menu">
