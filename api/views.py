@@ -377,9 +377,10 @@ def line_get(request):
 	    temp = [key,value]
 	    data.append(temp)
 
-	print(data)
 
-	print("--- %s seconds ---" % (time.time() - start_time))
+	# print(data)
+
+	# print("--- %s seconds ---" % (time.time() - start_time))
 
 	return JsonResponse({'data':data})
 

@@ -11,6 +11,10 @@
     display:none;
   }
 }
+
+.free{
+	background-color: rgba(250, 0, 0, 0.5) !important;
+}
 </style>
 {% endblock %}
 
@@ -50,12 +54,14 @@
 										<th>{% trans 'Operations' %}</th>
 									</tr>
 
-									<tr v-for="item in items" :style="[item[1][0].line__isComplated == false ? {'background-color': 'rgba(0, 150, 0, 0.5)'} : {'background': '#FFF'}]">
-										<!-- <td>
-											[[ item[0] ]]
-										</td> -->
+									<tr v-for="item in items"
+									:style="[item[1][0].line__isComplated == false ? {'background-color': 'rgba(0, 150, 0, 0.5)'} : {'background': '#FFF'}]">
+									<!-- :class="{free: item[1][0].line__id % 10 == 0 && item[1][0].line__isComplated == false }" -->
+
+										<td style="display: none;" class="_line_id">[[ item[1][0].line__id ]]</td>
+
 										<td>
-											<strong>[[ item[1][0].line__table__name ]]</strong>
+											<strong class="_table_id">[[ item[1][0].line__table__name ]]</strong>
 										</td>
 										<td>
 											<p v-for="menu in item[1]">
@@ -68,7 +74,13 @@
 											</p>
 										</td>
 										<td>[[ item[1][0].line__orderDate | formatDate ]]</td>
-										<td>$ [[ item[1][0].line__totalPrice ]]</td>
+										<td>
+											{% if LANGUAGE_CODE == 'tr' %}
+								                [[ item[1][0].line__totalPrice ]] ₺
+								            {% elif LANGUAGE_CODE == 'en' %}
+								                $ [[ item[1][0].line__totalPrice ]]
+								            {% endif %}
+										</td>
 										<td>
 											<div v-show="item[1][0].line__isComplated == false" v-on:click="setComplated(item, $event)">
 												<button :id="item[0]" style="height: 5rem; width: 12rem" type="button" class="btn btn-block btn-success">{% trans 'Approve' %}</button>
@@ -117,7 +129,10 @@
 				$.get("{% url 'api:line_get' %}", function (response) {
 					this.isLoading = false;
 					this.items = response.data;
-					console.log(response);
+					// console.log(response);
+					freeOnes();
+
+					// console.log('=-==');
 				}.bind(this));
 			},
 
@@ -145,6 +160,108 @@
 	});
 
 
+
+	function freeOnes(){
+		
+		function unique(arr, comparator) {
+		  var uniqueArr = [];
+		  for (var i in arr) {
+		    var found = false;
+		    for (var j in uniqueArr) {
+		      if (comparator instanceof Function) {
+		        if (comparator.call(null, arr[i], uniqueArr[j])) {
+		          found = true;
+		          break;
+		        }
+		      } else {
+		        if (arr[i] == uniqueArr[j]) {
+		          found = true;
+		          break;
+		        }
+		      }
+		    }
+		    if (!found) {
+		      uniqueArr.push(arr[i]);
+		    }
+		  }
+		  return uniqueArr;
+		}
+
+		function reverse(a) {
+
+		  var counter = a.length - 1;
+
+		  for (var i = 0; i < a.length; i++) {
+
+		    var temp = a[i];
+		    a[i] = a[counter];
+		    counter--;
+
+		  }
+
+		  return a;
+
+		}
+
+
+
+		var $tables = [];
+
+		$('._line_id').each(function(i){
+		  var order_id = $(this).html();
+		  var single_table_id = $(this).parent().find('._table_id').html();
+		  var single_table = [];
+		  single_table.push("table_"+single_table_id);
+		  single_table.push(order_id);
+		  $tables.push(single_table);
+		});
+
+
+		var uniq_tables = []
+		for (var i = 0; i < $tables.length; i++) {
+		  uniq_tables.push($tables[i][0]);
+		}
+		uniq_tables = unique(uniq_tables);
+
+		var uniq_tables_array = []
+		for (var i = 0; i < uniq_tables.length; i++) {
+		  uniq_tables_array.push({"t":uniq_tables[i],"orders":[]})
+		}
+
+		for (var i = 0; i < $tables.length; i++) {
+		    uniq_tables_array[uniq_tables.indexOf($tables[i][0])].orders.push($tables[i][1])
+		}
+
+		for (var i = 0; i < uniq_tables_array.length; i++) {
+			
+			var tableCounter = 0;
+
+			var orderIDlist = uniq_tables_array[i].orders.reverse();
+			for (var a = 0; a < orderIDlist.length; a++) {
+				tableCounter = tableCounter + 1;
+				var lineID = orderIDlist[a];
+
+				// eger 10 katlariysa
+				if(parseInt(tableCounter) % 10 == 0){
+					// highlight
+					var e = $( "td._line_id:contains('"+lineID+"')").parent().attr({'class': 'free'});
+				}
+			}
+			// console.log('--');
+		}
+
+
+		// console.log(uniq_tables_array);
+
+
+
+
+
+
+
+	}
+
+
 	// Set Line as Complated
 	function setComplated(item, event){
 
@@ -152,7 +269,7 @@
 
 		var btn = $(event.target);
 		var ttt = $("button[id="+btn.attr('id')+"]");
-		console.log(ttt);
+		// console.log(ttt);
 		btn.attr('disabled', 'disabled').html("{% trans 'Approving...' %}");
 		// setTimeout(function () {
 			// btn.removeAttr('disabled').html('Ödeme Al');
@@ -191,7 +308,7 @@
 		});
 
 		request.done(function (response, textStatus, jqXHR){
-			console.log(status);
+			// console.log(status);
 			// app.loadData();
 			btn.removeAttr('disabled').html("{% trans 'Approve' %}");
 		});
@@ -249,7 +366,7 @@
 		});
 
 		request.done(function (response, textStatus, jqXHR){
-			console.log(status);
+			// console.log(status);
 			// app.loadData();
 			btn.removeAttr('disabled').html("{% trans 'Receive Payment' %}");
 		});
