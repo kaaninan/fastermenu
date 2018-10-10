@@ -105,7 +105,28 @@ if 'PRODUCTION' in os.environ:
 		}
 	}
 
+elif 'STAGING' in os.environ:
+	DATABASES = {
+		'default': {
+			'ENGINE': 'django.db.backends.postgresql_psycopg2',
+			
+			'NAME': 'fasterdb',
+			'USER': 'fasteruser',
+			'PASSWORD': 'faster(MENU)',
+			# 'HOST': 'fastermenu-db-production.ccgtp665sryr.eu-central-1.rds.amazonaws.com',
+			'HOST': '35.241.252.147',
+			'PORT': '5432',
+
+			# 'NAME': os.environ['RDS_DB_NAME'],
+			# 'USER': os.environ['RDS_USERNAME'],
+			# 'PASSWORD': os.environ['RDS_PASSWORD'],
+			# 'HOST': os.environ['RDS_HOSTNAME'],
+			# 'PORT': os.environ['RDS_PORT'],
+		}
+	}
+
 else:
+	# Production
 	DATABASES = {
 		'default': {
 			'ENGINE': 'django.db.backends.postgresql_psycopg2',
