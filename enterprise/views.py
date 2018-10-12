@@ -280,6 +280,7 @@ def profile_view(request):
 			login(request, user_login)
 
 		else:
+			user.save()
 			messages.success(request, _("Successful!"))
 
 		return redirect('enterprise:profile')
