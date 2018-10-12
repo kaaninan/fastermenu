@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^reset/done/$', auth_views.password_reset_complete, name='password_reset_complete'),
 
     url(r'^order/$', order_view, name='order'),
+    url(r'^order/table/$', table_detail_view, name='table_detail'),
     url(r'^cash/$', cash_view, name='cash'),
     url(r'^category/$', category_view, name='category'),
     url(r'^category/(?P<id>[\w+]+)/$', menu_view, name='menu'),

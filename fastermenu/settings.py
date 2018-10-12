@@ -5,12 +5,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = 'o9undphnksx)_+_x9g9o*l)$neksr4wcibi1*&dlk+z-r0jcij'
 
-if 'PRODUCTION' in os.environ:
-	DEBUG = True
-else:
-	DEBUG = True
+DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 'www.localhost', '127.0.0.1', '.fastermenu.com', '.elasticbeanstalk.com']
+
+ALLOWED_HOSTS = ['localhost', 'www.localhost', '127.0.0.1', '.fastermenu.com', '.elasticbeanstalk.com', 'fastermenu-214511.appspot.com']
 
 
 
@@ -85,48 +83,30 @@ WSGI_APPLICATION = 'fastermenu.wsgi.application'
 
 # Database
 
+# DATABASES = {
+#     'default': {
+#       'ENGINE': 'django.db.backends.postgresql',
+#       'HOST': os.environ['DB_HOST'],
+#       'PORT': os.environ['DB_PORT'],
+#       'NAME': os.environ['DB_NAME'],
+#       'USER': os.environ['DB_USER'],
+#       'PASSWORD': os.environ['DB_PASSWORD']
+#     }
+# }
+
 if 'PRODUCTION' in os.environ:
 	DATABASES = {
 		'default': {
 			'ENGINE': 'django.db.backends.postgresql_psycopg2',
-			
 			'NAME': 'fasterdb',
 			'USER': 'fasteruser',
 			'PASSWORD': 'faster(MENU)',
-			# 'HOST': 'fastermenu-db-production.ccgtp665sryr.eu-central-1.rds.amazonaws.com',
 			'HOST': '35.240.13.81',
 			'PORT': '5432',
-
-			# 'NAME': os.environ['RDS_DB_NAME'],
-			# 'USER': os.environ['RDS_USERNAME'],
-			# 'PASSWORD': os.environ['RDS_PASSWORD'],
-			# 'HOST': os.environ['RDS_HOSTNAME'],
-			# 'PORT': os.environ['RDS_PORT'],
-		}
-	}
-
-elif 'STAGING' in os.environ:
-	DATABASES = {
-		'default': {
-			'ENGINE': 'django.db.backends.postgresql_psycopg2',
-			
-			'NAME': 'fasterdb',
-			'USER': 'fasteruser',
-			'PASSWORD': 'faster(MENU)',
-			# 'HOST': 'fastermenu-db-production.ccgtp665sryr.eu-central-1.rds.amazonaws.com',
-			'HOST': '35.241.252.147',
-			'PORT': '5432',
-
-			# 'NAME': os.environ['RDS_DB_NAME'],
-			# 'USER': os.environ['RDS_USERNAME'],
-			# 'PASSWORD': os.environ['RDS_PASSWORD'],
-			# 'HOST': os.environ['RDS_HOSTNAME'],
-			# 'PORT': os.environ['RDS_PORT'],
 		}
 	}
 
 else:
-	# Production
 	DATABASES = {
 		'default': {
 			'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -134,19 +114,10 @@ else:
 			'NAME': 'fasterdb',
 			'USER': 'fasteruser',
 			'PASSWORD': 'faster(MENU)',
-			'HOST': '35.240.13.81',
+			'HOST': '35.241.252.147',
 			'PORT': '5432',
 		}
 	}
-	# DATABASES = {
-	#     'default': {
-	#         'ENGINE': 'django.db.backends.sqlite3',
-	#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-	#     }
-	# }
-
-
-
 
 # Password validation
 
@@ -198,6 +169,12 @@ STATICFILES_DIRS = [
 	os.path.join(BASE_DIR, "static"),
 ]
 
+
+# STATIC_URL = os.environ['STATIC_URL'] # /static/ if DEBUG else Google Cloud bucket url
+
+# collectstatic directory (located OUTSIDE the base directory)
+# TODO: configure the name and path to your static bucket directory (where collectstatic will copy to)
+# STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'staticfiles')
 
 
 AWS_ACCESS_KEY_ID = 'AKIAIROXVV3GRHIOIIVQ'

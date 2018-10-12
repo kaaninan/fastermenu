@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^line_get/$', line_get, name="line_get"),
     url(r'^line_get_cash/$', line_get_cash, name="line_get_cash"),
     url(r'^line_set_complated/$', line_set_complated, name="line_set_complated"),
+    url(r'^line_set_complated_table/$', line_set_complated_table, name="line_set_complated_table"),
     url(r'^line_set_paid/$', line_set_paid, name="line_set_paid"),
 
 

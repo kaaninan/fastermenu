@@ -360,7 +360,7 @@ def line_get(request):
 
 	# Birden fazla order ayni line'da bulunuyor
 	new_data = Order.objects.filter(enterprise=request.user.profile.enterprise).select_related('line', 'menu', 'line__table').values(
-		'id', 'menu__name', 'count', 'optionsReadable', 'price', 'line__totalPrice', 'line__table__name', 'line__id',
+		'id', 'menu__name', 'count', 'optionsReadable', 'price', 'line__totalPrice', 'line__table__name', 'line__table__id', 'line__id',
 		'line__orderDate', 'line__isComplated', 'line__isPaid'
 	).order_by('-line__orderDate')
 
@@ -424,6 +424,20 @@ def line_set_complated(request):
 	data.save()
 
 	return JsonResponse({'status':'success'})
+
+
+def line_set_complated_table(request):
+
+	table_ID = request.POST.get('id','')
+	options = request.POST.get('options','') # 'all' or 'lineID1, lineID2 ...'
+
+	if options == 'all':
+		fetch = Line.objects.filter(table_id=int(table_ID)).update(isComplated=True, isPaid=True, paidDate=datetime.now())
+
+		return JsonResponse({'status':'success'})
+
+
+	return JsonResponse({'status':'nothing'})
 
 def line_set_paid(request):
 

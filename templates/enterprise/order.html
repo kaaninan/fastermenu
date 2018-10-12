@@ -61,7 +61,9 @@
 										<td style="display: none;" class="_line_id">[[ item[1][0].line__id ]]</td>
 
 										<td>
-											<strong class="_table_id">[[ item[1][0].line__table__name ]]</strong>
+											<a :href="'{% url 'enterprise:table_detail' %}?id=' + [[item[1][0].line__table__id]]">
+												<strong class="_table_id">[[ item[1][0].line__table__name ]]</strong>
+											</a>
 										</td>
 										<td>
 											<p v-for="menu in item[1]">

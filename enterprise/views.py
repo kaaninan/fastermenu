@@ -77,6 +77,28 @@ def order_view(request):
 
 
 
+@login_required
+def table_detail_view(request):
+
+	tableID = request.GET.get('id')
+
+	fetch = Order.objects.filter(line__table_id= tableID).select_related('line', 'menu', 'line__table').values(
+		'id', 'menu__name', 'count', 'optionsReadable', 'price', 'line__totalPrice', 'line__table__name', 'line__table__id', 'line__id',
+		'line__orderDate','line__complatedDate', 'line__isComplated', 'line__isPaid'
+	).order_by('-line__orderDate')
+
+
+	# Calculate Total Price from Line
+	totalPrice = 0.0
+	for item in fetch:
+		totalPrice += float(item['line__totalPrice'])
+	
+	context = {'active_tab': 'order', 'data':fetch, 'totalPrice':totalPrice}
+	return render(request, "enterprise/table_details.html", context)
+
+
+
+
 
 @login_required
 def cash_view(request):
