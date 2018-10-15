@@ -8,7 +8,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.core import serializers
-from django.db.models import Q
+from django.db.models import Q, Count
 import json, pickle, ast
 from datetime import timedelta
 from django.utils import timezone
@@ -214,7 +214,11 @@ def analyze_view(request):
 	endorsement['weekly'] = total_weekly
 	endorsement['montly'] = total_montly
 
-	context = {'active_tab': 'analyze', 'sales': sales, 'endorsement': endorsement}
+
+	# Most Sales
+	most_sales = Order.objects.select_related('menu').filter(enterprise_id=request.user.profile.enterprise).values('menu_id','count', 'menu__name').annotate(count_total = Count('count'))
+
+	context = {'active_tab': 'analyze', 'sales': sales, 'endorsement': endorsement, 'most_sales': most_sales}
 	return render(request, "enterprise/analyze.html", context)
 
 
