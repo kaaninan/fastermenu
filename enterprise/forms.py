@@ -8,8 +8,6 @@ from .models import Enterprise
 
 class EnterpriseForm(forms.ModelForm):
 
-	
-
 	logo = forms.ImageField(required=False, label=_('Your company logo'))
 	name = forms.CharField(max_length=30, required=False, label=_('Your company name'))
 	address = forms.CharField(max_length=200, required=False, label=_('Your company address'), help_text=_('This section appears under your company name on the order display.'))

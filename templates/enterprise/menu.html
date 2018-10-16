@@ -5,6 +5,29 @@
 
 {% block body %}
 
+	<!-- Modal: Picture Crop Helper -->
+	<div class="modal fade" id="modal-logo">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h4 class="modal-title">{% trans 'Upload Picture' %}</h4>
+	            </div>
+
+	            <div class="modal-body">
+	                <div style="position: relative">
+	                    <img id="logo_temp" src="" style="max-width: 100%;">
+	                </div>
+	            </div>
+	            
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" id="btn-cancel" style="width: 49%; float: left">{% trans 'Cancel' %}</button>
+	                <button type="button" class="btn btn-success" id="btn-save" style="width: 49%; float: left;">{% trans 'Save' %}</button>
+	            </div>
+	        
+	        </div>
+	    </div>
+	</div>
+
 	<!-- Modal: Ürün Ekle ve Duzenle -->
 	<div class="modal fade" id="modal-menu">
 		<div class="modal-dialog">
@@ -168,6 +191,82 @@
 
 
 	<script type="text/javascript">
+
+
+		// dont use (cropper) -- iki tane modal ust uste aciliyor
+
+		// $(document).ready(function(){
+
+	 //        var cropper = null;
+
+	 //        var x;
+	 //        var y;
+	 //        var width;
+	 //        var height;
+
+	 //        var upload = document.querySelector("#id_pictures");
+
+	 //        upload.addEventListener("change", function (e) {
+	 //          if (e.target.files.length) {
+	 //            var reader = new FileReader();
+	 //            reader.onload = function (e) {
+	 //              if (e.target.result) {
+
+	 //                $('#modal-logo').modal('show');
+
+	 //                document.getElementById("logo_temp").src = e.target.result;
+
+	 //                /* SCRIPTS TO HANDLE THE CROPPER BOX */
+	 //                var $image = $("#logo_temp");
+	 //                var cropBoxData;
+	 //                var canvasData;
+	 //                $("#modal-logo").on("shown.bs.modal", function () {
+	 //                    cropper = $image.cropper({
+	 //                                viewMode: 3,
+	 //                                aspectRatio: 1/1,
+	 //                                minCropBoxWidth: 100,
+	 //                                minCropBoxHeight: 100,
+	 //                            ready: function () {
+	 //                                $image.cropper("setCanvasData", canvasData);
+	 //                                $image.cropper("setCropBoxData", cropBoxData);
+	 //                            },
+	 //                            crop(event) {
+	 //                                x = event.detail.x;
+	 //                                y = event.detail.y;
+	 //                                width = event.detail.width;
+	 //                                height = event.detail.height;
+	 //                              },
+	 //                    });
+
+	 //                }).on("hidden.bs.modal", function () {
+	 //                    cropBoxData = $image.cropper("getCropBoxData");
+	 //                    canvasData = $image.cropper("getCanvasData");
+	 //                    $image.cropper("destroy");
+	 //                });
+
+	 //              }
+	 //            };
+	 //            reader.readAsDataURL(e.target.files[0]);
+	 //          }
+	 //        });
+
+	 //        $('#btn-cancel').click(function(e){
+	 //            $('#modal-logo').modal('hide');
+	 //            $('#id_logo').val('');
+	 //        });
+
+	 //        $('#btn-save').click(function(e){
+	 //            $('#modal-logo').modal('hide');
+
+	 //            $('#id_logo_x').val(parseInt(x));
+	 //            $('#id_logo_y').val(parseInt(y));
+	 //            $('#id_logo_width').val(parseInt(width));
+	 //            $('#id_logo_height').val(parseInt(height));
+	 //        });
+
+		// });
+
+
 
 
 		// ================================= MODAL UI EVENTS ============================================
