@@ -166,7 +166,6 @@
 										<td class="menu-name">{{ menu.name }}</td>
 										<td class="menu-id">
 											{% if menu.picture %}<i class="fa fa-check-circle" style="color: green"></i>{% endif %}
-											{% if not menu.picture %}<i class="fa fa-times-circle" style="color: red"></i>{% endif %}
 										</td>
 										<td>{{ request.user.profile.enterprise.currency }} {{ menu.price|floatformat:2 }}</td>
 										<!-- <td>
