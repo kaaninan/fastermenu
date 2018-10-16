@@ -462,6 +462,10 @@ def table_create(request):
 	postOption = request.POST.get('option', '')
 	postData = request.POST.get('data', '')
 
+	postClientName = request.POST.get('client_name', '')
+	postClientPhone = request.POST.get('client_phone', '')
+	postClientAddress = request.POST.get('client_address', '')
+
 	msg = '' # Return message
 
 	# Control Table Count
@@ -515,6 +519,36 @@ def table_create(request):
 			messages.success(request, "İşlem Başarılı!")
 			msg = 'success'
 
+
+	elif postOption == 'add-client':
+		if (tables + 1) >= 51:
+			msg = 'En fazla 50 tane masa ekleyebilirsiniz. Daha fazlası için bizimle iletişime geçin.'
+
+		else:
+			# First Create Unique Barcode ID
+			barcodeID = barcode_create(request)
+			barcodeID = json.loads(barcodeID.content.decode('ascii'))
+			barcodeID = barcodeID['barcode']
+			barcode = Barcode.objects.get(id=barcodeID)
+
+			# Second Create Table Object
+			table = Table()
+			table.barcode = barcode
+			table.active = True
+
+			table.name = postClientName
+			table.client_name = postClientName
+			table.client_phone = postClientPhone
+			table.client_address = postClientAddress
+
+			table.enterprise = request.user.profile.enterprise
+			table.save()
+
+			messages.success(request, "İşlem Başarılı!")
+			msg = 'success'
+
+
+
 	data = {'msg':msg}
 	return JsonResponse(data)
 
@@ -525,17 +559,33 @@ def table_update(request):
 	postName = request.POST.get('name', '')
 	postStatus = request.POST.get('status', '')
 
+	postClientName = request.POST.get('client_name', '')
+	postClientPhone = request.POST.get('client_phone', '')
+	postClientAddress = request.POST.get('client_address', '')
+
 	# Convert String to Bool
 	if postStatus == 'true':
 		postStatus = True
 	else:
 		postStatus = False
 
-	# Get item from database and update
-	item = Table.objects.get(id=postID)
-	item.name = postName
-	item.active = postStatus
-	item.save()
+
+	# Check Client
+	if postClientName != '':
+		# Get item from database and update
+		item = Table.objects.get(id=postID)
+		item.name = postName
+		item.active = postStatus
+		item.client_name = postClientName
+		item.client_phone = postClientPhone
+		item.client_address = postClientAddress
+		item.save()
+	else:
+		# Get item from database and update
+		item = Table.objects.get(id=postID)
+		item.name = postName
+		item.active = postStatus
+		item.save()
 
 	messages.success(request, "İşlem Başarılı!")
 
