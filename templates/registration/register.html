@@ -19,14 +19,22 @@
 						<div class="login-form-container">
 
 							<div class="form-response show">											
-								{{ form.errors }}
+
 								{% if form.errors %}
-						            {% for error in form.non_field_errors %}
-						                <div style="color:red; padding-bottom: 5px">
-						                    {{ error|escape }}
-						                </div><br>
-						            {% endfor %}
-						        {% endif %}
+								    {% for field in form %}
+								        {% for error in field.errors %}
+								            <div style="color:red; padding-bottom: 20px">
+								                {{ error|escape }}
+								            </div>
+								        {% endfor %}
+								    {% endfor %}
+								    {% for error in form.non_field_errors %}
+								        <div style="color:red; padding-bottom: 20px">
+								            {{ error|escape }}
+								        </div>
+								    {% endfor %}
+								{% endif %}
+
 							</div>
 
 							<form class="register-form" action="{% url 'enterprise:register' %}" method="post">
