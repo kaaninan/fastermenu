@@ -447,8 +447,8 @@
 				
 
 				$('#print').attr('href',`{% url 'barcode:single' %}?barcode=`+itemBarcode);
-				$('#qrLink').attr('href','https://app.fastermenu.com/redirect/'+itemBarcode);
-				$('#qrCode').attr('src','https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://app.fastermenu.com/redirect/'+itemBarcode);
+				$('#qrLink').attr('href','{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.META.HTTP_HOST }}/redirect/'+itemBarcode);
+				$('#qrCode').attr('src','https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.META.HTTP_HOST }}/redirect/'+itemBarcode);
 
 				$('#modal-qr').modal('show');
 			});

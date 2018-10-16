@@ -81,7 +81,7 @@
                 {% trans 'Use the camera for iPhone, QR reader for Android' %}
             </div>
             <div class="qr">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://app.fastermenu.com/redirect/{{ item.barcode }}">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.META.HTTP_HOST }}/redirect/{{ item.barcode }}">
             </div>
             <div>
                 <div style="text-align: center; ">{{ item.name }}</div> 
