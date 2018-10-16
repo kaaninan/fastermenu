@@ -244,7 +244,11 @@
 
 			var data = JSON.parse(response.line);
 
-			if(data[0].fields.isPaid == true){
+			if(data[0].fields.isCanceled == true){
+				$('#status').html("{% trans 'Your order has been canceled by restaurant.' %}");
+				$('#i1').addClass('danger');
+			}
+			else if(data[0].fields.isPaid == true){
 				if (willReload == true) {
 					window.location.reload();
 				}

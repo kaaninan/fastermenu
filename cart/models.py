@@ -11,7 +11,9 @@ from enterprise.models import *
 class Line(models.Model):
     orderDate = models.DateTimeField(editable=False)
     complatedDate = models.DateTimeField(null=True)
+    canceledDate = models.DateTimeField(null=True)
     paidDate = models.DateTimeField(null=True)
+    isCanceled = models.BooleanField(default=False)
     isComplated = models.BooleanField(default=False)
     isPaid = models.BooleanField(default=False)
     isCommented = models.BooleanField(default=False)

@@ -362,7 +362,7 @@ def line_get(request):
 	# Birden fazla order ayni line'da bulunuyor
 	new_data = Order.objects.filter(enterprise=request.user.profile.enterprise).select_related('line', 'menu', 'line__table').values(
 		'id', 'menu__name', 'count', 'optionsReadable', 'price', 'line__totalPrice', 'line__table__name', 'line__table__id', 'line__id',
-		'line__orderDate', 'line__isComplated', 'line__isPaid'
+		'line__orderDate', 'line__isComplated', 'line__isPaid', 'line__isCanceled'
 	).order_by('-line__orderDate')
 
 	# Ayni line a ait orderlari ayni yere koy
@@ -448,6 +448,19 @@ def line_set_paid(request):
 
 	data.isPaid = True;
 	data.paidDate = datetime.now()
+	data.save()
+
+	return JsonResponse({'status':'success'})
+
+
+def line_set_canceled(request):
+
+	item = request.POST.get('id','')
+
+	data = Line.objects.get(enterprise=request.user.profile.enterprise, id=item)
+
+	data.isCanceled = True;
+	data.canceledDate = datetime.now()
 	data.save()
 
 	return JsonResponse({'status':'success'})
