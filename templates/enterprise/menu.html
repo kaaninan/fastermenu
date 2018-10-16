@@ -154,6 +154,7 @@
 									<tr style="font-size: 1.5rem;">
 										<th>#</th>
 										<th>{% trans 'Product Name' %}</th>
+										<th>{% trans 'Picture' %}</th>
 										<th>{% trans 'Price' %}</th>
 										<!-- <th>Stok Durumu</th> -->
 										<th>{% trans 'Operations' %}</th>
@@ -161,8 +162,12 @@
 									
 									{% for menu in menus %}
 									<tr>
-										<td class="menu-id">{{ menu.id }}</td>
+										<td class="menu-id">{{menu.id}}</td>
 										<td class="menu-name">{{ menu.name }}</td>
+										<td class="menu-id">
+											{% if menu.picture %}<i class="fa fa-check-circle" style="color: green"></i>{% endif %}
+											{% if not menu.picture %}<i class="fa fa-times-circle" style="color: red"></i>{% endif %}
+										</td>
 										<td>{{ request.user.profile.enterprise.currency }} {{ menu.price|floatformat:2 }}</td>
 										<!-- <td>
 											{% if menu.stock == True %}<i class="fa fa-check-circle" style="color: green"></i>{% endif %}
