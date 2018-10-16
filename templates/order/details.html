@@ -57,16 +57,8 @@
         </div>
 
         <div class="price">
-            {% if LANGUAGE_CODE == 'tr' %}
-                <span id="priceInner">
-                    {{ menu.price|floatformat:2 }}
-                </span> TL
-            {% elif LANGUAGE_CODE == 'en' %}
-                $
-                <span id="priceInner">
-                    {{ menu.price|floatdot }}
-                </span>
-            {% endif %}
+            {{ enterprise.currency }}
+            <span id="priceInner">{{ menu.price|floatdot }}</span>
         </div>
 
         <div id="price" style="display: none">
@@ -104,9 +96,9 @@
 					<div class="extra">
             [
               {% if LANGUAGE_CODE == 'tr' %}
-                {{ subOption.price|floatformat:2 }} TL ekle
+                {{enterprise.currency}} {{ subOption.price|floatdot }} ekle
               {% elif LANGUAGE_CODE == 'en' %}
-                add ${{ subOption.price|floatdot }}
+                add {{enterprise.currency}} {{ subOption.price|floatdot }}
               {% endif %}
             ]
           </div>

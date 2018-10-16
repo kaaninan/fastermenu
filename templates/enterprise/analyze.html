@@ -54,7 +54,7 @@
                             <span class="info-box-icon bg-aqua"><i class="fa fa-money-check"></i></span>
                             <div class="info-box-content">
                                 <span class="info-box-text">{% trans 'Daily Endorsement' %}</span>
-                                <span class="info-box-number">{{ endorsement.daily|floatformat:2 }} ₺</span>
+                                <span class="info-box-number">{{ request.user.profile.enterprise.currency }} {{ endorsement.daily|floatformat:2 }}</span>
                             </div>
                         </div>
                     </div>
@@ -63,7 +63,7 @@
                             <span class="info-box-icon bg-green"><i class="fa fa-money-check"></i></span>
                             <div class="info-box-content">
                                 <span class="info-box-text">{% trans 'Weekly Endorsement' %}</span>
-                                <span class="info-box-number">{{ endorsement.weekly|floatformat:2 }} ₺</span>
+                                <span class="info-box-number">{{ request.user.profile.enterprise.currency }} {{ endorsement.weekly|floatformat:2 }}</span>
                             </div>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
                             <span class="info-box-icon bg-yellow"><i class="fa fa-money-check"></i></span>
                             <div class="info-box-content">
                                 <span class="info-box-text">{% trans 'Monthly Endorsement' %}</span>
-                                <span class="info-box-number">{{ endorsement.montly|floatformat:2 }} ₺</span>
+                                <span class="info-box-number">{{ request.user.profile.enterprise.currency }} {{ endorsement.montly|floatformat:2 }}</span>
                             </div>
                         </div>
                     </div>

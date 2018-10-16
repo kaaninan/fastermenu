@@ -97,11 +97,8 @@
 	            {% endif %}
 			</div>
 			<div class="o-price">
-				{% if LANGUAGE_CODE == 'tr' %}
-	                {{ item.totalPrice|floatformat:2 }} TL
-	            {% elif LANGUAGE_CODE == 'en' %}
-	                $ {{ item.totalPrice|floatdot }}
-	            {% endif %}
+				{{enterprise.currency}}
+	            {{ item.totalPrice|floatdot }}
 			</div>
 		</div>
 
@@ -115,22 +112,16 @@
 		<div class="order-detail">
 			<b>{% trans 'Tip' %}: </b>
 			<b class="green">
-				{% if LANGUAGE_CODE == 'tr' %}
-	                {{ line.tip|floatformat:2 }} TL
-	            {% elif LANGUAGE_CODE == 'en' %}
-	                $ {{ line.tip|floatdot }}
-	            {% endif %}
+				{{enterprise.currency}}
+				{{ line.tip|floatdot }}
 			</b>
 		</div>
 
 		<div class="order-detail">
 			<b>{% trans 'Total Price' %}: </b> 
 			<b class="green">
-				{% if LANGUAGE_CODE == 'tr' %}
-	                {{ line.totalPrice|floatformat:2 }} TL
-	            {% elif LANGUAGE_CODE == 'en' %}
-	                $ {{ line.totalPrice|floatdot }}
-	            {% endif %}
+				{{enterprise.currency}}
+				{{ line.totalPrice|floatdot }}
 			</b>
 		</div>
 

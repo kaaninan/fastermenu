@@ -38,7 +38,7 @@
                                         <p>{{item.menu__name}}</p>
                                         <p>{{item.count}} tane</p>
                                         <p>{{item.optionsReadable}}</p>
-                                        <p>{{item.line__totalPrice}} TL</p>
+                                        <p>{{ request.user.profile.enterprise.currency }} {{item.line__totalPrice}}</p>
                                         <p>Tamamlandi: {{item.line__isComplated}}</p>
                                         <p>Odendi: {{item.line__isPaid}}</p>
                                         <p>Order Date: {{item.line__orderDate}}</p>
@@ -46,7 +46,7 @@
                                         <hr>
                                     {% endfor %}
 
-                                    <h3><p>Total Price: {{ totalPrice }}</p></h3>
+                                    <h3><p>Total Price: {{ request.user.profile.enterprise.currency }} {{ totalPrice }}</p></h3>
                                     <h2><a href="#" id="closeButton">Masayi Kapat</a></h2>
 
                                 </div>

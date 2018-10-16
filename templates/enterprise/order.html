@@ -77,11 +77,7 @@
 										</td>
 										<td>[[ item[1][0].line__orderDate | formatDate ]]</td>
 										<td>
-											{% if LANGUAGE_CODE == 'tr' %}
-								                [[ item[1][0].line__totalPrice ]] ₺
-								            {% elif LANGUAGE_CODE == 'en' %}
-								                $ [[ item[1][0].line__totalPrice ]]
-								            {% endif %}
+											{{ request.user.profile.enterprise.currency }} [[ item[1][0].line__totalPrice ]]
 										</td>
 										<td>
 											<div v-show="item[1][0].line__isComplated == false" v-on:click="setComplated(item, $event)">

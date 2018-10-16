@@ -125,11 +125,8 @@
 				</div>
 				<div class="col-3 clear">
 					<div class="price">
-						{% if LANGUAGE_CODE == 'tr' %}
-			                <span id="price">{{ item.totalPrice|floatformat:2 }}</span> TL
-			            {% elif LANGUAGE_CODE == 'en' %}
-			                $ <span id="price">{{ item.totalPrice|floatdot }}</span>
-			            {% endif %}
+						{{enterprise.currency}}
+			            <span id="price">{{ item.totalPrice|floatdot }}</span>
 					</div>
 				</div>
 				<div class="clear"></div>
@@ -145,11 +142,8 @@
 		<div class="amount">
 			<div class="title">{% trans 'Tip' %}:</div>
 			<div class="price">
-				{% if LANGUAGE_CODE == 'tr' %}
-	                <span id="tip">0</span> TL
-	            {% elif LANGUAGE_CODE == 'en' %}
-	                $ <span id="tip">0</span>
-	            {% endif %}
+				{{enterprise.currency}}
+	            <span id="tip">0</span>
 			</div>
 		</div>
 	</div>
@@ -193,11 +187,8 @@
 			<div class="amount">
 				<div class="title">{% trans 'Total Price' %}:</div>
 				<div class="price" id="total-price">
-					{% if LANGUAGE_CODE == 'tr' %}
-		                <span id="total">{{ total|floatformat:2 }}</span> TL
-		            {% elif LANGUAGE_CODE == 'en' %}
-		                $<span id="total"> {{ total|floatdot }}</span>
-		            {% endif %}
+					{{enterprise.currency}}
+		            <span id="total"> {{ total|floatdot }}</span>
 				</div>
 			</div>
 		</div>

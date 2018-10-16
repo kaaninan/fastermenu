@@ -2,14 +2,23 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.utils.translation import ugettext as _
 from barcode.models import *
 
 class Enterprise(models.Model):
+    CURRENCY = (
+        ('$', _("USD - US Dollar")),
+        ('₺', _("TRY - Turkish Lira")),
+        ('€', _("EUR - Euro")),
+        ('£', _("GBP - Pound")),
+    )
+
     name = models.CharField(max_length=120, verbose_name="Name")
     address = models.CharField(max_length=200, verbose_name="Address", null=True, blank=True)
     size = models.IntegerField(null=True, blank=True, verbose_name="Size")
     logo = models.ImageField(null=True, blank=True, upload_to='logos/')
     active = models.BooleanField(verbose_name="Active", default=True)
+    currency = models.CharField(max_length=50, verbose_name="Currency", choices=CURRENCY, default='$')
 
     def __str__(self):
         return self.name

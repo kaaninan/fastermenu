@@ -195,12 +195,8 @@
 					<div class="col-3 clear">
 						<a href="{% url 'order:detail' id=menu.id %}">
 							<div class="price">
-									{% if LANGUAGE_CODE == 'tr' %}
-										<span id="price">{{ menu.price|floatformat:2 }}</span> TL
-									{% elif LANGUAGE_CODE == 'en' %}
-										$<span id="price">{{ menu.price|floatdot }}</span>
-									{% endif %}
-								</span>
+								{{ enterprise.currency }}
+								<span id="price">{{ menu.price|floatdot }}</span>
 							</div>
 						</a>
 					</div>

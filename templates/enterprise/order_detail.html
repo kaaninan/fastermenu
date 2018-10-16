@@ -49,7 +49,7 @@
                                     {% endfor %}
 
                                     <span style="font-size: 2rem; font-weight: 600">{% trans 'Total Price' %}</span><br>
-                                    <span style="font-size: 1.5rem">{{ data.0.totalPrice|floatformat:2 }} {% trans '$' %}</span>
+                                    <span style="font-size: 1.5rem">{{ request.user.profile.enterprise.currency }} {{ data.0.totalPrice|floatformat:2 }}</span>
                                     <br><br>
                                     <span style="font-size: 2rem; font-weight: 600">{% trans 'Order Date' %}</span><br>
                                     <span style="font-size: 1.5rem">{{ data.0.orderDate|naturaltime }} - {{ data.0.orderDate }}</span>
