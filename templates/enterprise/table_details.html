@@ -47,6 +47,18 @@
                                     {% endfor %}
 
                                     <h3><p>Total Price: {{ request.user.profile.enterprise.currency }} {{ totalPrice }}</p></h3>
+
+                                    {% if data.0.line__payment != 'default' %}
+                                    <h3>
+                                        <p>
+                                        {% trans 'Payment Method' %}:
+                                        {% if data.0.line__payment == 'cash' %}{% trans 'Cash' %}{% endif %}
+                                        {% if data.0.line__payment == 'credit' %}{% trans 'Credit Cart' %}{% endif %}
+                                        {% if data.0.line__payment == 'ticket' %}{% trans 'Ticket' %}{% endif %}
+                                        </p>
+                                    </h3>
+                                    {% endif %}
+
                                     <h2><a href="#" id="closeButton">Masayi Kapat</a></h2>
 
                                 </div>

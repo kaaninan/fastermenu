@@ -15,6 +15,7 @@ class Line(models.Model):
     isComplated = models.BooleanField(default=False)
     isPaid = models.BooleanField(default=False)
     isCommented = models.BooleanField(default=False)
+    payment = models.CharField(default='default', max_length=50)
     totalPrice = models.FloatField(null=True) # tip + price
     tip = models.FloatField(null=True) # tip $
     price = models.FloatField(null=True) # only price without tip

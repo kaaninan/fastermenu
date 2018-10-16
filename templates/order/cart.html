@@ -152,6 +152,22 @@
 <form action="{% url 'order:complated' %}" method="post">
 	{% csrf_token %}
 
+	<div class="row cart-payment">
+		<div class="col">
+			<div class="box">
+				<div class="title">{% trans 'Payment' %}:</div>
+				<div class="content">
+					<select class="custom-select" id="payment" name="payment">
+					  <option value="default" selected>{% trans 'Select' %}</option>
+					  <option value="cash">{% trans 'Cash' %}</option>
+					  <option value="credit">{% trans 'Credit Cart' %}</option>
+					  <option value="ticket">{% trans 'Ticket' %}</option>
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="row total-tip">
 		<div class="col">
 
@@ -196,14 +212,9 @@
 
 
 	<div class="row order">
-		<!-- <div class="col-6 clear">
-			<div class="amount">{{ total|floatformat:2 }} TL</div>
-		</div> -->
 		<div class="col-12 clear">
 			<div class="inside">
-				<!-- <a href="{% url 'order:complated' %}"> -->
-					<button class="button" type="submit">{% trans 'ORDER NOW' %}</button>
-				<!-- </a> -->
+				<button class="button" type="submit">{% trans 'ORDER NOW' %}</button>
 			</div>
 		</div>
 	</div>

@@ -84,7 +84,7 @@ def table_detail_view(request):
 
 	fetch = Order.objects.filter(line__table_id= tableID).select_related('line', 'menu', 'line__table').values(
 		'id', 'menu__name', 'count', 'optionsReadable', 'price', 'line__totalPrice', 'line__table__name', 'line__table__id', 'line__id',
-		'line__orderDate','line__complatedDate', 'line__isComplated', 'line__isPaid'
+		'line__orderDate','line__complatedDate', 'line__isComplated', 'line__isPaid', 'line__payment'
 	).order_by('-line__orderDate')
 
 

@@ -252,7 +252,7 @@ def order_get(request):
 # ================================= LINE ==================================================
 
 
-def line_add(request, tip=0):
+def line_add(request, tip=0, payment='default'):
 	cartSession = request.session['cart']
 
 	# Get Enterprise, Table and Shopping List from Session
@@ -327,6 +327,7 @@ def line_add(request, tip=0):
 	line = Line.objects.get(id = line.id)
 	line.price = totalPrice
 	line.tip = totalPrice/100*tip
+	line.payment = payment
 	line.totalPrice = totalPricewithTip
 	line.save()
 	

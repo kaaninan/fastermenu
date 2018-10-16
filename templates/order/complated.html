@@ -139,7 +139,7 @@
 
 			    if (diff._milliseconds <= 0) {
 			        clearInterval(interval);
-			        // window.location.href = "{% url 'order:track' id=line.id %}";
+			        window.location.href = "{% url 'order:track' id=line.id %}";
 					return false;
 			    }
 			}else if(diff._milliseconds >= 30){

@@ -125,6 +125,17 @@
 			</b>
 		</div>
 
+		{% if line.payment != 'default' %}
+		<div class="order-detail">
+			<b>{% trans 'Payment Method' %}: </b> 
+			<b class="green">
+				{% if line.payment == 'cash' %}{% trans 'Cash' %}{% endif %}
+				{% if line.payment == 'credit' %}{% trans 'Credit Cart' %}{% endif %}
+				{% if line.payment == 'ticket' %}{% trans 'Ticket' %}{% endif %}
+			</b>
+		</div>
+		{% endif %}
+
 	</div>
 </div>
 
