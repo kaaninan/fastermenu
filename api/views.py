@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.db.models import Q
 import json, pickle, uuid, ast, time
 from django.utils.translation import ugettext as _
+from django.core.serializers.json import DjangoJSONEncoder
+
 
 from enterprise.models import *
 from barcode.models import *
@@ -355,7 +357,7 @@ def line_delete(request):
 
 def line_get(request):
 
-	start_time = time.time()
+	# start_time = time.time()
 
 	data = list()
 
@@ -1145,3 +1147,58 @@ def biot_order(request):
 
 		data = {'status': 'success'}
 		return JsonResponse(data)
+
+
+
+
+# ================================= WAITER CALL ===============================================
+
+
+def waiter_call_create(request):
+
+	postTable = request.POST.get('table', '')
+	postEnterprise = request.POST.get('enterprise', '')
+
+	# Get Enterprise
+	enterprise = Enterprise.objects.get(id=postEnterprise)
+	table = Table.objects.get(id=postTable)
+
+	
+	# Save Category
+	item = Waiter()
+	item.calledDate = datetime.now()
+	item.table = table
+	item.enterprise = enterprise
+	item.save()
+
+	messages.success(request, _("İşlem Başarılı!"))
+
+	data = {'status':'success'}
+	return JsonResponse(data)
+
+def waiter_call_complate(request):
+	postID = request.POST.get('id', '')
+
+	# Get item from database and update
+	item = Waiter.objects.get(id=postID)
+	item.complatedDate = datetime.now()
+	item.isComplated = True
+	item.save()
+
+	data = {'status':'success'}
+	return JsonResponse(data)
+
+
+
+
+
+def waiter_call_list(request):
+	postEnterprise = request.GET.get('enterprise', '')
+	data = Waiter.objects.filter(enterprise__id=postEnterprise, isComplated=False).select_related('table').values('table__name', 'isComplated', 'id')
+	serialize = json.dumps(list(data), cls=DjangoJSONEncoder)
+	data = {'data':serialize}
+	return JsonResponse(data)
+
+
+
+

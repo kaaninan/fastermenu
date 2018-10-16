@@ -248,6 +248,27 @@ body, html{
 
 
 
+/* -- CALL WAITER --- */
+
+
+.index-waiter{
+	position: fixed;
+	height: 70px;
+	width: 70px;
+	bottom: 20px;
+	left: 40px;
+	border-radius: 50px; 
+	background: #F1311B;
+	text-align: center;
+	cursor: pointer;
+}
+
+.index-waiter i{
+	line-height: 70px;
+	font-size: 2rem;
+	color: #fff;
+	margin: auto;
+}
 
 /* ---- SEPETIM --------------------------------------------------- */
 

@@ -63,3 +63,17 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ['-commentDate']
+
+
+class Waiter(models.Model):
+    calledDate = models.DateTimeField(editable=False)
+    complatedDate = models.DateTimeField(null=True)
+    isComplated = models.BooleanField(default=False)
+    table = models.ForeignKey(Table, on_delete=models.SET_NULL, null=True)
+    enterprise = models.ForeignKey(Enterprise, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return str(self.pk)
+
+    class Meta:
+        ordering = ['-calledDate']

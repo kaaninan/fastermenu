@@ -9,7 +9,38 @@
 {% block body %}
 {% get_current_language as LANGUAGE_CODE %}
 
+<!-- Waiter Modal -->
+<div class="modal fade" id="modal-waiter">
+	<div class="modal-dialog">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h4 class="modal-title">
+					{% trans 'Call Waiter' %}
+				</h4>
+			</div>
+
+			<div class="modal-body">
+				{% trans 'Do you want to call the waiter?' %}
+			</div>
+			
+			<div class="modal-footer">
+				<button type="button" class="btn btn-light" data-dismiss="modal" style="width: 50%">{% trans 'Cancel' %}</button>
+				<button type="button" class="btn btn-success" style="width: 50%" id="button-waiter">{% trans 'Call' %}</button>
+			</div>
+
+		</div>
+	</div>
+</div>
+
 <div class="container-index">
+
+	   <div class="alert alert-success alert-dismissible fade" role="alert" id="buttonAlert" style="position: absolute; left: 10px; right: 10px; top: 60px; z-index: 10">
+          <strong>{% trans 'Successful' %}!</strong> {% trans 'You just called the waiter.' %}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+   </div>
 
 	<!-- Notifications -->
 
@@ -110,7 +141,8 @@
 								<!-- |parse_date:'%Y-%m-%d %H:%M:%S'| -->
 								<div class="sub">
 									<span style="color: #197E1C">
-										{% if order.isPaid %}<b>{% trans 'Complated' %}</b>
+										{% if order.isCanceled %}<b style="color: red">{% trans 'Canceled' %}</b>
+										{% elif order.isPaid %}<b>{% trans 'Complated' %}</b>
 										{% elif not order.isComplated %}<b style="color: #F58B5B">{% trans 'Preparing' %}</b>
 										{% elif order.isComplated %}<b>{% trans 'Prepared' %}</b>{% endif %}
 									</span>
@@ -213,6 +245,10 @@
 	<!-- END Menu -->
 
 
+	<!-- Call Waiter Button -->
+	<div class="row no-gutter index-waiter" data-toggle="modal" data-target="#modal-waiter">
+		<i class="fas fa-concierge-bell"></i>
+	</div>
 
 	<!-- Shopping Cart -->
 
@@ -237,6 +273,8 @@
 
 {% block js %}
 <script>
+
+
 
 
 function getBudgetCount(){
@@ -341,7 +379,57 @@ function addBudget(id, price){
 
 
 
+
 $(document).ready(function(){
+
+	
+
+	// Call Waiter
+	$('#button-waiter').click(function(){
+
+		// CSRF Token for Django
+		$.ajaxSetup({
+			beforeSend: function(xhr, settings) {
+				function getCookie(name) {
+					var cookieValue = null;
+					if (document.cookie && document.cookie != '') {
+						var cookies = document.cookie.split(';');
+						for (var i = 0; i < cookies.length; i++) {
+							var cookie = jQuery.trim(cookies[i]);
+							if (cookie.substring(0, name.length + 1) == (name + '=')) {
+								cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+								break;
+							}
+						}
+					}
+					return cookieValue;
+				}if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+					xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+				}
+			} 
+		});
+
+		var serialized = $.param({table: '{{ table.id }}', enterprise: '{{ enterprise.id }}'});
+
+		request = $.ajax({
+	        url: "{% url 'api:waiter_call_create' %}",
+	        type: "post",
+	        data: serialized
+	    });
+
+	    // Callback handler that will be called on success
+	    request.done(function (response, textStatus, jqXHR){
+	    	$('#modal-waiter').modal('hide');
+	    	$("#buttonAlert").addClass('show');
+	    });
+
+	    request.fail(function (jqXHR, textStatus, errorThrown){
+	        console.error(
+	            "The following error occurred: "+
+	            textStatus, errorThrown
+	        );
+	    });
+	});
 
 
 	$("#success-alert").fadeTo(1500, 500).slideUp(500, function(){});

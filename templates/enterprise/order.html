@@ -43,18 +43,21 @@
 
 	<div class="content-wrapper" id="app">
 		<div class="container">
-			<section class="content-header">
-				<h1>{% trans 'Orders' %}</h1>
 
-				<ol class="breadcrumb">
-					<li><a href="{% url 'enterprise:index' %}"><i class="fa fa-home"></i> {% trans 'Dashboard' %}</a></li>
-					<li class="active">{% trans 'Orders' %}</li>
-				</ol>
-			</section>
 			<section class="content">
+				<div class="row" v-show="calls.length != 0">
+					<div class="col-xs-12">
+						<h3>{% trans 'Waiter' %}</h3>
+						<button type="button" class="btn btn-info btn-lg" v-on:click="setWaiterComplated(call, $event)" v-for="call in calls" style="margin-right: 1rem; margin-bottom: 1rem">
+							{% trans 'Masa' %}: [[ call['table__name'] ]]
+						</button>
+					</div>
+				</div>
 				<div class="row">
 					<div class="col-xs-12">
-						<div class="box">
+						<h3>{% trans 'Orders' %}</h3>
+
+						<div class="box" style="margin-top: 2rem">
 
 							<div class="box-body table-responsive no-padding">
 
@@ -148,6 +151,7 @@
 		data: {
 			isLoading: true,
 			items: [],
+			calls: [],
 			interval: null,
 		},
 		
@@ -163,6 +167,13 @@
 				}.bind(this));
 			},
 
+			loadWaiter: function () {
+				$.get("{% url 'api:waiter_call_list' %}?enterprise={{request.user.profile.enterprise.id}}", function (response) {
+					this.isLoading = false;
+					this.calls = JSON.parse(response.data);
+				}.bind(this));
+			},
+
 		},
 
 		mounted: function () {
@@ -170,6 +181,7 @@
 			this.loadData();
 			this.interval = setInterval(function () {
 				this.loadData();
+				this.loadWaiter();
 			}.bind(this), 300);
 		},
 
@@ -450,6 +462,61 @@
 			);
 		});
 	}
+
+
+	// Set Waiter as Complated
+	function setWaiterComplated(item, event){
+
+		var id = item.id;
+
+		var btn = $(event.target);
+		btn.attr('disabled', 'disabled');
+
+
+		// CSRF Token for Django
+		$.ajaxSetup({
+			beforeSend: function(xhr, settings) {
+				function getCookie(name) {
+					var cookieValue = null;
+					if (document.cookie && document.cookie != '') {
+						var cookies = document.cookie.split(';');
+						for (var i = 0; i < cookies.length; i++) {
+							var cookie = jQuery.trim(cookies[i]);
+							if (cookie.substring(0, name.length + 1) == (name + '=')) {
+								cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+								break;
+							}
+						}
+					}
+					return cookieValue;
+				}if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+					xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+				}
+			} 
+		});
+
+		var serialized = $.param({id: id});
+
+		request = $.ajax({
+			url: "{% url 'api:waiter_call_complate' %}",
+			type: "post",
+			data: serialized
+		});
+
+		request.done(function (response, textStatus, jqXHR){
+			console.log(status);
+			// app.loadData();
+			btn.removeAttr('disabled');
+		});
+
+		request.fail(function (jqXHR, textStatus, errorThrown){
+			console.error(
+				"The following error occurred: "+
+				textStatus, errorThrown
+			);
+		});
+	}
+
 
 </script>
 
