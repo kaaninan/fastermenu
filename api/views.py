@@ -1163,15 +1163,12 @@ def waiter_call_create(request):
 	enterprise = Enterprise.objects.get(id=postEnterprise)
 	table = Table.objects.get(id=postTable)
 
-	
 	# Save Category
 	item = Waiter()
 	item.calledDate = datetime.now()
 	item.table = table
 	item.enterprise = enterprise
 	item.save()
-
-	messages.success(request, _("İşlem Başarılı!"))
 
 	data = {'status':'success'}
 	return JsonResponse(data)
