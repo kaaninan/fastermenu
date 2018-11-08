@@ -20,20 +20,44 @@
 
 {% block body %}
 {% get_current_language as LANGUAGE_CODE %}
+
+	<!-- Modal: setCanceled -->
+	<div class="modal fade" id="modal-cancel">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">{% trans 'Delete Order' %}</h4>
+				</div>
+
+				<div class="modal-body">
+					<b><span id="delete-table-name"></span></b> {% trans 'Order will be canceled. Do you confirm?' %}
+				</div>
+			
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default pull-left" data-dismiss="modal" style="width: 49%; float: left">{% trans 'Cancel' %}</button>
+					<button type="button" class="btn btn-danger pull-left" id="button-delete" style="width: 49%; float: left;">{% trans 'Delete' %}</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="content-wrapper" id="app">
 		<div class="container">
-			<section class="content-header">
-				<h1>{% trans 'Orders' %}</h1>
 
-				<ol class="breadcrumb">
-					<li><a href="{% url 'enterprise:index' %}"><i class="fa fa-home"></i> {% trans 'Dashboard' %}</a></li>
-					<li class="active">{% trans 'Orders' %}</li>
-				</ol>
-			</section>
 			<section class="content">
+				<div class="row" v-show="calls.length != 0">
+					<div class="col-xs-12">
+						<h3>{% trans 'Waiter' %}</h3>
+						<button type="button" class="btn btn-info btn-lg" v-on:click="setWaiterComplated(call, $event)" v-for="call in calls" style="margin-right: 1rem; margin-bottom: 1rem">
+							{% trans 'Masa' %}: [[ call['table__name'] ]]
+						</button>
+					</div>
+				</div>
 				<div class="row">
 					<div class="col-xs-12">
-						<div class="box">
+						<h3>{% trans 'Orders' %}</h3>
+
+						<div class="box" style="margin-top: 2rem">
 
 							<div class="box-body table-responsive no-padding">
 
@@ -55,15 +79,17 @@
 									</tr>
 
 									<tr v-for="item in items"
-									:style="[item[1][0].line__isComplated == false ? {'background-color': 'rgba(0, 150, 0, 0.5)'} : {'background': '#FFF'}]">
+									:style="[item[1][0].line__isComplated == false && item[1][0].line__isCanceled == false ? {'background-color': 'rgba(0, 150, 0, 0.5)'} : {'background': '#FFF'}]">
 									<!-- :class="{free: item[1][0].line__id % 10 == 0 && item[1][0].line__isComplated == false }" -->
 
 										<td style="display: none;" class="_line_id">[[ item[1][0].line__id ]]</td>
 
 										<td>
-											<strong class="_table_id">[[ item[1][0].line__table__name ]]</strong>
+											<a :href="'{% url 'enterprise:table_detail' %}?id=' + [[item[1][0].line__table__id]]">
+												<strong class="_table_id">[[ item[1][0].line__table__name ]]</strong>
+											</a>
 										</td>
-										<td>
+										<td style="max-width: 15rem;">
 											<p v-for="menu in item[1]">
 												<b>
 													[[ menu.count ]] {% if LANGUAGE_CODE == 'tr' %}tane{% endif %}
@@ -75,15 +101,15 @@
 										</td>
 										<td>[[ item[1][0].line__orderDate | formatDate ]]</td>
 										<td>
-											{% if LANGUAGE_CODE == 'tr' %}
-								                [[ item[1][0].line__totalPrice ]] ₺
-								            {% elif LANGUAGE_CODE == 'en' %}
-								                $ [[ item[1][0].line__totalPrice ]]
-								            {% endif %}
+											{{ request.user.profile.enterprise.currency }} [[ item[1][0].line__totalPrice ]]
 										</td>
 										<td>
-											<div v-show="item[1][0].line__isComplated == false" v-on:click="setComplated(item, $event)">
-												<button :id="item[0]" style="height: 5rem; width: 12rem" type="button" class="btn btn-block btn-success">{% trans 'Approve' %}</button>
+											<div v-show="item[1][0].line__isComplated == false && item[1][0].line__isCanceled == false" v-on:click="setComplated(item, $event)">
+												<button :id="item[0]" style="height: 5rem; width: 12rem; float:left; margin-right: 1rem;" type="button" class="btn btn-success">{% trans 'Approve' %}</button>
+											</div>
+
+											<div v-show="item[1][0].line__isComplated == false && item[1][0].line__isCanceled == false" v-on:click="setCanceled(item, $event)">
+												<button :id="item[0]" style="height: 5rem; width: 7rem; float:left" type="button" class="btn btn-danger">{% trans 'Cancel' %}</button>
 											</div>
 											
 											<div v-show="item[1][0].line__isPaid == false && item[1][0].line__isComplated == true" v-on:click="setPaid(item, $event)">
@@ -92,6 +118,10 @@
 
 											<div v-show="item[1][0].line__isPaid == true && item[1][0].line__isComplated == true">
 												<b style="color: green">{% trans 'Complated' %}</b>
+											</div>
+
+											<div v-show="item[1][0].line__isCanceled == true">
+												<b style="color: red">{% trans 'Cancelled' %}</b>
 											</div>
 										</td>
 									</tr>
@@ -121,6 +151,7 @@
 		data: {
 			isLoading: true,
 			items: [],
+			calls: [],
 			interval: null,
 		},
 		
@@ -136,6 +167,13 @@
 				}.bind(this));
 			},
 
+			loadWaiter: function () {
+				$.get("{% url 'api:waiter_call_list' %}?enterprise={{request.user.profile.enterprise.id}}", function (response) {
+					this.isLoading = false;
+					this.calls = JSON.parse(response.data);
+				}.bind(this));
+			},
+
 		},
 
 		mounted: function () {
@@ -143,6 +181,7 @@
 			this.loadData();
 			this.interval = setInterval(function () {
 				this.loadData();
+				this.loadWaiter();
 			}.bind(this), 300);
 		},
 
@@ -253,14 +292,64 @@
 
 
 		// console.log(uniq_tables_array);
-
-
-
-
-
-
-
 	}
+
+
+	var canceledID = null;
+
+	// Set Line as Canceled
+	function setCanceled(item, event){
+
+		canceledID = item[0];
+
+		var btn = $(event.target);
+		var ttt = $("button[id="+btn.attr('id')+"]");
+		
+		$('#modal-cancel').modal('show');
+	}
+
+	$('#button-delete').click(function(e){
+		// CSRF Token for Django
+		$.ajaxSetup({
+			beforeSend: function(xhr, settings) {
+				function getCookie(name) {
+					var cookieValue = null;
+					if (document.cookie && document.cookie != '') {
+						var cookies = document.cookie.split(';');
+						for (var i = 0; i < cookies.length; i++) {
+							var cookie = jQuery.trim(cookies[i]);
+							if (cookie.substring(0, name.length + 1) == (name + '=')) {
+								cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+								break;
+							}
+						}
+					}
+					return cookieValue;
+				}if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+					xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+				}
+			} 
+		});
+
+		var serialized = $.param({id: canceledID});
+
+		request = $.ajax({
+			url: "{% url 'api:line_set_canceled' %}",
+			type: "post",
+			data: serialized
+		});
+
+		request.done(function (response, textStatus, jqXHR){
+			$('#modal-cancel').modal('hide');
+		});
+
+		request.fail(function (jqXHR, textStatus, errorThrown){
+			console.error(
+				"The following error occurred: "+
+				textStatus, errorThrown
+			);
+		});
+	});
 
 
 	// Set Line as Complated
@@ -269,13 +358,7 @@
 		var id = item[0];
 
 		var btn = $(event.target);
-		var ttt = $("button[id="+btn.attr('id')+"]");
-		// console.log(ttt);
 		btn.attr('disabled', 'disabled').html("{% trans 'Approving...' %}");
-		// setTimeout(function () {
-			// btn.removeAttr('disabled').html('Ödeme Al');
-			// item.isComplated = true;
-		// }, 1000);
 
 
 		// CSRF Token for Django
@@ -379,6 +462,61 @@
 			);
 		});
 	}
+
+
+	// Set Waiter as Complated
+	function setWaiterComplated(item, event){
+
+		var id = item.id;
+
+		var btn = $(event.target);
+		btn.attr('disabled', 'disabled');
+
+
+		// CSRF Token for Django
+		$.ajaxSetup({
+			beforeSend: function(xhr, settings) {
+				function getCookie(name) {
+					var cookieValue = null;
+					if (document.cookie && document.cookie != '') {
+						var cookies = document.cookie.split(';');
+						for (var i = 0; i < cookies.length; i++) {
+							var cookie = jQuery.trim(cookies[i]);
+							if (cookie.substring(0, name.length + 1) == (name + '=')) {
+								cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+								break;
+							}
+						}
+					}
+					return cookieValue;
+				}if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+					xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+				}
+			} 
+		});
+
+		var serialized = $.param({id: id});
+
+		request = $.ajax({
+			url: "{% url 'api:waiter_call_complate' %}",
+			type: "post",
+			data: serialized
+		});
+
+		request.done(function (response, textStatus, jqXHR){
+			console.log(status);
+			// app.loadData();
+			btn.removeAttr('disabled');
+		});
+
+		request.fail(function (jqXHR, textStatus, errorThrown){
+			console.error(
+				"The following error occurred: "+
+				textStatus, errorThrown
+			);
+		});
+	}
+
 
 </script>
 

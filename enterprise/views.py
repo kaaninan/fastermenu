@@ -8,7 +8,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.core import serializers
-from django.db.models import Q
+from django.db.models import Q, Sum
 import json, pickle, ast
 from datetime import timedelta
 from django.utils import timezone
@@ -73,6 +73,28 @@ def order_view(request):
 	
 	context = {'active_tab': 'order'}
 	return render(request, "enterprise/order.html", context)
+
+
+
+
+@login_required
+def table_detail_view(request):
+
+	tableID = request.GET.get('id')
+
+	fetch = Order.objects.filter(line__table_id= tableID).select_related('line', 'menu', 'line__table').values(
+		'id', 'menu__name', 'count', 'optionsReadable', 'price', 'line__totalPrice', 'line__table__name', 'line__table__id', 'line__id',
+		'line__orderDate','line__complatedDate', 'line__isComplated', 'line__isPaid', 'line__payment'
+	).order_by('-line__orderDate')
+
+
+	# Calculate Total Price from Line
+	totalPrice = 0.0
+	for item in fetch:
+		totalPrice += float(item['line__totalPrice'])
+	
+	context = {'active_tab': 'order', 'data':fetch, 'totalPrice':totalPrice}
+	return render(request, "enterprise/table_details.html", context)
 
 
 
@@ -192,7 +214,11 @@ def analyze_view(request):
 	endorsement['weekly'] = total_weekly
 	endorsement['montly'] = total_montly
 
-	context = {'active_tab': 'analyze', 'sales': sales, 'endorsement': endorsement}
+
+	# Most Sales
+	most_sales = Order.objects.select_related('menu').filter(enterprise_id=request.user.profile.enterprise).values('menu_id','count', 'menu__name').annotate(count_total = Sum('count')).order_by('-count_total')
+
+	context = {'active_tab': 'analyze', 'sales': sales, 'endorsement': endorsement, 'most_sales': most_sales}
 	return render(request, "enterprise/analyze.html", context)
 
 

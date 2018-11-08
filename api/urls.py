@@ -22,7 +22,9 @@ urlpatterns = [
     url(r'^line_get/$', line_get, name="line_get"),
     url(r'^line_get_cash/$', line_get_cash, name="line_get_cash"),
     url(r'^line_set_complated/$', line_set_complated, name="line_set_complated"),
+    url(r'^line_set_complated_table/$', line_set_complated_table, name="line_set_complated_table"),
     url(r'^line_set_paid/$', line_set_paid, name="line_set_paid"),
+    url(r'^line_set_canceled/$', line_set_canceled, name="line_set_canceled"),
 
 
     # TABLE
@@ -49,5 +51,11 @@ urlpatterns = [
 
 	# BIOT
 	url(r'^biot_order/$', biot_order, name="biot_order"),
+
+	# CALL WAITER
+	url(r'^waiter_call_create/$', waiter_call_create, name="waiter_call_create"),
+	url(r'^waiter_call_complate/$', waiter_call_complate, name="waiter_call_complate"),
+	url(r'^waiter_call_list/$', waiter_call_list, name="waiter_call_list"),
+	
 
 ]

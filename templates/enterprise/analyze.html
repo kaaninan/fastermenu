@@ -54,7 +54,7 @@
                             <span class="info-box-icon bg-aqua"><i class="fa fa-money-check"></i></span>
                             <div class="info-box-content">
                                 <span class="info-box-text">{% trans 'Daily Endorsement' %}</span>
-                                <span class="info-box-number">{{ endorsement.daily|floatformat:2 }} ₺</span>
+                                <span class="info-box-number">{{ request.user.profile.enterprise.currency }} {{ endorsement.daily|floatformat:2 }}</span>
                             </div>
                         </div>
                     </div>
@@ -63,7 +63,7 @@
                             <span class="info-box-icon bg-green"><i class="fa fa-money-check"></i></span>
                             <div class="info-box-content">
                                 <span class="info-box-text">{% trans 'Weekly Endorsement' %}</span>
-                                <span class="info-box-number">{{ endorsement.weekly|floatformat:2 }} ₺</span>
+                                <span class="info-box-number">{{ request.user.profile.enterprise.currency }} {{ endorsement.weekly|floatformat:2 }}</span>
                             </div>
                         </div>
                     </div>
@@ -72,11 +72,32 @@
                             <span class="info-box-icon bg-yellow"><i class="fa fa-money-check"></i></span>
                             <div class="info-box-content">
                                 <span class="info-box-text">{% trans 'Monthly Endorsement' %}</span>
-                                <span class="info-box-number">{{ endorsement.montly|floatformat:2 }} ₺</span>
+                                <span class="info-box-number">{{ request.user.profile.enterprise.currency }} {{ endorsement.montly|floatformat:2 }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <h3>En Çok Satılan Menüler</h3>
+
+                <div class="box">
+                    <div class="box-body">
+                      <table class="table">
+                        <tr>
+                          <th style="width: 10px">#</th>
+                          <th>Menü Adı</th>
+                          <th>Satış</th>
+                        </tr>
+                        {% for item in most_sales %}
+                        <tr>
+                          <td>{{ forloop.counter }}</td>
+                          <td>{{ item.menu__name }}</td>
+                          <td>{{ item.count_total }}</td>
+                        </tr>
+                        {% endfor %}
+                      </table>
+                    </div>
+                  </div>
 
             </section>
         </div>

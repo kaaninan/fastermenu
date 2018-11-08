@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.db.models import Q
 import json, pickle, uuid, ast, time
 from django.utils.translation import ugettext as _
+from django.core.serializers.json import DjangoJSONEncoder
+
 
 from enterprise.models import *
 from barcode.models import *
@@ -252,7 +254,7 @@ def order_get(request):
 # ================================= LINE ==================================================
 
 
-def line_add(request, tip=0):
+def line_add(request, tip=0, payment='default'):
 	cartSession = request.session['cart']
 
 	# Get Enterprise, Table and Shopping List from Session
@@ -327,6 +329,7 @@ def line_add(request, tip=0):
 	line = Line.objects.get(id = line.id)
 	line.price = totalPrice
 	line.tip = totalPrice/100*tip
+	line.payment = payment
 	line.totalPrice = totalPricewithTip
 	line.save()
 	
@@ -354,14 +357,14 @@ def line_delete(request):
 
 def line_get(request):
 
-	start_time = time.time()
+	# start_time = time.time()
 
 	data = list()
 
 	# Birden fazla order ayni line'da bulunuyor
 	new_data = Order.objects.filter(enterprise=request.user.profile.enterprise).select_related('line', 'menu', 'line__table').values(
-		'id', 'menu__name', 'count', 'optionsReadable', 'price', 'line__totalPrice', 'line__table__name', 'line__id',
-		'line__orderDate', 'line__isComplated', 'line__isPaid'
+		'id', 'menu__name', 'count', 'optionsReadable', 'price', 'line__totalPrice', 'line__table__name', 'line__table__id', 'line__id',
+		'line__orderDate', 'line__isComplated', 'line__isPaid', 'line__isCanceled'
 	).order_by('-line__orderDate')
 
 	# Ayni line a ait orderlari ayni yere koy
@@ -425,6 +428,20 @@ def line_set_complated(request):
 
 	return JsonResponse({'status':'success'})
 
+
+def line_set_complated_table(request):
+
+	table_ID = request.POST.get('id','')
+	options = request.POST.get('options','') # 'all' or 'lineID1, lineID2 ...'
+
+	if options == 'all':
+		fetch = Line.objects.filter(table_id=int(table_ID)).update(isComplated=True, isPaid=True, paidDate=datetime.now())
+
+		return JsonResponse({'status':'success'})
+
+
+	return JsonResponse({'status':'nothing'})
+
 def line_set_paid(request):
 
 	item = request.POST.get('id','')
@@ -433,6 +450,19 @@ def line_set_paid(request):
 
 	data.isPaid = True;
 	data.paidDate = datetime.now()
+	data.save()
+
+	return JsonResponse({'status':'success'})
+
+
+def line_set_canceled(request):
+
+	item = request.POST.get('id','')
+
+	data = Line.objects.get(enterprise=request.user.profile.enterprise, id=item)
+
+	data.isCanceled = True;
+	data.canceledDate = datetime.now()
 	data.save()
 
 	return JsonResponse({'status':'success'})
@@ -447,6 +477,10 @@ def table_create(request):
 
 	postOption = request.POST.get('option', '')
 	postData = request.POST.get('data', '')
+
+	postClientName = request.POST.get('client_name', '')
+	postClientPhone = request.POST.get('client_phone', '')
+	postClientAddress = request.POST.get('client_address', '')
 
 	msg = '' # Return message
 
@@ -501,6 +535,36 @@ def table_create(request):
 			messages.success(request, "İşlem Başarılı!")
 			msg = 'success'
 
+
+	elif postOption == 'add-client':
+		if (tables + 1) >= 51:
+			msg = 'En fazla 50 tane masa ekleyebilirsiniz. Daha fazlası için bizimle iletişime geçin.'
+
+		else:
+			# First Create Unique Barcode ID
+			barcodeID = barcode_create(request)
+			barcodeID = json.loads(barcodeID.content.decode('ascii'))
+			barcodeID = barcodeID['barcode']
+			barcode = Barcode.objects.get(id=barcodeID)
+
+			# Second Create Table Object
+			table = Table()
+			table.barcode = barcode
+			table.active = True
+
+			table.name = postClientName
+			table.client_name = postClientName
+			table.client_phone = postClientPhone
+			table.client_address = postClientAddress
+
+			table.enterprise = request.user.profile.enterprise
+			table.save()
+
+			messages.success(request, "İşlem Başarılı!")
+			msg = 'success'
+
+
+
 	data = {'msg':msg}
 	return JsonResponse(data)
 
@@ -511,17 +575,33 @@ def table_update(request):
 	postName = request.POST.get('name', '')
 	postStatus = request.POST.get('status', '')
 
+	postClientName = request.POST.get('client_name', '')
+	postClientPhone = request.POST.get('client_phone', '')
+	postClientAddress = request.POST.get('client_address', '')
+
 	# Convert String to Bool
 	if postStatus == 'true':
 		postStatus = True
 	else:
 		postStatus = False
 
-	# Get item from database and update
-	item = Table.objects.get(id=postID)
-	item.name = postName
-	item.active = postStatus
-	item.save()
+
+	# Check Client
+	if postClientName != '':
+		# Get item from database and update
+		item = Table.objects.get(id=postID)
+		item.name = postName
+		item.active = postStatus
+		item.client_name = postClientName
+		item.client_phone = postClientPhone
+		item.client_address = postClientAddress
+		item.save()
+	else:
+		# Get item from database and update
+		item = Table.objects.get(id=postID)
+		item.name = postName
+		item.active = postStatus
+		item.save()
 
 	messages.success(request, "İşlem Başarılı!")
 
@@ -1067,3 +1147,58 @@ def biot_order(request):
 
 		data = {'status': 'success'}
 		return JsonResponse(data)
+
+
+
+
+# ================================= WAITER CALL ===============================================
+
+
+def waiter_call_create(request):
+
+	postTable = request.POST.get('table', '')
+	postEnterprise = request.POST.get('enterprise', '')
+
+	# Get Enterprise
+	enterprise = Enterprise.objects.get(id=postEnterprise)
+	table = Table.objects.get(id=postTable)
+
+	
+	# Save Category
+	item = Waiter()
+	item.calledDate = datetime.now()
+	item.table = table
+	item.enterprise = enterprise
+	item.save()
+
+	messages.success(request, _("İşlem Başarılı!"))
+
+	data = {'status':'success'}
+	return JsonResponse(data)
+
+def waiter_call_complate(request):
+	postID = request.POST.get('id', '')
+
+	# Get item from database and update
+	item = Waiter.objects.get(id=postID)
+	item.complatedDate = datetime.now()
+	item.isComplated = True
+	item.save()
+
+	data = {'status':'success'}
+	return JsonResponse(data)
+
+
+
+
+
+def waiter_call_list(request):
+	postEnterprise = request.GET.get('enterprise', '')
+	data = Waiter.objects.filter(enterprise__id=postEnterprise, isComplated=False).select_related('table').values('table__name', 'isComplated', 'id')
+	serialize = json.dumps(list(data), cls=DjangoJSONEncoder)
+	data = {'data':serialize}
+	return JsonResponse(data)
+
+
+
+

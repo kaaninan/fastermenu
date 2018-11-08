@@ -28,6 +28,14 @@ class LoginForm(forms.ModelForm):
 
 class SignUpForm(UserCreationForm):
 	enterprise = forms.CharField(max_length=100, required=True)
+
+	def clean_email(self):
+	    email = self.cleaned_data['email']
+	    try:
+	        user = User.objects.exclude(pk=self.instance.pk).get(email=email)
+	    except User.DoesNotExist:
+	        return username
+	    raise forms.ValidationError(_("'%s' is already in use.") % email)
 	
 	def __init__(self, *args, **kwargs):
 		super(UserCreationForm, self).__init__(*args, **kwargs)

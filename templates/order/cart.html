@@ -125,11 +125,8 @@
 				</div>
 				<div class="col-3 clear">
 					<div class="price">
-						{% if LANGUAGE_CODE == 'tr' %}
-			                <span id="price">{{ item.totalPrice|floatformat:2 }}</span> TL
-			            {% elif LANGUAGE_CODE == 'en' %}
-			                $ <span id="price">{{ item.totalPrice|floatdot }}</span>
-			            {% endif %}
+						{{enterprise.currency}}
+			            <span id="price">{{ item.totalPrice|floatdot }}</span>
 					</div>
 				</div>
 				<div class="clear"></div>
@@ -145,11 +142,8 @@
 		<div class="amount">
 			<div class="title">{% trans 'Tip' %}:</div>
 			<div class="price">
-				{% if LANGUAGE_CODE == 'tr' %}
-	                <span id="tip">0</span> TL
-	            {% elif LANGUAGE_CODE == 'en' %}
-	                $ <span id="tip">0</span>
-	            {% endif %}
+				{{enterprise.currency}}
+	            <span id="tip">0</span>
 			</div>
 		</div>
 	</div>
@@ -157,6 +151,22 @@
 
 <form action="{% url 'order:complated' %}" method="post">
 	{% csrf_token %}
+
+	<div class="row cart-payment">
+		<div class="col">
+			<div class="box">
+				<div class="title">{% trans 'Payment' %}:</div>
+				<div class="content">
+					<select class="custom-select" id="payment" name="payment">
+					  <option value="default" selected>{% trans 'Select' %}</option>
+					  <option value="cash">{% trans 'Cash' %}</option>
+					  <option value="credit">{% trans 'Credit Cart' %}</option>
+					  <option value="ticket">{% trans 'Ticket' %}</option>
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<div class="row total-tip">
 		<div class="col">
@@ -193,11 +203,8 @@
 			<div class="amount">
 				<div class="title">{% trans 'Total Price' %}:</div>
 				<div class="price" id="total-price">
-					{% if LANGUAGE_CODE == 'tr' %}
-		                <span id="total">{{ total|floatformat:2 }}</span> TL
-		            {% elif LANGUAGE_CODE == 'en' %}
-		                $<span id="total"> {{ total|floatdot }}</span>
-		            {% endif %}
+					{{enterprise.currency}}
+		            <span id="total"> {{ total|floatdot }}</span>
 				</div>
 			</div>
 		</div>
@@ -205,14 +212,9 @@
 
 
 	<div class="row order">
-		<!-- <div class="col-6 clear">
-			<div class="amount">{{ total|floatformat:2 }} TL</div>
-		</div> -->
 		<div class="col-12 clear">
 			<div class="inside">
-				<!-- <a href="{% url 'order:complated' %}"> -->
-					<button class="button" type="submit">{% trans 'ORDER NOW' %}</button>
-				<!-- </a> -->
+				<button class="button" type="submit">{% trans 'ORDER NOW' %}</button>
 			</div>
 		</div>
 	</div>

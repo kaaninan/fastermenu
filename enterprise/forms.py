@@ -7,9 +7,11 @@ from .models import Enterprise
 
 
 class EnterpriseForm(forms.ModelForm):
+
 	logo = forms.ImageField(required=False, label=_('Your company logo'))
 	name = forms.CharField(max_length=30, required=False, label=_('Your company name'))
 	address = forms.CharField(max_length=200, required=False, label=_('Your company address'), help_text=_('This section appears under your company name on the order display.'))
+	# currency = forms.ChoiceField(widget=forms.Select(), choices=CURRENCY, label=_("Select Currency"), required=True)
 
 	logo_x = forms.IntegerField(required=False, widget = forms.HiddenInput())
 	logo_y = forms.IntegerField(required=False, widget = forms.HiddenInput())
@@ -18,7 +20,7 @@ class EnterpriseForm(forms.ModelForm):
 
 	class Meta:
 		model = Enterprise
-		fields = ('logo', 'name', 'address' )
+		fields = ('logo', 'name', 'address', 'currency' )
 
 
 	def clean_logo(self):

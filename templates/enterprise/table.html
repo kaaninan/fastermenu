@@ -48,7 +48,12 @@
 					<label for="add1">{% trans 'Add bulk table' %}</label><br>
 
 					<input id="add2" type="radio" name="radio-add" value="add-single">
-					<label for="add2">{% trans 'Add one table' %}</label>
+					<label for="add2">{% trans 'Add one table' %}</label><br>
+
+					<input id="add3" type="radio" name="radio-add" value="add-client">
+					<label for="add3">{% trans 'Add home delivery client' %}</label>
+
+					<div style="color:red; font-weight: 600; padding-top: 15px;" id="add-error"></div>
 
 					<div id="add-multiple" style="display: none">
 						<div class="form-group">
@@ -75,6 +80,27 @@
 						</div>
 					</div>
 
+					<div id="add-client" style="display: none">
+						<div class="form-group">
+							<hr>
+							<div class="error-add" style="display: none">
+								<span style="color: red"></span>
+								<br><br>
+							</div>
+							<label for="table-name">{% trans 'Client Name:' %}</label>
+							<input type="text" class="form-control" id="client-name" name="client-name">
+							<br>
+
+							<label for="table-name">{% trans 'Client Phone:' %}</label>
+							<input type="tel" class="form-control" id="client-phone" name="client-phone">
+							<br>
+
+							<label for="table-name">{% trans 'Client Address:' %}</label>
+							<textarea class="form-control" id="client-address" name="client-address" rows="2"></textarea>
+							<br>
+						</div>
+					</div>
+
 				</div>
 				
 				<div class="modal-footer">
@@ -96,6 +122,8 @@
 
 				<div class="modal-body">
 
+					<div style="color:red; font-weight: 600; padding-top: 15px;" id="edit-error"></div>
+
 					<div class="form-group">
 						<label for="table-count">{% trans 'Table Name' %}</label>
 						<input type="text" class="form-control" name="edit-name">
@@ -111,6 +139,26 @@
 						<label for="edit2">{% trans 'Not Active' %}</label>
 
 						<span class="help-block">{% trans 'You can remove the tables that are not in use.' %}</span>
+					</div>
+
+					<!-- IF CLIENT -->
+					<div class="form-group" id="update-client" style="display: none">
+						<hr>
+						<div class="error-update" style="display: none">
+							<span style="color: red"></span>
+							<br><br>
+						</div>
+						<label for="table-name">{% trans 'Client Name:' %}</label>
+						<input type="text" class="form-control" id="client-name-edit">
+						<br>
+
+						<label for="table-name">{% trans 'Client Phone:' %}</label>
+						<input type="tel" class="form-control" id="client-phone-edit">
+						<br>
+
+						<label for="table-name">{% trans 'Client Address:' %}</label>
+						<textarea class="form-control" id="client-address-edit" rows="2"></textarea>
+						<br>
 					</div>
 
 				</div>
@@ -211,6 +259,10 @@
 								</tr>
 								{% for single in tables %}
 									<tr>
+										<td class="_cli_name" style="display: none">{{ single.client_name }}</td>
+										<td class="_cli_phone" style="display: none">{{ single.client_phone }}</td>
+										<td class="_cli_address" style="display: none">{{ single.client_address }}</td>
+
 										<td class="_name">{{ single.name }}</td>
 										<td class="_status">
 											{% if single.active == True %}<i class="fa fa-check-circle" style="color: green"></i>{% endif %}
@@ -244,7 +296,7 @@
 
 		// ============================= jQuery Requests ============================================
 
-		function addTable(option, data){
+		function addTable(option, data, client_name, client_phone, client_address){
 
 			// CSRF Token for Django
 			$.ajaxSetup({
@@ -268,7 +320,7 @@
 				} 
 			});
 
-			var serialized = $.param({option: option, data: data});
+			var serialized = $.param({option: option, data: data, client_name: client_name, client_phone: client_phone, client_address: client_address});
 
 			request = $.ajax({
 				url: "{% url 'api:table_create' %}",
@@ -298,7 +350,7 @@
 		}
 
 
-		function updateTable(id, name, status){
+		function updateTable(id, name, status, client_name, client_phone, client_address){
 
 			// CSRF Token for Django
 			$.ajaxSetup({
@@ -322,7 +374,7 @@
 				} 
 			});
 
-			var serialized = $.param({id: id, name: name, status: status});
+			var serialized = $.param({id: id, name: name, status: status, client_name: client_name, client_phone: client_phone, client_address: client_address});
 
 			request = $.ajax({
 				url: "{% url 'api:table_update' %}",
@@ -408,6 +460,21 @@
 				itemID = $(this).parent().parent().find('.id').html();
 				itemName = $(this).parent().parent().find('._name').html();
 				itemStatus = $(this).parent().parent().find('._status').find('i').attr('class');
+				itemCliName = $(this).parent().parent().find('._cli_name').html();
+				itemCliPhone = $(this).parent().parent().find('._cli_phone').html();
+				itemCliAddress = $(this).parent().parent().find('._cli_address').html();
+
+				console.log($('input[name="client-name"]'));
+
+				if(itemCliName != 'None'){
+					$('#update-client').show();
+					$('#client-name-edit').val(itemCliName);
+					$('#client-phone-edit').val(itemCliPhone);
+					$('#client-address-edit').val(itemCliAddress);
+				}else{
+					$('#update-client').hide();
+				}
+
 				if(itemStatus == 'fa fa-check-circle'){
 					$('input[type=radio][id=edit1]').prop('checked', true);
 				}else if(itemStatus == 'fa fa-times-circle'){
@@ -447,8 +514,8 @@
 				
 
 				$('#print').attr('href',`{% url 'barcode:single' %}?barcode=`+itemBarcode);
-				$('#qrLink').attr('href','https://app.fastermenu.com/redirect/'+itemBarcode);
-				$('#qrCode').attr('src','https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://app.fastermenu.com/redirect/'+itemBarcode);
+				$('#qrLink').attr('href','{% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.META.HTTP_HOST }}/redirect/'+itemBarcode);
+				$('#qrCode').attr('src','https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={% if request.is_secure %}https://{% else %}http://{% endif %}{{ request.META.HTTP_HOST }}/redirect/'+itemBarcode);
 
 				$('#modal-qr').modal('show');
 			});
@@ -461,10 +528,10 @@
 
 			$('#button-save').click(function(e){
 
-				// Get Edit Form Details
-
 				var btn = $(event.target);
-				btn.attr('disabled', 'disabled').html("Bekleyin...");
+				btn.attr('disabled', 'disabled').html("{% trans 'Wait...' %}");
+
+				$('#edit-error').html('');
 
 				id = selectedID;
 				name = $('input[name="edit-name"]').val();
@@ -472,7 +539,39 @@
 				if(option == 'active'){ option = true; }
 				else { option = false; }
 
-				updateTable(id, name, option);
+				
+				client_name = ''
+				client_phone = ''
+				client_address = ''
+
+
+				// If Client Table
+
+				var visible = $('#update-client').css('display');
+				console.log(visible);
+
+				if (visible == 'block'){
+					client_name = $('#client-name-edit').val();
+					client_phone = $('#client-phone-edit').val();
+					client_address = $('#client-address-edit').val();
+
+
+					if(client_name == '' || client_phone == '' || client_address == ''){
+						$('#edit-error').html("{% trans 'Please fill in the required fields!' %}");
+						btn.attr('disabled', false).html("{% trans 'Save' %}");
+						return;
+					}
+				}
+
+				else{
+					$('#add-error').html("{% trans 'Please select one of options!' %}");
+					var btn = $('#button-add');
+					btn.attr('disabled', false).html("{% trans 'Add' %}");
+					return;
+				}
+
+				updateTable(id, name, option, client_name, client_phone, client_address);
+
 
 
 			});
@@ -499,25 +598,73 @@
 				btn.attr('disabled', 'disabled').html("{% trans 'Wait...' %}");
 
 				$('.error-add').hide();
+
+				$('#add-error').html('');
 				
 				option = $('input[type=radio][name=radio-add]:checked').val();
 				data = null;
+				client_name = ''
+				client_phone = ''
+				client_address = ''
+
 				if(option == 'add-single'){
 					data = $('#table-name').val();
+
+					if(data == ''){
+						$('#add-error').html("{% trans 'Please fill in the required fields!' %}");
+						var btn = $('#button-add');
+						btn.attr('disabled', false).html("{% trans 'Add' %}");
+						return;
+					}
+
 				}else if (option == 'add-multiple'){
 					data = $('#table-count').val();
+
+					if(!data){
+						$('#add-error').html("{% trans 'Please fill in the required fields!' %}");
+						var btn = $('#button-add');
+						btn.attr('disabled', false).html("{% trans 'Add' %}");
+						return;
+					}
+
+				}else if (option == 'add-client'){
+					client_name = $('#client-name').val();
+					client_phone = $('#client-phone').val();
+					client_address = $('#client-address').val();
+
+					if(client_name == '' || client_phone == '' || client_address == ''){
+						$('#add-error').html("{% trans 'Please fill in the required fields!' %}");
+						var btn = $('#button-add');
+						btn.attr('disabled', false).html("{% trans 'Add' %}");
+						return;
+					}
 				}
-				addTable(option, data);
+
+				else{
+					$('#add-error').html("{% trans 'Please select one of options!' %}");
+					var btn = $('#button-add');
+					btn.attr('disabled', false).html("{% trans 'Add' %}");
+					return;
+				}
+				
+				addTable(option, data, client_name, client_phone, client_address);
 			});
 
 			$('input[type=radio][name=radio-add]').change(function() {
 				if (this.value == 'add-multiple') {
 					$('#add-multiple').show();
 					$('#add-single').hide();
+					$('#add-client').hide();
 				}
 				else if (this.value == 'add-single') {
 					$('#add-multiple').hide();
 					$('#add-single').show();
+					$('#add-client').hide();
+				}
+				else if (this.value == 'add-client') {
+					$('#add-multiple').hide();
+					$('#add-single').hide();
+					$('#add-client').show();
 				}
 			}); 
 		});
