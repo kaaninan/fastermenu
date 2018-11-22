@@ -34,7 +34,7 @@ class SignUpForm(UserCreationForm):
 	    try:
 	        user = User.objects.exclude(pk=self.instance.pk).get(email=email)
 	    except User.DoesNotExist:
-	        return username
+	        return email
 	    raise forms.ValidationError(_("'%s' is already in use.") % email)
 	
 	def __init__(self, *args, **kwargs):
