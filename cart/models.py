@@ -16,6 +16,7 @@ class Line(models.Model):
     isCanceled = models.BooleanField(default=False)
     isComplated = models.BooleanField(default=False)
     isPaid = models.BooleanField(default=False)
+    isPrinted = models.BooleanField(default=False)
     isCommented = models.BooleanField(default=False)
     payment = models.CharField(default='default', max_length=50)
     totalPrice = models.FloatField(null=True) # tip + price

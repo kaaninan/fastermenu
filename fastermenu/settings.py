@@ -94,30 +94,30 @@ WSGI_APPLICATION = 'fastermenu.wsgi.application'
 #     }
 # }
 
-if 'PRODUCTION' in os.environ:
-	DATABASES = {
-		'default': {
-			'ENGINE': 'django.db.backends.postgresql_psycopg2',
-			'NAME': 'fasterdb',
-			'USER': 'fasteruser',
-			'PASSWORD': 'faster(MENU)',
-			'HOST': '35.240.13.81',
-			'PORT': '5432',
-		}
+# if 'PRODUCTION' in os.environ:
+DATABASES = {
+	'default': {
+		'ENGINE': 'django.db.backends.postgresql_psycopg2',
+		'NAME': 'fasterdb',
+		'USER': 'fasteruser',
+		'PASSWORD': 'faster(MENU)',
+		'HOST': '35.240.13.81',
+		'PORT': '5432',
 	}
+}
 
-else:
-	DATABASES = {
-		'default': {
-			'ENGINE': 'django.db.backends.postgresql_psycopg2',
+# else:
+# 	DATABASES = {
+# 		'default': {
+# 			'ENGINE': 'django.db.backends.postgresql_psycopg2',
 			
-			'NAME': 'fasterdb',
-			'USER': 'fasteruser',
-			'PASSWORD': 'faster(MENU)',
-			'HOST': '35.241.252.147',
-			'PORT': '5432',
-		}
-	}
+# 			'NAME': 'fasterdb',
+# 			'USER': 'fasteruser',
+# 			'PASSWORD': 'faster(MENU)',
+# 			'HOST': '35.241.252.147',
+# 			'PORT': '5432',
+# 		}
+# 	}
 
 # Password validation
 

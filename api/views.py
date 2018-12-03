@@ -319,7 +319,9 @@ def line_add(request, tip=0, payment='default'):
 			order.optionsReadable = optionsReadable
 
 		else:
-			order.optionsReadable = order.menu.description
+			# Add menu description for default
+			# order.optionsReadable = order.menu.description
+			pass
 
 		
 		order.save();
@@ -357,8 +359,6 @@ def line_delete(request):
 
 def line_get(request):
 
-	# start_time = time.time()
-
 	data = list()
 
 	# Birden fazla order ayni line'da bulunuyor
@@ -380,41 +380,34 @@ def line_get(request):
 	    temp = [key,value]
 	    data.append(temp)
 
+	return JsonResponse({'data':data})
 
-	# print(data)
 
-	# print("--- %s seconds ---" % (time.time() - start_time))
+def line_get_for_printer(request):
+
+	data = list()
+
+	# Birden fazla order ayni line'da bulunuyor
+	new_data = Order.objects.filter(enterprise=request.GET.get('enterprise', '')).select_related('line', 'menu', 'line__table').values(
+		'id', 'menu__name', 'count', 'optionsReadable', 'price', 'line__totalPrice', 'line__table__name', 'line__table__id', 'line__id',
+		'line__orderDate', 'line__isComplated', 'line__isPaid', 'line__isCanceled', 'line__payment', 'line__isPrinted'
+	).order_by('-line__orderDate')[:5]
+
+	# Ayni line a ait orderlari ayni yere koy
+	d = {}
+	for name in new_data:
+	    key = name['line__id']
+	    if key not in d:
+	        d[key] = []
+	    d[key].append(name)
+
+
+	for key, value in d.items():
+	    temp = [key,value]
+	    data.append(temp)
 
 	return JsonResponse({'data':data})
 
-# unused
-def line_get_cash(request):
-
-	# For Search
-	query = request.GET.get('table')
-
-	if query:
-		table = Table.objects.filter(Q(name__icontains=query), enterprise=request.user.profile.enterprise).distinct()
-		data = list(Line.objects.filter(enterprise=request.user.profile.enterprise, isComplated=True).filter(table__in=table).values())
-	else:
-		data = list(Line.objects.filter(enterprise=request.user.profile.enterprise, isComplated=True).values())
-
-
-	for item in data:
-		item['table'] = Table.objects.get(id=item['table_id']).name
-		order = list(Order.objects.filter(line=item['id']).values())
-		item['order'] = []
-		for orderItem in order:
-			try:
-				menu = Menu.objects.get(id=orderItem['menu_id'])
-				orderItem['name'] = menu.name
-			except Exception as e:
-				orderItem['name'] = ''
-
-			item['order'].append(orderItem)
-
-
-	return JsonResponse({'data':data})
 
 def line_set_complated(request):
 
@@ -463,6 +456,18 @@ def line_set_canceled(request):
 
 	data.isCanceled = True;
 	data.canceledDate = datetime.now()
+	data.save()
+
+	return JsonResponse({'status':'success'})
+
+
+def line_set_printed(request):
+
+	item = request.POST.get('id','')
+
+	data = Line.objects.get(enterprise=request.user.profile.enterprise, id=item)
+
+	data.isPrinted = True;
 	data.save()
 
 	return JsonResponse({'status':'success'})
