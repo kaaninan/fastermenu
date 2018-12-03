@@ -463,7 +463,7 @@ def line_set_canceled(request):
 
 def line_set_printed(request):
 
-	item = request.POST.get('id','')
+	item = request.GET.get('id','')
 
 	data = Line.objects.get(enterprise=request.user.profile.enterprise, id=item)
 
