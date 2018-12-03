@@ -71,6 +71,8 @@
 
     <div class="print" onclick="window.print();">{% trans 'Click to Print' %}</div>
 
+    {{ request.get_host }}
+
     {% for item in barcodes %}
     
         <div class="card">
