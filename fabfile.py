@@ -45,7 +45,7 @@ def deploy():
                 sudo('pip install -r requirements.txt')
                 sudo('python manage.py makemigrations')
                 sudo('python manage.py migrate')
-                sudo('python manage.py createsu') # can be delete
+                # sudo('python manage.py createsu') # can be delete
                 sudo('python manage.py collectstatic --noinput')
 
     restart()
