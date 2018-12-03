@@ -464,8 +464,9 @@ def line_set_canceled(request):
 def line_set_printed(request):
 
 	item = request.GET.get('id','')
+	enterprise = request.GET.get('enterprise','')
 
-	data = Line.objects.get(enterprise=request.user.profile.enterprise, id=item)
+	data = Line.objects.get(enterprise=enterprise, id=item)
 
 	data.isPrinted = True;
 	data.save()
