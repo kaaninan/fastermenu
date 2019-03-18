@@ -9,7 +9,7 @@ PROJECT_ROOT = '/opt/%s' % PROJECT_NAME
 VENV_DIR = os.path.join(PROJECT_ROOT, 'venv')
 REPO = 'git@gitlab.com:fastermenu/fastermenu.git'
 
-env.hosts = ['contact@35.198.165.200']
+env.hosts = ['contact@35.207.141.134']
 # Not needed because it've done on server side manually
 # env.command_prefixes=["export PRODUCTION='true'",]
 
