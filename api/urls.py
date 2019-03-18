@@ -52,6 +52,7 @@ urlpatterns = [
 
 	# BIOT
 	url(r'^biot_order/$', biot_order, name="biot_order"),
+	url(r'^biot_hepsiburada/$', biot_hepsiburada, name="biot_hepsiburada"),
 
 	# CALL WAITER
 	url(r'^waiter_call_create/$', waiter_call_create, name="waiter_call_create"),

@@ -3,7 +3,7 @@ from django.http import JsonResponse, HttpResponse, QueryDict
 from django.core import serializers
 from django.contrib import messages
 from django.db.models import Q
-import json, pickle, uuid, ast, time
+import json, pickle, uuid, ast, time, http.client
 from django.utils.translation import ugettext as _
 from django.core.serializers.json import DjangoJSONEncoder
 
@@ -1155,6 +1155,52 @@ def biot_order(request):
 		return JsonResponse(data)
 
 
+def biot_hepsiburada(request):
+
+	# API[source] => Connect FM Database get Table object and get Menu object
+
+	# Get Post Parameters
+	postClient = request.GET.get('client', '')
+	postOption = request.GET.get('option', '')
+
+	def send_sms(message, phones):
+	  sms_msg = {
+	    'username' : '908505325216', # https://oim.verimor.com.tr/sms_settings/edit adresinden öğrenebilirsiniz.
+	    'password' : 'BulutYazilim', # https://oim.verimor.com.tr/sms_settings/edit adresinden belirlemeniz gerekir.
+	    'source_addr' : '08505325216', # Gönderici başlığı, https://oim.verimor.com.tr/headers adresinde onaylanmış olmalı, değilse 400 hatası alırsınız.
+	    'messages' : [
+	      {'msg': message, 'dest': phones}
+	    ]
+	  }
+
+	  sms_msg = json.dumps(sms_msg)
+
+	  conn = http.client.HTTPConnection('sms.verimor.com.tr', 80)
+	  request_headers = {'Content-type': 'application/json'}
+	  conn.request("POST", "/v2/send.json", sms_msg, request_headers)
+	  response = conn.getresponse()
+	  print(response.status, response.reason)
+
+
+	  if response.status == 200:
+	    data = response.read()
+	    conn.close
+	    return data
+	  else:
+	    conn.close
+	    return False
+
+	message = "Kagan, https://www.hepsiburada.com/ariel-dag-esintisi-beyazlar-icin-9-kg-parlak-renkler-9-kg-toz-camasir-deterjani-p-HBV000007M8CD?magaza=Online%20Market"
+	dest = "905309263819"
+
+	campaign_id = send_sms(message, dest)
+	if campaign_id == False:
+	  print("Mesaj gönderilemedi.")
+	else:
+	  print("Kampanya ID:", campaign_id)
+
+	data = {'status': str(campaign_id, 'utf-8')}
+	return JsonResponse(data)
 
 
 # ================================= WAITER CALL ===============================================
