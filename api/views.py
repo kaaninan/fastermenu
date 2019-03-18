@@ -1190,8 +1190,25 @@ def biot_hepsiburada(request):
 	    conn.close
 	    return False
 
-	message = "Kagan, https://www.hepsiburada.com/ariel-dag-esintisi-beyazlar-icin-9-kg-parlak-renkler-9-kg-toz-camasir-deterjani-p-HBV000007M8CD?magaza=Online%20Market"
+	message = postClient
+
+	if postOption == '1':
+		message += ", https://www.hepsiburada.com/ariel-dag-esintisi-beyazlar-icin-9-kg-parlak-renkler-9-kg-toz-camasir-deterjani-p-HBV000007M8CD?magaza=Online%20Market"
+	else:
+		message += ', https://www.hepsiburada.com/finish-bulasik-makinesi-deterjani-200-lu-hepsi-bir-arada-tablet-100x2-p-HBV00000BSK7T?magaza=Online%20Market'
+	
 	dest = "905309263819"
+
+	if postClient == 'Kagan':
+		dest = "905309263819"
+	elif postClient == 'Huseyin':
+		dest = "905327342028"
+	elif postClient == 'Orhan':
+		dest = "905323580404"
+	elif postClient == 'Evren':
+		dest = "905332821140"
+	elif postClient == 'Mutlu':
+		dest = "905322552998"
 
 	campaign_id = send_sms(message, dest)
 	if campaign_id == False:
@@ -1199,7 +1216,7 @@ def biot_hepsiburada(request):
 	else:
 	  print("Kampanya ID:", campaign_id)
 
-	data = {'status': str(campaign_id, 'utf-8')}
+	data = {'status': str(campaign_id, 'utf-8'), 'client': postClient, 'option': postOption}
 	return JsonResponse(data)
 
 
