@@ -1221,12 +1221,9 @@ def biot_hepsiburada(request):
 	  print("Kampanya ID:", campaign_id)
 
 
-	# comment = Comment()
-	# comment.commentDate = datetime.now()
-	# comment.comment = campaign_id
-	# # comment.line = 2183
-	# # comment.enterprise = 1
-	# comment.save()
+	comment = HPLog()
+	comment.comment = campaign_id
+	comment.save()
 
 	data = {'status': campaign_id, 'client': postClient, 'option': postOption}
 	return JsonResponse(data)

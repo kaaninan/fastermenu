@@ -85,3 +85,18 @@ class BiotLog(models.Model):
 
     class Meta:
         ordering = ['-scanned']
+
+
+class HPLog(models.Model):
+    comment = models.CharField(max_length=120, verbose_name="Comment")
+    scanned = models.DateTimeField(editable=False)
+
+    def save(self, *args, **kwargs):
+        self.scanned = datetime.now()
+        return super(HPLog, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return str(self.scanned)
+
+    class Meta:
+        ordering = ['-scanned']
