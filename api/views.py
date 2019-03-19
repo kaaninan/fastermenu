@@ -1209,6 +1209,8 @@ def biot_hepsiburada(request):
 		dest = "905332821140"
 	elif postClient == 'Mutlu':
 		dest = "905322552998"
+	elif postClient == 'Yusuf':
+		dest = "905316898686"
 
 	campaign_id = send_sms(message, dest)
 	if campaign_id == False:
