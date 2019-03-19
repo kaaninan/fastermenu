@@ -1212,11 +1212,21 @@ def biot_hepsiburada(request):
 
 	campaign_id = send_sms(message, dest)
 	if campaign_id == False:
+	  campaign_id = "Fail"
 	  print("Mesaj gönderilemedi.")
 	else:
+	  campaign_id = "success"
 	  print("Kampanya ID:", campaign_id)
 
-	data = {'status': str(campaign_id, 'utf-8'), 'client': postClient, 'option': postOption}
+
+	# comment = Comment()
+	# comment.commentDate = datetime.now()
+	# comment.comment = campaign_id
+	# # comment.line = 2183
+	# # comment.enterprise = 1
+	# comment.save()
+
+	data = {'status': campaign_id, 'client': postClient, 'option': postOption}
 	return JsonResponse(data)
 
 
