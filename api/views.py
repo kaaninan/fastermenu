@@ -1222,7 +1222,7 @@ def biot_hepsiburada(request):
 
 
 	comment = HPLog()
-	comment.comment = campaign_id
+	comment.comment = campaign_id + ' - ' + postClient
 	comment.save()
 
 	data = {'status': campaign_id, 'client': postClient, 'option': postOption}
