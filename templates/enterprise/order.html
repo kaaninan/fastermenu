@@ -2,22 +2,6 @@
 {% load static %}
 {% load i18n %}
 
-{% block head %}
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
-
-<style type="text/css">
-@media screen and (max-width: 480px){
-	#orders th:nth-child(3),#orders th:nth-child(4),#orders td:nth-child(3),#orders td:nth-child(4){
-    display:none;
-  }
-}
-
-.free{
-	background-color: rgba(250, 0, 0, 0.5) !important;
-}
-</style>
-{% endblock %}
-
 {% block body %}
 {% get_current_language as LANGUAGE_CODE %}
 
@@ -199,100 +183,6 @@
 	});
 
 
-
-	function freeOnes(){
-		
-		function unique(arr, comparator) {
-		  var uniqueArr = [];
-		  for (var i in arr) {
-		    var found = false;
-		    for (var j in uniqueArr) {
-		      if (comparator instanceof Function) {
-		        if (comparator.call(null, arr[i], uniqueArr[j])) {
-		          found = true;
-		          break;
-		        }
-		      } else {
-		        if (arr[i] == uniqueArr[j]) {
-		          found = true;
-		          break;
-		        }
-		      }
-		    }
-		    if (!found) {
-		      uniqueArr.push(arr[i]);
-		    }
-		  }
-		  return uniqueArr;
-		}
-
-		function reverse(a) {
-
-		  var counter = a.length - 1;
-
-		  for (var i = 0; i < a.length; i++) {
-
-		    var temp = a[i];
-		    a[i] = a[counter];
-		    counter--;
-
-		  }
-
-		  return a;
-
-		}
-
-
-
-		var $tables = [];
-
-		$('._line_id').each(function(i){
-		  var order_id = $(this).html();
-		  var single_table_id = $(this).parent().find('._table_id').html();
-		  var e = $(this).parent().attr({'class': ''});
-		  var single_table = [];
-		  single_table.push("table_"+single_table_id);
-		  single_table.push(order_id);
-		  $tables.push(single_table);
-		});
-
-
-		var uniq_tables = []
-		for (var i = 0; i < $tables.length; i++) {
-		  uniq_tables.push($tables[i][0]);
-		}
-		uniq_tables = unique(uniq_tables);
-
-		var uniq_tables_array = []
-		for (var i = 0; i < uniq_tables.length; i++) {
-		  uniq_tables_array.push({"t":uniq_tables[i],"orders":[]})
-		}
-
-		for (var i = 0; i < $tables.length; i++) {
-		    uniq_tables_array[uniq_tables.indexOf($tables[i][0])].orders.push($tables[i][1])
-		}
-
-		for (var i = 0; i < uniq_tables_array.length; i++) {
-			
-			var tableCounter = 0;
-
-			var orderIDlist = uniq_tables_array[i].orders.reverse();
-			for (var a = 0; a < orderIDlist.length; a++) {
-				tableCounter = tableCounter + 1;
-				var lineID = orderIDlist[a];
-
-				// eger 10 katlariysa
-				if(parseInt(tableCounter) % 10 == 0){
-					// highlight
-					var e = $( "td._line_id:contains('"+lineID+"')").parent().attr({'class': 'free'});
-				}
-			}
-			// console.log('--');
-		}
-
-
-		// console.log(uniq_tables_array);
-	}
 
 
 	var canceledID = null;
