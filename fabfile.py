@@ -47,6 +47,7 @@ def deploy():
                 sudo('python manage.py migrate')
                 # sudo('python manage.py createsu') # can be delete
                 sudo('python manage.py collectstatic --noinput')
+                sudo('python manage.py compilemessages')
 
     restart()
 
@@ -55,7 +56,7 @@ def deploy():
 def bootstrap():
     sudo('apt update')
     sudo('apt upgrade')
-    sudo('apt install git supervisor nginx memcached postgresql python3-dev python-pip python-virtualenv')
+    sudo('apt install git supervisor nginx memcached postgresql python3-dev python-pip python-virtualenv gettext')
     # run("export LC_ALL='en_US.UTF-8'")
     # run("export LC_CTYPE='en_US.UTF-8'")
 
@@ -79,6 +80,7 @@ def bootstrap():
                 sudo('python manage.py migrate')
                 sudo('python manage.py createsu')
                 sudo('python manage.py collectstatic --noinput')
+                sudo('python manage.py compilemessages')
 
 
     # Deploy web and app server configs
