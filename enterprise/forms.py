@@ -11,6 +11,7 @@ class EnterpriseForm(forms.ModelForm):
 	logo = forms.ImageField(required=False, label=_('Your company logo'))
 	name = forms.CharField(max_length=30, required=False, label=_('Your company name'))
 	address = forms.CharField(max_length=200, required=False, label=_('Your company address'), help_text=_('This section appears under your company name on the order display.'))
+	phone = forms.CharField(max_length=200, required=False, label=_('Your phone (for sms)'))
 	# currency = forms.ChoiceField(widget=forms.Select(), choices=CURRENCY, label=_("Select Currency"), required=True)
 
 	logo_x = forms.IntegerField(required=False, widget = forms.HiddenInput())
@@ -20,7 +21,7 @@ class EnterpriseForm(forms.ModelForm):
 
 	class Meta:
 		model = Enterprise
-		fields = ('logo', 'name', 'address', 'currency' )
+		fields = ('logo', 'name', 'phone', 'address', 'currency' )
 
 
 	def clean_logo(self):

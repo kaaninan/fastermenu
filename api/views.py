@@ -1197,7 +1197,7 @@ def biot_hepsiburada(request):
 	else:
 		message += ', https://www.hepsiburada.com/finish-bulasik-makinesi-deterjani-200-lu-hepsi-bir-arada-tablet-100x2-p-HBV00000BSK7T?magaza=Online%20Market'
 	
-	dest = "905309263819", "905322552998", "905332821140", "905323580404", "905327342028"
+	dest = "905309263819"
 
 	# if postClient == 'Kagan':
 	# 	dest = "905309263819"
@@ -1209,9 +1209,14 @@ def biot_hepsiburada(request):
 	# 	dest = "905332821140"
 	# elif postClient == 'Mutlu':
 	# 	dest = "905322552998"
-	# elif postClient == 'Yusuf':
-	# 	dest = "905316898686"
+	# elif postClient == 'Other':
+	# 	dest = "905309263819"
 
+	if postClient == 'Other':
+		dest = "905309263819"
+	else:
+		dest = "905309263819", "905322552998", "905332821140", "905323580404", "905327342028"
+		
 	campaign_id = send_sms(message, dest)
 	if campaign_id == False:
 	  campaign_id = "Fail"
