@@ -3,7 +3,7 @@ from django.http import JsonResponse, HttpResponse, QueryDict
 from django.core import serializers
 from django.contrib import messages
 from django.db.models import Q
-import json, pickle, uuid, ast, time, http.client
+import json, pickle, uuid, ast, time, http.client, random
 from django.utils.translation import ugettext as _
 from django.core.serializers.json import DjangoJSONEncoder
 
@@ -1193,9 +1193,11 @@ def biot_hepsiburada(request):
 	message = postClient
 
 	if postOption == '1':
-		message += ", https://www.hepsiburada.com/ariel-dag-esintisi-beyazlar-icin-9-kg-parlak-renkler-9-kg-toz-camasir-deterjani-p-HBV000007M8CD?magaza=Online%20Market"
+		message += ", https://www.hepsiburada.com/ariel-dag-esintisi-beyazlar-icin-9-kg-parlak-renkler-9-kg-toz-camasir-deterjani-p-HBV000007M8CD?magaza=Online%20Market - "
 	else:
-		message += ', https://www.hepsiburada.com/finish-bulasik-makinesi-deterjani-200-lu-hepsi-bir-arada-tablet-100x2-p-HBV00000BSK7T?magaza=Online%20Market'
+		message += ', https://www.hepsiburada.com/finish-bulasik-makinesi-deterjani-200-lu-hepsi-bir-arada-tablet-100x2-p-HBV00000BSK7T?magaza=Online%20Market - '
+
+	message += str(random.randint(1,101))
 	
 	dest = "905309263819"
 
